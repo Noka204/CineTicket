@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using CineTicket.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CineTicket.Data;
 
-public partial class CineTicketDbContext : DbContext
+public partial class CineTicketDbContext : IdentityDbContext<ApplicationUser>
 {
-    public CineTicketDbContext()
-    {
-    }
-
     public CineTicketDbContext(DbContextOptions<CineTicketDbContext> options)
         : base(options)
     {
@@ -40,6 +37,7 @@ public partial class CineTicketDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<BapNuoc>(entity =>
         {
             entity.HasKey(e => e.MaBn).HasName("PK__BapNuoc__272475AD32F5D274");

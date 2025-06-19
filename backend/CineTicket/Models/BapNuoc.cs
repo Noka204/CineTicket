@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineTicket.Models;
-
+[Table("BapNuoc")]
 public partial class BapNuoc
 {
     public int MaBn { get; set; }

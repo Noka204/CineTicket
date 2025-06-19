@@ -9,7 +9,9 @@ using CineTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using CineTicket.Data.Repositories.Interfaces;
-using CineTicket.MappingProfiles;  // 👈 thêm dòng này!
+using CineTicket.MappingProfiles;
+using CineTicket.Models;
+using Microsoft.AspNetCore.Identity;  // 👈 thêm dòng này!
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<CineTicketDbContext>()
+    .AddDefaultTokenProviders();
+
 
 // Thêm cấu hình JWT Authentication
 builder.Services.AddAuthentication(options =>
@@ -74,6 +82,11 @@ builder.Services.AddScoped<IVeRepository, VeRepository>();
 builder.Services.AddScoped<IVeService, VeService>();
 builder.Services.AddScoped<IGheRepository, GheRepository>();
 builder.Services.AddScoped<IGheService, GheService>();
+builder.Services.AddScoped<ILoaiPhimRepository, LoaiPhimRepository>();
+builder.Services.AddScoped<ILoaiPhimService, LoaiPhimService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 
 
 

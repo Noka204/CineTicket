@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs;
+using CineTicket.DTOs.Auth;
+using CineTicket.DTOs.LoaiPhim;
 using CineTicket.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -39,13 +41,24 @@ namespace CineTicket.MappingProfiles
             CreateMap<CreateVeRequest, Ve>();
             CreateMap<UpdateVeRequest, Ve>();
 
-
+            //Ghe
             CreateMap<Ghe, GheDTO>()
                 .ForMember(dest => dest.TenPhong, opt => opt.MapFrom(src => src.MaPhongNavigation.TenPhong));
 
             CreateMap<CreateGheRequest, Ghe>();
             CreateMap<UpdateGheRequest, Ghe>();
 
+            // LoaiPhim
+            CreateMap<LoaiPhim, LoaiPhimDTO>();
+            CreateMap<CreateLoaiPhimRequest, LoaiPhim>();
+            CreateMap<UpdateLoaiPhimRequest, LoaiPhim>();
+
+            //Acccount
+            CreateMap<RegisterUserRequest, ApplicationUser>();
+            CreateMap<ApplicationUser, ApplicationUserDTO>();
+
+            CreateMap<UpdateUserInfoRequest, ApplicationUser>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore()); // Tránh update ID
         }
     }
 }
