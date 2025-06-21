@@ -2,6 +2,7 @@
 using CineTicket.DTOs.LoaiPhim;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,7 +36,7 @@ namespace CineTicket.Controllers
                 return NotFound(new { status = false, message = "Không tìm thấy" });
             return Ok(new { status = true, data = _mapper.Map<LoaiPhimDTO>(item) });
         }
-
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateLoaiPhimRequest request)
         {
@@ -43,7 +44,7 @@ namespace CineTicket.Controllers
             var created = await _service.CreateAsync(model);
             return CreatedAtAction(nameof(GetById), new { id = created.MaLoaiPhim }, new { status = true, data = _mapper.Map<LoaiPhimDTO>(created) });
         }
-
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateLoaiPhimRequest request)
         {
@@ -55,7 +56,7 @@ namespace CineTicket.Controllers
 
             return success ? NoContent() : NotFound(new { status = false, message = "Không tìm thấy để cập nhật" });
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

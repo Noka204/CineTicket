@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs.Auth;
+using CineTicket.Helpers;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -15,26 +17,34 @@ public class AccountController : ControllerBase
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
     private readonly IConfiguration _config;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly JwtTokenGenerator _jwtTokenGenerator;
 
-    public AccountController(IUserService userService, IMapper mapper, IConfiguration config)
+    public AccountController(IUserService userService, IMapper mapper, IConfiguration config, UserManager<ApplicationUser> userManager, JwtTokenGenerator jwtTokenGenerator)
     {
         _userService = userService;
         _mapper = mapper;
         _config = config;
+        _userManager = userManager;
+        _jwtTokenGenerator = jwtTokenGenerator;
     }
 
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
     {
         var user = _mapper.Map<ApplicationUser>(request);
+        user.Role = SD.Role_Customer;
         var result = await _userService.RegisterAsync(user, request.Password);
         if (!result.Succeeded)
             return BadRequest(new { status = false, message = string.Join("; ", result.Errors.Select(e => e.Description)) });
 
+        await _userService.AssignRoleAsync(user, SD.Role_Customer);
+
         var createdUser = await _userService.GetByUserNameAsync(request.UserName);
-        var token = GenerateJwtToken(createdUser!);
+        var token = _jwtTokenGenerator.GenerateToken(createdUser!);
         return Ok(new { status = true, message = "Đăng ký thành công", token });
     }
+
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
@@ -43,65 +53,38 @@ public class AccountController : ControllerBase
         if (user == null || !await _userService.CheckPasswordAsync(user, request.Password))
             return Unauthorized(new { status = false, message = "Sai thông tin đăng nhập" });
 
-        var token = GenerateJwtToken(user);
+        var token = _jwtTokenGenerator.GenerateToken(user);
         return Ok(new { status = true, message = "Đăng nhập thành công", token });
     }
 
-    [HttpPost("forgot-password")]
-    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
-    {
-        var user = await _userService.GetByEmailAsync(request.Email);
-        if (user == null) return NotFound();
-        var token = await _userService.GeneratePasswordResetTokenAsync(user);
-        return Ok(new { status = true, token });
-    }
+    //[HttpPost("forgot-password")]
+    //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    //{
+    //    var user = await _userService.GetByEmailAsync(request.Email);
+    //    if (user == null) return NotFound();
+    //    var token = await _userService.GeneratePasswordResetTokenAsync(user);
+    //    return Ok(new { status = true, token });
+    //}
 
-    [HttpPost("reset-password")]
-    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
-    {
-        var user = await _userService.GetByEmailAsync(request.Email);
-        if (user == null) return NotFound();
-        var success = await _userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
-        return success ? Ok(new { status = true }) : BadRequest(new { status = false });
-    }
+    //[HttpPost("reset-password")]
+    //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    //{
+    //    var user = await _userService.GetByEmailAsync(request.Email);
+    //    if (user == null) return NotFound();
+    //    var success = await _userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
+    //    return success ? Ok(new { status = true }) : BadRequest(new { status = false });
+    //}
 
-    [HttpPut("update-info")]
-    public async Task<IActionResult> UpdateInfo([FromBody] UpdateUserInfoRequest request)
-    {
-        var user = await _userService.GetByIdAsync(request.Id);
-        if (user == null) return NotFound();
-        user.FullName = request.FullName;
-        user.Address = request.Address;
-        user.PhoneNumber = request.PhoneNumber;
-        var success = await _userService.UpdateUserInfoAsync(user);
-        return success ? Ok(new { status = true }) : BadRequest(new { status = false });
-    }
-
-    private string GenerateJwtToken(ApplicationUser user)
-    {
-        var claims = new[]
-        {
-        new Claim(ClaimTypes.NameIdentifier, user.Id),
-        new Claim(ClaimTypes.Name, user.UserName ?? string.Empty),
-        new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
-        new Claim("FullName", user.FullName ?? string.Empty),
-        new Claim("PhoneNumber", user.PhoneNumber ?? string.Empty),
-        new Claim("Address", user.Address ?? string.Empty)
-    };
-
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-        var expires = DateTime.UtcNow.AddDays(7);
-
-        var token = new JwtSecurityToken(
-            issuer: _config["Jwt:Issuer"],
-            audience: _config["Jwt:Audience"],
-            claims: claims,
-            expires: expires,
-            signingCredentials: creds
-        );
-
-        return new JwtSecurityTokenHandler().WriteToken(token);
-    }
+    //[HttpPut("update-info")]
+    //public async Task<IActionResult> UpdateInfo([FromBody] UpdateUserInfoRequest request)
+    //{
+    //    var user = await _userService.GetByIdAsync(request.Id);
+    //    if (user == null) return NotFound();
+    //    user.FullName = request.FullName;
+    //    user.Address = request.Address;
+    //    user.PhoneNumber = request.PhoneNumber;
+    //    var success = await _userService.UpdateUserInfoAsync(user);
+    //    return success ? Ok(new { status = true }) : BadRequest(new { status = false });
+    //}
 
 }

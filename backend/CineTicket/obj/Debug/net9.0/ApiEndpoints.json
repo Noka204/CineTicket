@@ -1,22 +1,6 @@
 [
   {
     "ContainingType": "AccountController",
-    "Method": "ForgotPassword",
-    "RelativePath": "api/Account/forgot-password",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "CineTicket.DTOs.Auth.ForgotPasswordRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AccountController",
     "Method": "Login",
     "RelativePath": "api/Account/login",
     "HttpMethod": "POST",
@@ -42,38 +26,6 @@
       {
         "Name": "request",
         "Type": "CineTicket.DTOs.Auth.RegisterUserRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AccountController",
-    "Method": "ResetPassword",
-    "RelativePath": "api/Account/reset-password",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "CineTicket.DTOs.Auth.ResetPasswordRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "AccountController",
-    "Method": "UpdateInfo",
-    "RelativePath": "api/Account/update-info",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "CineTicket.DTOs.Auth.UpdateUserInfoRequest",
         "IsRequired": true
       }
     ],

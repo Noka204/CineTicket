@@ -1,4 +1,5 @@
-﻿using CineTicket.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using CineTicket.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace CineTicket.Models
@@ -11,6 +12,7 @@ namespace CineTicket.Models
         public ICollection<Ve> Ves { get; set; }
         public ICollection<HoaDon> HoaDons  { get; set; }
         public string Address { get; set; } = null!;
+        public string Role { get; set; }
     }
 
 }

@@ -11,7 +11,8 @@ using System.Text.Json.Serialization;
 using CineTicket.Data.Repositories.Interfaces;
 using CineTicket.MappingProfiles;
 using CineTicket.Models;
-using Microsoft.AspNetCore.Identity;  // 👈 thêm dòng này!
+using Microsoft.AspNetCore.Identity;
+using CineTicket.Helpers;  // 👈 thêm dòng này!
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddAuthorization();
 
+builder.Services.AddScoped<JwtTokenGenerator>();
+
 builder.Services.AddScoped<IPhimRepository, PhimRepository>();
 builder.Services.AddScoped<IPhimService, PhimService>();
 builder.Services.AddScoped<ISuatChieuRepository, SuatChieuRepository>();
@@ -100,6 +103,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    await IdentitySeeder.SeedRolesAsync(serviceProvider);
+}
+
 
 app.UseHttpsRedirection();
 

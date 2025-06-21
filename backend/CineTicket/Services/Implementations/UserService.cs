@@ -8,10 +8,12 @@ namespace CineTicket.Services.Implementations
     public class UserService : IUserService
     {
         private readonly IUserRepository _repo;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public UserService(IUserRepository repo)
+        public UserService(IUserRepository repo, UserManager<ApplicationUser> userManager)
         {
             _repo = repo;
+            _userManager = userManager;
         }
 
         public Task<ApplicationUser?> GetByIdAsync(string id) => _repo.GetByIdAsync(id);
@@ -29,5 +31,11 @@ namespace CineTicket.Services.Implementations
         public Task<bool> ResetPasswordAsync(ApplicationUser user, string token, string newPassword) => _repo.ResetPasswordAsync(user, token, newPassword);
 
         public Task<bool> UpdateUserInfoAsync(ApplicationUser user) => _repo.UpdateUserInfoAsync(user);
+
+        public async Task<bool> AssignRoleAsync(ApplicationUser user, string role)
+        {
+            var result = await _userManager.AddToRoleAsync(user, role);
+            return result.Succeeded;
+        }
     }
 }

@@ -175,3 +175,4 @@ C:\Users\khanh\Documents\CineTicket\backend\CineTicket\bin\Debug\net9.0\Microsof
 C:\Users\khanh\Documents\CineTicket\backend\CineTicket\bin\Debug\net9.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\khanh\Documents\CineTicket\backend\CineTicket\bin\Debug\net9.0\Microsoft.Extensions.Identity.Core.dll
 C:\Users\khanh\Documents\CineTicket\backend\CineTicket\bin\Debug\net9.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\khanh\Documents\CineTicket\backend\CineTicket\bin\Debug\net9.0\Microsoft.AspNet.Identity.Core.dll

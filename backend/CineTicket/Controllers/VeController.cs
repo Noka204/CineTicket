@@ -2,6 +2,7 @@
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CineTicket.Controllers
@@ -38,6 +39,7 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy vé thành công", data = mapped });
         }
 
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateVeRequest request)
         {
@@ -48,6 +50,7 @@ namespace CineTicket.Controllers
             return CreatedAtAction(nameof(GetById), new { id = mapped.MaVe }, new { status = true, message = "Tạo vé thành công", data = mapped });
         }
 
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateVeRequest request)
         {
@@ -63,6 +66,7 @@ namespace CineTicket.Controllers
                 return NotFound(new { status = false, message = "Không tìm thấy vé để cập nhật", data = (object?)null });
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

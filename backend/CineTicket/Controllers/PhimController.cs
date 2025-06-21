@@ -20,7 +20,6 @@ namespace CineTicket.Controllers.Api
             _mapper = mapper;
         }
 
-        // GET: api/phim/get-all
         [HttpGet("get-all")]
         public async Task<IActionResult> GetAll()
         {
@@ -29,7 +28,6 @@ namespace CineTicket.Controllers.Api
             return Ok(new { status = true, message = "Lấy danh sách phim thành công", data = mapped });
         }
 
-        // GET: api/phim/get/{id}
         [HttpGet("get/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -41,7 +39,7 @@ namespace CineTicket.Controllers.Api
             return Ok(new { status = true, message = "Lấy phim thành công", data = mapped });
         }
 
-        // POST: api/phim/create
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreatePhimRequest request)
         {
@@ -52,7 +50,7 @@ namespace CineTicket.Controllers.Api
             return CreatedAtAction(nameof(GetById), new { id = mapped.MaPhim }, new { status = true, message = "Tạo phim thành công", data = mapped });
         }
 
-        // PUT: api/phim/update/{id}
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePhimRequest request)
         {
@@ -68,7 +66,7 @@ namespace CineTicket.Controllers.Api
                 return NotFound(new { status = false, message = "Không tìm thấy phim để cập nhật", data = (object?)null });
         }
 
-        // DELETE: api/phim/delete/{id}
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

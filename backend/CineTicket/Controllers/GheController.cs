@@ -2,6 +2,7 @@
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CineTicket.Controllers
@@ -37,7 +38,7 @@ namespace CineTicket.Controllers
             var mapped = _mapper.Map<GheDTO>(ghe);
             return Ok(new { status = true, message = "Lấy ghế thành công", data = mapped });
         }
-
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateGheRequest request)
         {
@@ -47,7 +48,7 @@ namespace CineTicket.Controllers
 
             return CreatedAtAction(nameof(GetById), new { id = mapped.MaGhe }, new { status = true, message = "Tạo ghế thành công", data = mapped });
         }
-
+        [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateGheRequest request)
         {
@@ -62,7 +63,7 @@ namespace CineTicket.Controllers
             else
                 return NotFound(new { status = false, message = "Không tìm thấy ghế để cập nhật", data = (object?)null });
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
