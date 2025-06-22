@@ -1,58 +1,118 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Danh sách Phim</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CineMax - Danh sách Phim</title>
+  <link rel="stylesheet" href="../../assets/css/Phim.css">
+
 </head>
 <body>
+  <!-- Header -->
+  <div id="include-header"></div>
 
-<h1>Danh sách Phim (Gọi API bên VS tím)</h1>
+  <!-- Hero Slideshow -->
+  <section class="hero-section" id="home">
+    <div class="slideshow-container">
+      <div class="slide active" style="background-image: url('https://wallpapercat.com/w/full/8/7/7/194290-3840x2160-desktop-4k-outer-space-wallpaper-photo.jpg')">
+        <div class="slide-overlay">
+          <div class="slide-content">
+            <h1>Trải Nghiệm Điện Ảnh Đỉnh Cao</h1>
+            <p>Khám phá những bộ phim mới nhất</p>
+            <a href="#movies" class="cta-button">Xem Phim</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dots-container">
+      <span class="dot active" onclick="currentSlide(1)"></span>
+    </div>
+  </section>
 
-<table border="1" id="phimTable">
-    <thead>
-        <tr>
-            <th>Mã Phim</th>
-            <th>Tên Phim</th>
-            <th>Thời Lượng</th>
-            <th>Đạo Diễn</th>
-            <th>Loại Phim</th>
-            <th>Poster</th>
-        </tr>
-    </thead>
-    <tbody>
-    </tbody>
-</table>
+  <!-- Movies Section -->
+  <section class="movies-section" id="movies">
+    <h2 class="section-title">Phim Đang Chiếu</h2>
+    <div class="movies-grid" id="moviesGrid">
+      <!-- Danh sách phim sẽ được load bằng API -->
+    </div>
+  </section>
 
-<script>
-    // Đường dẫn API bên VS tím
-    const apiUrl = 'https://localhost:7058/api/phim/get-all';
+  <!-- Footer -->
+  <div id="include-footer"></div>
 
-    fetch(apiUrl)
+
+  <script src="../../assets/js/login.js"></script>
+  <script>
+    function includeHTML(id, file) {
+      fetch(file)
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById(id).innerHTML = data;
+          if (id === "include-header") {
+            setTimeout(updateAuthButtons, 100);
+          }
+        });
+    }
+
+    function loadMovies() {
+      const moviesGrid = document.getElementById('moviesGrid');
+      fetch('https://localhost:7058/api/phim/get-all')
         .then(response => response.json())
         .then(data => {
-            if (data.status) {
-                const tbody = document.querySelector('#phimTable tbody');
-                data.data.forEach(phim => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${phim.maPhim}</td>
-                        <td>${phim.tenPhim}</td>
-                        <td>${phim.thoiLuong} phút</td>
-                        <td>${phim.daoDien}</td>
-                        <td>${phim.tenLoaiPhim}</td>
-                        <td>${phim.poster ? `<img src="${phim.poster}" width="100" />` : ''}</td>
-                    `;
-                    tbody.appendChild(row);
-                });
-            } else {
-                alert('Không lấy được danh sách phim.');
-            }
+          if (data.status && Array.isArray(data.data)) {
+            data.data.forEach(movie => {
+              const movieCard = document.createElement('div');
+              movieCard.className = 'movie-card';
+              movieCard.style.cursor = 'pointer';
+              movieCard.innerHTML = `
+                <div class="movie-poster" style="background-image: url('${movie.poster || '../../assets/images/default-poster.jpg'}')"></div>
+                <div class="movie-info">
+                  <div class="movie-title">${movie.tenPhim}</div>
+                  <div class="movie-details">
+                    <p><strong>Thể loại:</strong> ${movie.tenLoaiPhim}</p>
+                    <p><strong>Thời lượng:</strong> ${movie.thoiLuong} phút</p>
+                    <p><strong>Đạo diễn:</strong> ${movie.daoDien}</p>
+                  </div>
+                </div>
+              `;
+              movieCard.addEventListener('click', () => {
+                window.location.href = `../../pages/phim/detail.html?id=${movie.maPhim}`;
+              });
+              moviesGrid.appendChild(movieCard);
+            });
+          } else {
+            alert('Không có dữ liệu phim.');
+          }
         })
-        .catch(error => {
-            console.error('Lỗi khi gọi API:', error);
-            alert('Lỗi khi gọi API.');
+        .catch(err => {
+          console.error('Lỗi API:', err);
+          alert('Không thể tải danh sách phim.');
         });
-</script>
+    }
+
+    // Gọi sau khi DOM sẵn sàng
+    document.addEventListener('DOMContentLoaded', () => {
+      includeHTML("include-header", "../../part/header.html");
+      includeHTML("include-footer", "../../part/footer.html");
+      loadMovies();
+    });
+
+    // Slider logic
+    let slideIndex = 1;
+    function currentSlide(n) { showSlides(slideIndex = n); }
+    function showSlides(n) {
+      let slides = document.getElementsByClassName("slide");
+      let dots = document.getElementsByClassName("dot");
+      if (n > slides.length) slideIndex = 1;
+      if (n < 1) slideIndex = slides.length;
+      for (let i = 0; i < slides.length; i++) slides[i].classList.remove("active");
+      for (let i = 0; i < dots.length; i++) dots[i].classList.remove("active");
+      slides[slideIndex - 1].classList.add("active");
+      dots[slideIndex - 1].classList.add("active");
+    }
+    showSlides(slideIndex);
+  </script>
+  
 
 </body>
 </html>

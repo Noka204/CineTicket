@@ -3,33 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Đăng ký</title>
-    <link rel="stylesheet" href="../../assets/style.css">
+    <link rel="stylesheet" href="../../assets/css/login.css"> <!-- Dùng lại CSS nếu đã tách -->
 </head>
 <body>
-    <h2>Đăng ký tài khoản mới</h2>
-    <form id="registerForm">
-        <label>Tên đăng nhập:</label><br>
-        <input type="text" id="username" required><br><br>
+    <section class="container">
+        <div class="login-container">
+            <div class="circle circle-one"></div>
+            <div class="form-container">
+                <img src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png" alt="illustration" class="illustration" />
+                <h1 class="opacity">REGISTER</h1>
+                <form id="registerForm">
+                    <input type="text" id="username" placeholder="USERNAME" required />
+                    <input type="email" id="email" placeholder="EMAIL" required />
+                    <input type="text" id="fullname" placeholder="FULL NAME" required />
+                    <input type="text" id="address" placeholder="ADDRESS" required />
+                    <input type="password" id="password" placeholder="PASSWORD" required />
+                    <input type="password" id="confirmPassword" placeholder="CONFIRM PASSWORD" required />
+                    <button type="submit" class="opacity">SUBMIT</button>
+                </form>
 
-        <label>Email:</label><br>
-        <input type="email" id="email" required><br><br>
+                <div class="register-forget opacity">
+                    <a href="login.html">LOGIN</a>
+                    <a href="#">HELP?</a>
+                </div>
+            </div>
+            <div class="circle circle-two"></div>
+        </div>
+        <div class="theme-btn-container"></div>
+    </section>
 
-        <label>Địa chỉ:</label><br>
-        <input type="text" id="address" required><br><br>
-
-        <label>Họ và tên:</label><br>
-        <input type="text" id="fullname" required><br><br>
-
-        <label>Mật khẩu:</label><br>
-        <input type="password" id="password" required><br><br>
-
-        <label>Nhập lại mật khẩu:</label><br>
-        <input type="password" id="confirmPassword" required><br><br>
-
-        <button type="submit">Đăng ký</button>
-    </form>
-
-    <p id="message"></p>
+    <p id="message" style="text-align:center; margin-top: 1rem;"></p>
 
     <script>
         document.getElementById("registerForm").addEventListener("submit", async function (e) {
@@ -37,9 +40,11 @@
 
             const password = document.getElementById("password").value;
             const confirmPassword = document.getElementById("confirmPassword").value;
+            const msg = document.getElementById("message");
 
             if (password !== confirmPassword) {
-                document.getElementById("message").textContent = "Mật khẩu xác nhận không khớp.";
+                msg.style.color = "red";
+                msg.textContent = "Mật khẩu xác nhận không khớp.";
                 return;
             }
 
@@ -58,7 +63,6 @@
             });
 
             const result = await response.json();
-            const msg = document.getElementById("message");
 
             if (result.status) {
                 msg.style.color = "green";
@@ -67,7 +71,7 @@
                 window.location.href = "/pages/Phim/index.html";
             } else {
                 msg.style.color = "red";
-                msg.textContent = result.message;
+                msg.textContent = result.message || "Đăng ký thất bại.";
             }
         });
     </script>
