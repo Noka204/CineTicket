@@ -25,7 +25,10 @@ namespace CineTicket.MappingProfiles
             // SuatChieu
             CreateMap<SuatChieu, SuatChieuDTO>()
                 .ForMember(dest => dest.TenPhim, opt => opt.MapFrom(src => src.MaPhimNavigation.TenPhim))
-                .ForMember(dest => dest.TenPhong, opt => opt.MapFrom(src => src.MaPhongNavigation.TenPhong));
+                .ForMember(dest => dest.TenPhong, opt => opt.MapFrom(src => src.MaPhongNavigation.TenPhong))
+                .ForMember(dest => dest.GioChieu, opt => opt.MapFrom(src =>
+                    src.ThoiGianBatDau.HasValue ? src.ThoiGianBatDau.Value.ToString("HH:mm") : null));
+
             CreateMap<CreateSuatChieuRequest, SuatChieu>();
             CreateMap<UpdateSuatChieuRequest, SuatChieu>();
 

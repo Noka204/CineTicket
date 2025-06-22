@@ -12,5 +12,6 @@
         public DateTime? ThoiGianBatDau { get; set; }
         public DateTime? ThoiGianKetThuc { get; set; }
         public DateOnly? NgayChieu { get; set; }
+        public string? GioChieu { get; set; } // ✅ Thêm để hiển thị "14:30"
     }
 }
