@@ -12,6 +12,9 @@ public partial class Ghe
     public string? LoaiGhe { get; set; }
 
     public int? MaPhong { get; set; }
+    public string T { get; set; }
+
+    public virtual Ve? VeNavigation { get; set; }
 
     public virtual PhongChieu? MaPhongNavigation { get; set; }
 

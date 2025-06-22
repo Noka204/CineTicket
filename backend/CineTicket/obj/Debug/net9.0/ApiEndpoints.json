@@ -111,6 +111,27 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CineTicket.Controllers.DashboardController",
+    "Method": "GetDoanhThuNgay",
+    "RelativePath": "api/Dashboard/doanh-thu-ngay",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "year",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "month",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CineTicket.Controllers.GheController",
     "Method": "Create",
     "RelativePath": "api/Ghe/create",
@@ -184,6 +205,85 @@
       {
         "Name": "request",
         "Type": "CineTicket.DTOs.UpdateGheRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoaDonController",
+    "Method": "Create",
+    "RelativePath": "api/HoaDon/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CineTicket.DTOs.HoaDon.CreateHoaDonDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoaDonController",
+    "Method": "Delete",
+    "RelativePath": "api/HoaDon/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoaDonController",
+    "Method": "GetAll",
+    "RelativePath": "api/HoaDon/get-all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoaDonController",
+    "Method": "GetById",
+    "RelativePath": "api/HoaDon/get/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "HoaDonController",
+    "Method": "Update",
+    "RelativePath": "api/HoaDon/update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "CineTicket.DTOs.HoaDon.UpdateHoaDonDTO",
         "IsRequired": true
       }
     ],

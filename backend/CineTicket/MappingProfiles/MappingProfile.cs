@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs;
 using CineTicket.DTOs.Auth;
+using CineTicket.DTOs.ChiTietHoaDon;
 using CineTicket.DTOs.HoaDon;
 using CineTicket.DTOs.LoaiPhim;
 using CineTicket.Models;
@@ -65,9 +66,15 @@ namespace CineTicket.MappingProfiles
             CreateMap<BapNuocUpdateDTO, BapNuoc>();
 
             // HoaDon
-            //CreateMap<CreateHoaDonDTO, HoaDon>();
-            //CreateMap<UpdateHoaDonDTO, HoaDon>();
-            //CreateMap<HoaDon, HoaDonDTO>();
+            CreateMap<CreateHoaDonDTO, HoaDon>();
+            CreateMap<UpdateHoaDonDTO, HoaDon>();
+            CreateMap<HoaDon, HoaDonDTO>();
+
+            CreateMap<CreateHoaDonDTO, HoaDon>();
+            CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
+            CreateMap<UpdateHoaDonDTO, HoaDon>();
+            CreateMap<HoaDon, HoaDonDTO>();
+            CreateMap<ChiTietHoaDon, ChiTietHoaDonDTO>();
         }
     }
 }

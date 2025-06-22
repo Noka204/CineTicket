@@ -74,6 +74,8 @@ builder.Services.AddCors(options =>
 builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<JwtTokenGenerator>();
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 
 builder.Services.AddScoped<IPhimRepository, PhimRepository>();
 builder.Services.AddScoped<IPhimService, PhimService>();
@@ -92,8 +94,11 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBapNuocRepository, BapNuocRepository>();
 builder.Services.AddScoped<IBapNuocService, BapNuocService>();
-//builder.Services.AddScoped<IHoaDonRepository, HoaDonRepository>();
-////builder.Services.AddScoped<IHoaDonService, HoaDonService>();
+builder.Services.AddScoped<IHoaDonRepository, HoaDonRepository>();
+builder.Services.AddScoped<IHoaDonService, HoaDonService>();
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+
 
 
 
