@@ -41,8 +41,7 @@ public class AccountController : ControllerBase
         await _userService.AssignRoleAsync(user, SD.Role_Customer);
 
         var createdUser = await _userService.GetByUserNameAsync(request.UserName);
-        var token = _jwtTokenGenerator.GenerateToken(createdUser!);
-        return Ok(new { status = true, message = "Đăng ký thành công", token });
+        return Ok(new { status = true, message = "Đăng ký thành công" });
     }
 
 

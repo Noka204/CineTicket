@@ -1,10 +1,13 @@
 ﻿using CineTicket.Models;
 
-public interface IHoaDonRepository
+namespace CineTicket.Repositories.Interfaces
 {
-    Task<IEnumerable<HoaDon>> GetAllAsync();
-    Task<HoaDon?> GetByIdAsync(int id);
-    Task<HoaDon> CreateAsync(HoaDon model);
-    Task<bool> UpdateAsync(HoaDon model);
-    Task<bool> DeleteWithDetailsAsync(int id);
+    public interface IHoaDonRepository
+    {
+        Task<HoaDon> CreateAsync(HoaDon hoaDon);
+        Task<HoaDon?> GetByIdAsync(int id);
+        Task<IEnumerable<HoaDon>> GetAllAsync();
+        Task<bool> UpdateAsync(HoaDon hoaDon);
+        Task<bool> DeleteAsync(int id);
+    }
 }
