@@ -12,7 +12,8 @@ using CineTicket.Data.Repositories.Interfaces;
 using CineTicket.MappingProfiles;
 using CineTicket.Models;
 using Microsoft.AspNetCore.Identity;
-using CineTicket.Helpers;  // 👈 thêm dòng này!
+using CineTicket.Helpers;
+using CineTicket.Data.Repositories.Implementations;  // 👈 thêm dòng này!
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,6 +90,8 @@ builder.Services.AddScoped<ILoaiPhimRepository, LoaiPhimRepository>();
 builder.Services.AddScoped<ILoaiPhimService, LoaiPhimService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBapNuocRepository, BapNuocRepository>();
+builder.Services.AddScoped<IBapNuocService, BapNuocService>();
 
 
 

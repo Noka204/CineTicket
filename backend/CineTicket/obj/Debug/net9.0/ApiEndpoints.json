@@ -32,6 +32,85 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CineTicket.Controllers.BapNuocController",
+    "Method": "Create",
+    "RelativePath": "api/BapNuoc/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CineTicket.DTOs.BapNuocCreateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CineTicket.Controllers.BapNuocController",
+    "Method": "Delete",
+    "RelativePath": "api/BapNuoc/delete/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CineTicket.Controllers.BapNuocController",
+    "Method": "GetAll",
+    "RelativePath": "api/BapNuoc/get-all",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CineTicket.Controllers.BapNuocController",
+    "Method": "GetById",
+    "RelativePath": "api/BapNuoc/get/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CineTicket.Controllers.BapNuocController",
+    "Method": "Update",
+    "RelativePath": "api/BapNuoc/update/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "request",
+        "Type": "CineTicket.DTOs.BapNuocUpdateDTO",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CineTicket.Controllers.GheController",
     "Method": "Create",
     "RelativePath": "api/Ghe/create",

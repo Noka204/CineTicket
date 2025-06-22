@@ -59,6 +59,11 @@ namespace CineTicket.MappingProfiles
 
             CreateMap<UpdateUserInfoRequest, ApplicationUser>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore()); // Tránh update ID
+
+            CreateMap<BapNuoc, BapNuocDTO>().ReverseMap();
+            CreateMap<BapNuocCreateDTO, BapNuoc>();
+            CreateMap<BapNuocUpdateDTO, BapNuoc>();
+
         }
     }
 }
