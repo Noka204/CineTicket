@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Quản lý Loại Phim</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f4f4f4;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    .form-inline {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .table thead th {
+      background: #222;
+      color: white;
+      text-align: center;
+    }
+
+    .table td,
+    .table th {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .page-input {
+      width: 60px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>📂 Danh sách Loại Phim</h2>
+    <a href="../Admin/index.html" class="btn btn-outline-secondary">🔙 Quay lại</a>
+  </div>
+
+  <div class="form-inline">
+    <input type="text" id="tenLoaiPhim" placeholder="Nhập tên loại phim..." class="form-control" />
+    <button onclick="addLoaiPhim()" class="btn btn-primary">➕ Thêm</button>
+  </div>
+
+  <div class="form-inline">
+    <label>Hiển thị:</label>
+    <select id="itemsPerPage" class="form-select w-auto" onchange="goToPage(1)">
+      <option value="5">5 dòng</option>
+      <option value="10" selected>10 dòng</option>
+      <option value="20">20 dòng</option>
+    </select>
+
+    <label>Tìm kiếm:</label>
+    <input type="text" id="searchBox" class="form-control" placeholder="Nhập tên cần tìm..." oninput="goToPage(1)" />
+  </div>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên Loại</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody id="loaiPhimTableBody"></tbody>
+  </table>
+
+  <div class="pagination-controls">
+    <button class="btn btn-outline-secondary" onclick="goToPage(1)">⬅ Trang đầu</button>
+    <button class="btn btn-outline-secondary" onclick="changePage(-1)">⬅ Trước</button>
+
+    <span>Trang <input type="number" id="pageInput" class="form-control page-input d-inline" min="1" onchange="goToInputPage()"> / <span id="totalPagesSpan">1</span></span>
+
+    <button class="btn btn-outline-secondary" onclick="changePage(1)">Tiếp ➡</button>
+    <button class="btn btn-outline-secondary" onclick="goToPage(totalPages)">Trang cuối ➡</button>
+  </div>
+
+  <script>
+    const API_BASE = "https://localhost:7058/api/LoaiPhim";
+    const token = localStorage.getItem("token");
+    let allLoaiPhim = [];
+    let currentPage = 1;
+    let totalPages = 1;
+
+    async function loadLoaiPhim() {
+      const res = await fetch(`${API_BASE}/get-all`);
+      const data = await res.json();
+      allLoaiPhim = data.data || [];
+      goToPage(1);
+    }
+
+    function getItemsPerPage() {
+      return parseInt(document.getElementById("itemsPerPage").value);
+    }
+
+    function getSearchText() {
+      return document.getElementById("searchBox").value.toLowerCase().trim();
+    }
+
+    function goToPage(page) {
+      const perPage = getItemsPerPage();
+      const filterText = getSearchText();
+      const filtered = allLoaiPhim.filter(item =>
+        item.tenLoaiPhim.toLowerCase().includes(filterText)
+      );
+
+      totalPages = Math.ceil(filtered.length / perPage);
+      if (page < 1) page = 1;
+      if (page > totalPages) page = totalPages;
+      currentPage = page;
+      document.getElementById("totalPagesSpan").textContent = totalPages;
+      document.getElementById("pageInput").value = page;
+
+      const start = (page - 1) * perPage;
+      const items = filtered.slice(start, start + perPage);
+
+      const tbody = document.getElementById("loaiPhimTableBody");
+      tbody.innerHTML = "";
+      items.forEach(item => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${item.maLoaiPhim}</td>
+            <td><input type="text" value="${item.tenLoaiPhim}" id="edit-${item.maLoaiPhim}" class="form-control" /></td>
+            <td>
+              <button class="btn btn-success btn-sm" onclick="updateLoaiPhim(${item.maLoaiPhim})">💾 Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteLoaiPhim(${item.maLoaiPhim})">❌ Xoá</button>
+            </td>
+          </tr>`;
+      });
+    }
+
+    function changePage(offset) {
+      goToPage(currentPage + offset);
+    }
+
+    function goToInputPage() {
+      const inputPage = parseInt(document.getElementById("pageInput").value);
+      if (!isNaN(inputPage)) goToPage(inputPage);
+    }
+
+    async function addLoaiPhim() {
+      const name = document.getElementById("tenLoaiPhim").value.trim();
+      if (!name) return alert("Vui lòng nhập tên loại phim!");
+
+      const res = await fetch(`${API_BASE}/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ tenLoaiPhim: name })
+      });
+
+      if (res.ok) {
+        document.getElementById("tenLoaiPhim").value = "";
+        await loadLoaiPhim();
+      } else {
+        alert("❌ Thêm thất bại");
+      }
+    }
+
+    async function updateLoaiPhim(id) {
+      const newName = document.getElementById(`edit-${id}`).value.trim();
+
+      const res = await fetch(`${API_BASE}/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ maLoaiPhim: id, tenLoaiPhim: newName })
+      });
+
+      if (res.ok) {
+        alert("✅ Đã cập nhật");
+        await loadLoaiPhim();
+      } else {
+        alert("❌ Cập nhật thất bại");
+      }
+    }
+
+    async function deleteLoaiPhim(id) {
+      if (!confirm("Bạn có chắc muốn xoá?")) return;
+
+      const res = await fetch(`${API_BASE}/delete/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        await loadLoaiPhim();
+      } else {
+        alert("❌ Xoá thất bại");
+      }
+    }
+
+    loadLoaiPhim();
+  </script>
+
+</body>
+
+</html>

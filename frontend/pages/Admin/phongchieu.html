@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Quản lý Phòng Chiếu</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th,
+    td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    th {
+      background: #343a40;
+      color: white;
+    }
+
+    .form-inline {
+      display: flex;
+      gap: 10px;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .pagination-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+      align-items: center;
+    }
+
+    input[type="number"] {
+      width: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>🏢 Danh sách Phòng Chiếu</h2>
+    <a href="../Admin/index.html" class="btn btn-outline-secondary">🔙 Quay lại</a>
+  </div>
+
+  <div class="form-inline">
+    <input type="text" id="tenPhong" placeholder="Tên phòng chiếu" class="form-control" />
+    <input type="number" id="soGhe" placeholder="Số ghế" class="form-control" />
+    <button onclick="addPhongChieu()" class="btn btn-primary">➕ Thêm</button>
+  </div>
+
+  <div class="form-inline">
+    <label>Hiển thị:</label>
+    <select id="pageSize" class="form-select w-auto" onchange="goToPage(1)">
+      <option value="5">5 dòng</option>
+      <option value="10" selected>10 dòng</option>
+      <option value="20">20 dòng</option>
+    </select>
+
+    <label for="searchText">Tìm kiếm:</label>
+    <input type="text" id="searchText" class="form-control" placeholder="Nhập tên phòng..." oninput="goToPage(1)" />
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Tên Phòng</th>
+        <th>Số ghế</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody id="phongTableBody"></tbody>
+  </table>
+
+  <div class="pagination-controls">
+    <button class="btn btn-secondary" onclick="goToPage(1)">← Trang đầu</button>
+    <button class="btn btn-secondary" onclick="changePage(-1)">← Trước</button>
+    <span>Trang <strong id="currentPageSpan">1</strong> / <span id="totalPageSpan">1</span></span>
+    <input type="number" id="gotoPageInput" min="1" placeholder="Số trang">
+    <button class="btn btn-outline-primary" onclick="jumpToPage()">Đi</button>
+    <button class="btn btn-secondary" onclick="changePage(1)">Tiếp →</button>
+    <button class="btn btn-secondary" onclick="goToLastPage()">Trang cuối →</button>
+  </div>
+
+  <script>
+    const API_BASE = "https://localhost:7058/api/PhongChieu";
+    const token = localStorage.getItem("token");
+    let currentPage = 1;
+    let totalPages = 1;
+    let currentData = [];
+
+    async function fetchData() {
+      const res = await fetch(`${API_BASE}/get-all`);
+      const json = await res.json();
+      currentData = json.data || [];
+      goToPage(currentPage);
+    }
+
+    function goToPage(page) {
+      const search = document.getElementById("searchText").value.toLowerCase();
+      const pageSize = parseInt(document.getElementById("pageSize").value);
+      const tbody = document.getElementById("phongTableBody");
+      tbody.innerHTML = "";
+
+      const filtered = currentData.filter(p =>
+        p.tenPhong?.toLowerCase().includes(search)
+      );
+
+      totalPages = Math.ceil(filtered.length / pageSize);
+      if (page < 1) page = 1;
+      if (page > totalPages) page = totalPages;
+      currentPage = page;
+
+      const start = (currentPage - 1) * pageSize;
+      const paginated = filtered.slice(start, start + pageSize);
+
+      paginated.forEach(p => {
+        tbody.innerHTML += `
+          <tr>
+            <td>${p.maPhong}</td>
+            <td><input id="ten-${p.maPhong}" value="${p.tenPhong || ''}" /></td>
+            <td><input id="ghe-${p.maPhong}" type="number" value="${p.soGhe || 0}" /></td>
+            <td>
+              <button class="btn btn-success btn-sm" onclick="updatePhong(${p.maPhong})">💾 Sửa</button>
+              <button class="btn btn-danger btn-sm" onclick="deletePhong(${p.maPhong})">❌ Xóa</button>
+            </td>
+          </tr>`;
+      });
+
+      document.getElementById("currentPageSpan").textContent = currentPage;
+      document.getElementById("totalPageSpan").textContent = totalPages;
+    }
+
+    function changePage(offset) {
+      goToPage(currentPage + offset);
+    }
+
+    function goToLastPage() {
+      goToPage(totalPages);
+    }
+
+    function jumpToPage() {
+      const page = parseInt(document.getElementById("gotoPageInput").value);
+      if (!isNaN(page)) goToPage(page);
+    }
+
+    async function addPhongChieu() {
+      const body = {
+        tenPhong: document.getElementById("tenPhong").value,
+        soGhe: parseInt(document.getElementById("soGhe").value)
+      };
+
+      const res = await fetch(`${API_BASE}/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        alert("✅ Đã thêm phòng");
+        fetchData();
+      } else {
+        alert("❌ Thêm thất bại");
+      }
+    }
+
+    async function updatePhong(id) {
+      const body = {
+        maPhong: id,
+        tenPhong: document.getElementById(`ten-${id}`).value,
+        soGhe: parseInt(document.getElementById(`ghe-${id}`).value)
+      };
+
+      const res = await fetch(`${API_BASE}/update/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      if (res.ok) {
+        alert("✅ Đã cập nhật");
+        fetchData();
+      } else {
+        alert("❌ Cập nhật thất bại");
+      }
+    }
+
+    async function deletePhong(id) {
+      if (!confirm("Bạn có chắc muốn xóa?")) return;
+
+      const res = await fetch(`${API_BASE}/delete/${id}`, {
+        method: "DELETE",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+
+      if (res.ok) {
+        alert("✅ Đã xoá");
+        fetchData();
+      } else {
+        alert("❌ Xóa thất bại");
+      }
+    }
+
+    fetchData();
+  </script>
+</body>
+
+</html>
