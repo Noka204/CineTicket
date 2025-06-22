@@ -3,12 +3,80 @@
   "WorkspaceRootPath": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\suatchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\implementations\\suatchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\hoadon\\createhoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\hoadon\\createhoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\interfaces\\isuatchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\interfaces\\isuatchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\isuatchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\isuatchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\implementations\\suatchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\suatchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\hoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\implementations\\hoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\suatchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\suatchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\mappingprofiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\mappingprofiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\suatchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\suatchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\interfaces\\ihoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\interfaces\\ihoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\iphimrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\iphimrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\iphongchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\iphongchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\cineticket.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\cineticket.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\loaiphimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\loaiphimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\implementations\\hoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\hoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\ihoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\ihoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\chitiethoadon\\createchitiethoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\chitiethoadon\\createchitiethoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\hoadon\\hoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,12 +87,36 @@
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\hoadon\\updatehoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\hoadoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\hoadon\\createhoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\hoadon\\createhoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\loaiphimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\loaiphimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\chitiethoadon\\updatechitiethoahondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\chitiethoadon\\updatechitiethoahondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\chitiethoadon\\chitiethoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\dtos\\chitiethoadon\\chitiethoadondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\sd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\sd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\phongchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\phongchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\ve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\ve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\hoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\chitiethoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\chitiethoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\ghecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -43,32 +135,12 @@
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\vecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\suatchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\suatchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\phongchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\phongchieucontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\phimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\phimcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\hoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\implementations\\hoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\interfaces\\ihoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\interfaces\\ihoadonservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\implementations\\hoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\hoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\ihoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\ihoadonrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\bapnuocservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -85,14 +157,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\implementations\\bapnuocrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\bapnuocrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\mappingprofiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\mappingprofiles\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\dtos\\bapnuoc\\bapnuoccreatedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -135,10 +199,6 @@
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\gherepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\chitiethoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\chitiethoadon.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\bapnuoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\bapnuoc.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -153,10 +213,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\implementations\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\sd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\sd.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\applicationuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -203,20 +259,12 @@
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\cineticket.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\interfaces\\iuserservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\implementations\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\implementations\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\controllers\\weatherforecastcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\data\\repositories\\interfaces\\iphongchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\data\\repositories\\interfaces\\iphongchieurepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -253,18 +301,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\services\\implementations\\phongchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\services\\implementations\\phongchieuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\ve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\ve.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\phongchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\phongchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\suatchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|solutionrelative:cineticket\\models\\suatchieu.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{014ADCBE-7056-4141-8C84-BB07E84A7930}|CineTicket\\CineTicket.csproj|c:\\users\\khanh\\documents\\cineticket\\backend\\cineticket\\models\\loaiphim.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -314,7 +350,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 11,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Bookmark",
@@ -337,148 +373,148 @@
               "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ISuatChieuService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ISuatChieuService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\ISuatChieuService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ISuatChieuService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\ISuatChieuService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T06:48:46.194Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ISuatChieuRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\ISuatChieuRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\ISuatChieuRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\ISuatChieuRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\ISuatChieuRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T06:48:28.06Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "SuatChieuService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\SuatChieuService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\SuatChieuService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\SuatChieuService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\SuatChieuService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T06:47:55.031Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SuatChieu.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SuatChieu.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\SuatChieu.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SuatChieu.cs",
+              "RelativeToolTip": "CineTicket\\Models\\SuatChieu.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:15:55.477Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SuatChieuRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\SuatChieuRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\SuatChieuRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\SuatChieuRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\SuatChieuRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T06:45:29.979Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
+              "Title": "HoaDonService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\HoaDonService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\HoaDonService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\HoaDonService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\HoaDonService.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAuwCkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T04:43:23.853Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Program.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Program.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Program.cs*",
+              "RelativeToolTip": "CineTicket\\Program.cs*",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAnwF8AAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:16:43.432Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\MappingProfiles\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "CineTicket\\MappingProfiles\\MappingProfile.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\MappingProfiles\\MappingProfile.cs*",
+              "RelativeToolTip": "CineTicket\\MappingProfiles\\MappingProfile.cs*",
+              "ViewState": "AgIAADIAAAAAAAAAAAAnwEUAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:28:54.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "HoaDonController.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\HoaDonController.cs",
               "RelativeDocumentMoniker": "CineTicket\\Controllers\\HoaDonController.cs",
               "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\HoaDonController.cs",
               "RelativeToolTip": "CineTicket\\Controllers\\HoaDonController.cs",
-              "ViewState": "AgIAADMAAAAAAAAAAAAYwD8AAAAKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-22T05:13:40.035Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AccountController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\AccountController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\AccountController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\AccountController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\AccountController.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAAACMAAAAlAAAAAAAAAA==",
+              "DocumentIndex": 10,
+              "Title": "IUserService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IUserService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IUserService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IUserService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IUserService.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAIA5wA8AAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:29:29.334Z",
+              "WhenOpened": "2025-06-19T10:19:03.604Z",
               "EditorCaption": ""
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CreateHoaDonDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:38:55.542Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "LoaiPhimController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\LoaiPhimController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\LoaiPhimController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\LoaiPhimController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\LoaiPhimController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:28:07.968Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "UpdateHoaDonDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:39:27.329Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "HoaDon.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\HoaDon.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\HoaDon.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\HoaDon.cs",
-              "RelativeToolTip": "CineTicket\\Models\\HoaDon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:16:01.343Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "HoaDonDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:39:47.228Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "BapNuocController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\BapNuocController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\BapNuocController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\BapNuocController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\BapNuocController.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAAADYAAABYAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T02:03:17.977Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "GheController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\GheController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\GheController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\GheController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\GheController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:29:28.622Z",
-              "EditorCaption": ""
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "VeController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\VeController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\VeController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\VeController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\VeController.cs",
-              "ViewState": "AgIAACkAAAAAAAAAAAAgwEcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:01:29.571Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
               "Title": "SuatChieuController.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\SuatChieuController.cs",
               "RelativeDocumentMoniker": "CineTicket\\Controllers\\SuatChieuController.cs",
               "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\SuatChieuController.cs",
               "RelativeToolTip": "CineTicket\\Controllers\\SuatChieuController.cs",
-              "ViewState": "AgIAACMAAAAAAAAAAAAgwEMAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACYAAAAAAAAAAAAgwCwAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-21T11:01:29.024Z",
               "EditorCaption": ""
@@ -486,537 +522,45 @@
             {
               "$type": "Document",
               "DocumentIndex": 11,
-              "Title": "PhongChieuController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhongChieuController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\PhongChieuController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhongChieuController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\PhongChieuController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:01:28.547Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "PhimController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhimController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\PhimController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhimController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\PhimController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:01:27.256Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "HoaDonService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\HoaDonService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\HoaDonService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\HoaDonService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\HoaDonService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:43:23.853Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
               "Title": "IHoaDonService.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IHoaDonService.cs",
               "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IHoaDonService.cs",
               "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IHoaDonService.cs",
               "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IHoaDonService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-22T04:43:00.281Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "HoaDonRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAUwCsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:42:30.016Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "IHoaDonRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
+              "DocumentIndex": 12,
+              "Title": "IPhimRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IPhimRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IPhimRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IPhimRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IPhimRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T04:42:00.448Z",
+              "WhenOpened": "2025-06-22T06:47:35.27Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "BapNuocService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\BapNuocService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\BapNuocService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\BapNuocService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\BapNuocService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T02:00:30.047Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "IBapNuocService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:59:41.933Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "IBapNuocRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:56:55.362Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "BapNuocRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:57:44.638Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "MappingProfile.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\MappingProfiles\\MappingProfile.cs",
-              "RelativeDocumentMoniker": "CineTicket\\MappingProfiles\\MappingProfile.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\MappingProfiles\\MappingProfile.cs",
-              "RelativeToolTip": "CineTicket\\MappingProfiles\\MappingProfile.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEUAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:28:54.132Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Program.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Program.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Program.cs",
-              "RelativeToolTip": "CineTicket\\Program.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAYwGAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:16:43.432Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
-              "Title": "BapNuocCreateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:52:54.683Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 25,
-              "Title": "BapNuocUpdateDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:53:07.722Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 26,
-              "Title": "GheService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\GheService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\GheService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\GheService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\GheService.cs",
+              "DocumentIndex": 14,
+              "Title": "CineTicket.http",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.http",
+              "RelativeDocumentMoniker": "CineTicket\\CineTicket.http",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.http",
+              "RelativeToolTip": "CineTicket\\CineTicket.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:49:05.477Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 24,
-              "Title": "BapNuocDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:52:32.835Z",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-06-22T06:32:20.599Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "IGheRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:46:50.578Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
-              "Title": "IGheService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IGheService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IGheService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IGheService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IGheService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:49:07.297Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 29,
-              "Title": "IPhimService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IPhimService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IPhimService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IPhimService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IPhimService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T02:16:03.149Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 30,
-              "Title": "ILoaiPhimService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:27:19.823Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 31,
-              "Title": "LoaiPhimRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:25:41.789Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 32,
-              "Title": "GheRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-22T01:59:06.115Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 35,
-              "Title": "VeService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\VeService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\VeService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\VeService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\VeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T11:03:12.405Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 33,
-              "Title": "ChiTietHoaDon.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ChiTietHoaDon.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\ChiTietHoaDon.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ChiTietHoaDon.cs",
-              "RelativeToolTip": "CineTicket\\Models\\ChiTietHoaDon.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T14:42:24.847Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 34,
-              "Title": "BapNuoc.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\BapNuoc.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\BapNuoc.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\BapNuoc.cs",
-              "RelativeToolTip": "CineTicket\\Models\\BapNuoc.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:33:18.791Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 36,
-              "Title": "JwtTokenGenerator.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Helpers\\JwtTokenGenerator.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Helpers\\JwtTokenGenerator.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Helpers\\JwtTokenGenerator.cs",
-              "RelativeToolTip": "CineTicket\\Helpers\\JwtTokenGenerator.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:35:09.366Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 37,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\UserService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\UserService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\UserService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\UserService.cs",
-              "ViewState": "AgIAABgAAAAAAAAAAAA5wCQAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:19:25.514Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 38,
-              "Title": "SD.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SD.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\SD.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SD.cs",
-              "RelativeToolTip": "CineTicket\\Models\\SD.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T10:50:35.349Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 39,
-              "Title": "ApplicationUser.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ApplicationUser.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\ApplicationUser.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ApplicationUser.cs",
-              "RelativeToolTip": "CineTicket\\Models\\ApplicationUser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:31:10.593Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 40,
-              "Title": "UpdateGheRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:29:57.795Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 41,
-              "Title": "CreateGheRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:29:55.974Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 42,
-              "Title": "UpdateUserInfoRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:17:38.023Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 43,
-              "Title": "ResetPasswordRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:17:16.005Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
-              "Title": "RegisterUserRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:15:34.743Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 45,
-              "Title": "LoginUserRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:16:32.562Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "ForgotPasswordRequest.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:16:55.877Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 47,
-              "Title": "ApplicationUserDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:15:10.857Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 49,
-              "Title": "CineTicket.csproj",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.csproj",
-              "RelativeDocumentMoniker": "CineTicket\\CineTicket.csproj",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.csproj",
-              "RelativeToolTip": "CineTicket\\CineTicket.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-06-19T08:27:13.141Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 50,
-              "Title": "IUserService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IUserService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IUserService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IUserService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IUserService.cs",
-              "ViewState": "AgIAAAcAAAAAAAAAAIA7wA8AAABGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:19:03.604Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 48,
-              "Title": "IdentitySeeder.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\IdentitySeeder.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\IdentitySeeder.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\IdentitySeeder.cs",
-              "RelativeToolTip": "CineTicket\\Data\\IdentitySeeder.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T10:57:33.613Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
-              "Title": "UserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAMAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:18:41.769Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 75,
-              "Title": "20250621112224_AddRoles.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250621112224_AddRoles.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250621112224_AddRoles.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250621112224_AddRoles.cs",
-              "RelativeToolTip": "CineTicket\\Migrations\\20250621112224_AddRoles.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:22:24.184Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 52,
-              "Title": "WeatherForecastController.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\WeatherForecastController.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Controllers\\WeatherForecastController.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\WeatherForecastController.cs",
-              "RelativeToolTip": "CineTicket\\Controllers\\WeatherForecastController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:34:45.444Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 53,
+              "DocumentIndex": 13,
               "Title": "IPhongChieuRepository.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IPhongChieuRepository.cs",
               "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IPhongChieuRepository.cs",
@@ -1024,167 +568,144 @@
               "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IPhongChieuRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-21T11:01:20.248Z"
+              "WhenOpened": "2025-06-21T11:01:20.248Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 54,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\appsettings.json",
-              "RelativeDocumentMoniker": "CineTicket\\appsettings.json",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\appsettings.json",
-              "RelativeToolTip": "CineTicket\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAPAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-06-19T10:58:22.942Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 55,
-              "Title": "IUserRepository.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
-              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "DocumentIndex": 15,
+              "Title": "LoaiPhimController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\LoaiPhimController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\LoaiPhimController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\LoaiPhimController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\LoaiPhimController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:18:20.379Z"
+              "WhenOpened": "2025-06-16T07:28:07.968Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 56,
-              "Title": "IVeService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IVeService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IVeService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IVeService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IVeService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "DocumentIndex": 16,
+              "Title": "HoaDonRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\HoaDonRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAIwB4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T11:02:29.507Z"
+              "WhenOpened": "2025-06-22T04:42:30.016Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 58,
-              "Title": "20250619104659_AddIdentityTables.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
-              "RelativeToolTip": "CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
-              "ViewState": "AgIAAH4AAAAAAAAAAAAhwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:47:00.192Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 74,
-              "Title": "20250619104853_AddIdentityTables.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
-              "RelativeToolTip": "CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:48:53.318Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 57,
-              "Title": "CineTicketDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\CineTicketDbContext.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Data\\CineTicketDbContext.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\CineTicketDbContext.cs",
-              "RelativeToolTip": "CineTicket\\Data\\CineTicketDbContext.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAIwCcAAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:32:32.084Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 59,
-              "Title": "GheDTO.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\GheDTO.cs",
-              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\GheDTO.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\GheDTO.cs",
-              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\GheDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T10:29:56.884Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 62,
-              "Title": "PhongChieuService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhongChieuService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\PhongChieuService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhongChieuService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\PhongChieuService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:49:09.209Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 60,
-              "Title": "LoaiPhimService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:27:37.267Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 61,
-              "Title": "PhimService.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhimService.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\PhimService.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhimService.cs",
-              "RelativeToolTip": "CineTicket\\Services\\Implementations\\PhimService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:49:10.07Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 73,
-              "Title": "20250619063824_add-applicationuser.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
-              "RelativeToolTip": "CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:38:24.413Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 64,
-              "Title": "PhongChieu.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\PhongChieu.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\PhongChieu.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\PhongChieu.cs",
-              "RelativeToolTip": "CineTicket\\Models\\PhongChieu.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-19T06:33:06.42Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 66,
-              "Title": "LoaiPhim.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\LoaiPhim.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\LoaiPhim.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\LoaiPhim.cs",
-              "RelativeToolTip": "CineTicket\\Models\\LoaiPhim.cs",
+              "DocumentIndex": 17,
+              "Title": "IHoaDonRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IHoaDonRepository.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:16:00.229Z"
+              "WhenOpened": "2025-06-22T04:42:00.448Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 63,
+              "DocumentIndex": 18,
+              "Title": "CreateChiTietHoaDonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\CreateChiTietHoaDonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\ChiTietHoaDon\\CreateChiTietHoaDonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\CreateChiTietHoaDonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\ChiTietHoaDon\\CreateChiTietHoaDonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T05:36:21.768Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "HoaDonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\HoaDonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAABJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T04:39:47.228Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "UpdateHoaDonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\UpdateHoaDonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T04:39:27.329Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "CreateHoaDonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\HoaDon\\CreateHoaDonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T04:38:55.542Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "UpdateChiTietHoaHonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\UpdateChiTietHoaHonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\ChiTietHoaDon\\UpdateChiTietHoaHonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\UpdateChiTietHoaHonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\ChiTietHoaDon\\UpdateChiTietHoaHonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T05:39:25.501Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "ChiTietHoaDonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\ChiTietHoaDonDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\ChiTietHoaDon\\ChiTietHoaDonDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\ChiTietHoaDon\\ChiTietHoaDonDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\ChiTietHoaDon\\ChiTietHoaDonDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T05:36:06.451Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "HoaDon.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\HoaDon.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\HoaDon.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\HoaDon.cs",
+              "RelativeToolTip": "CineTicket\\Models\\HoaDon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:16:01.343Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "ChiTietHoaDon.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ChiTietHoaDon.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\ChiTietHoaDon.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ChiTietHoaDon.cs",
+              "RelativeToolTip": "CineTicket\\Models\\ChiTietHoaDon.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T14:42:24.847Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
               "Title": "Ve.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\Ve.cs",
               "RelativeDocumentMoniker": "CineTicket\\Models\\Ve.cs",
@@ -1196,19 +717,631 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 65,
-              "Title": "SuatChieu.cs",
-              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SuatChieu.cs",
-              "RelativeDocumentMoniker": "CineTicket\\Models\\SuatChieu.cs",
-              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SuatChieu.cs",
-              "RelativeToolTip": "CineTicket\\Models\\SuatChieu.cs",
+              "DocumentIndex": 25,
+              "Title": "PhongChieu.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\PhongChieu.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\PhongChieu.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\PhongChieu.cs",
+              "RelativeToolTip": "CineTicket\\Models\\PhongChieu.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T07:15:55.477Z"
+              "WhenOpened": "2025-06-19T06:33:06.42Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "SD.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SD.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\SD.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\SD.cs",
+              "RelativeToolTip": "CineTicket\\Models\\SD.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAA1AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T10:50:35.349Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAAACMAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:29:29.334Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "BapNuocController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\BapNuocController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\BapNuocController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\BapNuocController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\BapNuocController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAAADYAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T02:03:17.977Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "GheController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\GheController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\GheController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\GheController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\GheController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:29:28.622Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "VeController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\VeController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\VeController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\VeController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\VeController.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAgwEcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:01:29.571Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "PhongChieuController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhongChieuController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\PhongChieuController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhongChieuController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\PhongChieuController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:01:28.547Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "PhimController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhimController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\PhimController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\PhimController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\PhimController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:01:27.256Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "BapNuocService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\BapNuocService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\BapNuocService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\BapNuocService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\BapNuocService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T02:00:30.047Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "IBapNuocService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IBapNuocService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:59:41.933Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "IBapNuocRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IBapNuocRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:56:55.362Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "BapNuocRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\BapNuocRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAADUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:57:44.638Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "BapNuocCreateDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocCreateDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:52:54.683Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "BapNuocUpdateDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocUpdateDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:53:07.722Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "GheService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\GheService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\GheService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\GheService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\GheService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:49:05.477Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "BapNuocDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\BapNuoc\\BapNuocDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:52:32.835Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "IGheRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IGheRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:46:50.578Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "IGheService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IGheService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IGheService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IGheService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IGheService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:49:07.297Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "IPhimService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IPhimService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IPhimService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IPhimService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IPhimService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T02:16:03.149Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "ILoaiPhimService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\ILoaiPhimService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:27:19.823Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "LoaiPhimRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\LoaiPhimRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:25:41.789Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "GheRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\GheRepository.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-22T01:59:06.115Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "VeService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\VeService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\VeService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\VeService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\VeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T11:03:12.405Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "BapNuoc.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\BapNuoc.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\BapNuoc.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\BapNuoc.cs",
+              "RelativeToolTip": "CineTicket\\Models\\BapNuoc.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:33:18.791Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "JwtTokenGenerator.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Helpers\\JwtTokenGenerator.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Helpers\\JwtTokenGenerator.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Helpers\\JwtTokenGenerator.cs",
+              "RelativeToolTip": "CineTicket\\Helpers\\JwtTokenGenerator.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:35:09.366Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\UserService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\UserService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\UserService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\UserService.cs",
+              "ViewState": "AgIAABgAAAAAAAAAAAA5wCQAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:19:25.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "ApplicationUser.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ApplicationUser.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\ApplicationUser.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\ApplicationUser.cs",
+              "RelativeToolTip": "CineTicket\\Models\\ApplicationUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA0AAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:31:10.593Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "UpdateGheRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\UpdateGheRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:29:57.795Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "CreateGheRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\CreateGheRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:29:55.974Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "UpdateUserInfoRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\UpdateUserInfoRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:17:38.023Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "ResetPasswordRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ResetPasswordRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:17:16.005Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "RegisterUserRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\RegisterUserRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:15:34.743Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "LoginUserRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\LoginUserRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:16:32.562Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "ForgotPasswordRequest.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ForgotPasswordRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:16:55.877Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "ApplicationUserDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Accout\\ApplicationUserDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAA0AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:15:10.857Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "CineTicket.csproj",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.csproj",
+              "RelativeDocumentMoniker": "CineTicket\\CineTicket.csproj",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\CineTicket.csproj",
+              "RelativeToolTip": "CineTicket\\CineTicket.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-06-19T08:27:13.141Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "IdentitySeeder.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\IdentitySeeder.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\IdentitySeeder.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\IdentitySeeder.cs",
+              "RelativeToolTip": "CineTicket\\Data\\IdentitySeeder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T10:57:33.613Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Implementations\\UserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:18:41.769Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "20250621112224_AddRoles.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250621112224_AddRoles.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250621112224_AddRoles.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250621112224_AddRoles.cs",
+              "RelativeToolTip": "CineTicket\\Migrations\\20250621112224_AddRoles.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-21T11:22:24.184Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "WeatherForecastController.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\WeatherForecastController.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Controllers\\WeatherForecastController.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Controllers\\WeatherForecastController.cs",
+              "RelativeToolTip": "CineTicket\\Controllers\\WeatherForecastController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:34:45.444Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\appsettings.json",
+              "RelativeDocumentMoniker": "CineTicket\\appsettings.json",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\appsettings.json",
+              "RelativeToolTip": "CineTicket\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-19T10:58:22.942Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 67,
+              "Title": "IUserRepository.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
+              "RelativeToolTip": "CineTicket\\Data\\Repositories\\Interfaces\\IUserRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:18:20.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "IVeService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IVeService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Interfaces\\IVeService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Interfaces\\IVeService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Interfaces\\IVeService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T11:02:29.507Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "20250619104659_AddIdentityTables.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
+              "RelativeToolTip": "CineTicket\\Migrations\\20250619104659_AddIdentityTables.cs",
+              "ViewState": "AgIAAH4AAAAAAAAAAAAhwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:47:00.192Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "20250619104853_AddIdentityTables.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
+              "RelativeToolTip": "CineTicket\\Migrations\\20250619104853_AddIdentityTables.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:48:53.318Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "CineTicketDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\CineTicketDbContext.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Data\\CineTicketDbContext.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\CineTicketDbContext.cs",
+              "RelativeToolTip": "CineTicket\\Data\\CineTicketDbContext.cs",
+              "ViewState": "AgIAABAAAAAAAAAAAAAIwCcAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:32:32.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "GheDTO.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\GheDTO.cs",
+              "RelativeDocumentMoniker": "CineTicket\\DTOs\\Ghe\\GheDTO.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\Ghe\\GheDTO.cs",
+              "RelativeToolTip": "CineTicket\\DTOs\\Ghe\\GheDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T10:29:56.884Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "PhongChieuService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhongChieuService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\PhongChieuService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhongChieuService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\PhongChieuService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:49:09.209Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "LoaiPhimService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\LoaiPhimService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:27:37.267Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "PhimService.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhimService.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Services\\Implementations\\PhimService.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Services\\Implementations\\PhimService.cs",
+              "RelativeToolTip": "CineTicket\\Services\\Implementations\\PhimService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:49:10.07Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "20250619063824_add-applicationuser.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
+              "RelativeToolTip": "CineTicket\\Migrations\\20250619063824_add-applicationuser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-19T06:38:24.413Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "LoaiPhim.cs",
+              "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\LoaiPhim.cs",
+              "RelativeDocumentMoniker": "CineTicket\\Models\\LoaiPhim.cs",
+              "ToolTip": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\LoaiPhim.cs",
+              "RelativeToolTip": "CineTicket\\Models\\LoaiPhim.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T07:16:00.229Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
               "Title": "ILoaiPhimRepository.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Data\\Repositories\\Interfaces\\ILoaiPhimRepository.cs",
               "RelativeDocumentMoniker": "CineTicket\\Data\\Repositories\\Interfaces\\ILoaiPhimRepository.cs",
@@ -1220,7 +1353,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 68,
+              "DocumentIndex": 77,
               "Title": "UpdateLoaiPhimRequest.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\LoaiPhim\\UpdateLoaiPhimRequest.cs",
               "RelativeDocumentMoniker": "CineTicket\\DTOs\\LoaiPhim\\UpdateLoaiPhimRequest.cs",
@@ -1232,7 +1365,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 69,
+              "DocumentIndex": 78,
               "Title": "CreateLoaiPhimRequest.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\LoaiPhim\\CreateLoaiPhimRequest.cs",
               "RelativeDocumentMoniker": "CineTicket\\DTOs\\LoaiPhim\\CreateLoaiPhimRequest.cs",
@@ -1244,7 +1377,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 70,
+              "DocumentIndex": 79,
               "Title": "LoaiPhimDTO.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\DTOs\\LoaiPhim\\LoaiPhimDTO.cs",
               "RelativeDocumentMoniker": "CineTicket\\DTOs\\LoaiPhim\\LoaiPhimDTO.cs",
@@ -1256,7 +1389,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 71,
+              "DocumentIndex": 80,
               "Title": "Phim.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\Phim.cs",
               "RelativeDocumentMoniker": "CineTicket\\Models\\Phim.cs",
@@ -1268,7 +1401,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 72,
+              "DocumentIndex": 81,
               "Title": "Ghe.cs",
               "DocumentMoniker": "C:\\Users\\khanh\\Documents\\CineTicket\\backend\\CineTicket\\Models\\Ghe.cs",
               "RelativeDocumentMoniker": "CineTicket\\Models\\Ghe.cs",

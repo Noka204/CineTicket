@@ -1,13 +1,11 @@
-﻿using CineTicket.Models;
+﻿using CineTicket.DTOs.ChiTietHoaDon;
+using CineTicket.Models;
 
-namespace CineTicket.Services.Interfaces
+public interface IHoaDonService
 {
-    public interface IHoaDonService
-    {
-        Task<IEnumerable<HoaDon>> GetAllAsync();
-        Task<HoaDon?> GetByIdAsync(int id);
-        Task<HoaDon> CreateAsync(HoaDon model);
-        Task<bool> UpdateAsync(HoaDon model);
-        Task<bool> DeleteAsync(int id);
-    }
+    Task<IEnumerable<HoaDon>> GetAllAsync();
+    Task<HoaDon?> GetByIdAsync(int id);
+    Task<HoaDon> CreateWithDetailsAsync(HoaDon hoaDon, List<CreateChiTietHoaDonDTO>? details);
+    Task<bool> UpdateWithDetailsAsync(int id, HoaDon hoaDon, List<CreateChiTietHoaDonDTO>? details);
+    Task<bool> DeleteWithDetailsAsync(int id);
 }

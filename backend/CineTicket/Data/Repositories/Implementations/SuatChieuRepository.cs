@@ -32,6 +32,15 @@ namespace CineTicket.Repositories.Implementations
                 .FirstOrDefaultAsync(s => s.MaSuat == id);
         }
 
+        public async Task<List<SuatChieu>> GetByPhimIdAsync(int maPhim)
+        {
+            return await _context.SuatChieus
+                .Where(s => s.MaPhim == maPhim)
+                .Include(s => s.MaPhimNavigation)
+                .Include(s => s.MaPhongNavigation)
+                .Include(s => s.Ves)
+                .ToListAsync();
+        }
         public async Task<SuatChieu> CreateAsync(SuatChieu suatChieu)
         {
             _context.SuatChieus.Add(suatChieu);

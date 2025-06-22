@@ -1,6 +1,4 @@
-﻿using CineTicket.DTOs.ChiTietHoaDon;
-
-namespace CineTicket.DTOs.HoaDon
+﻿namespace CineTicket.DTOs.ChiTietHoaDon
 {
     public class UpdateHoaDonRequest
     {

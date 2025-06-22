@@ -65,9 +65,9 @@ namespace CineTicket.MappingProfiles
             CreateMap<BapNuocUpdateDTO, BapNuoc>();
 
             // HoaDon
-            CreateMap<CreateHoaDonDTO, HoaDon>();
-            CreateMap<UpdateHoaDonDTO, HoaDon>();
-            CreateMap<HoaDon, HoaDonDTO>();
+            //CreateMap<CreateHoaDonDTO, HoaDon>();
+            //CreateMap<UpdateHoaDonDTO, HoaDon>();
+            //CreateMap<HoaDon, HoaDonDTO>();
         }
     }
 }

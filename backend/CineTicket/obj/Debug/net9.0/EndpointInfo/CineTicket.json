@@ -329,137 +329,6 @@
         }
       }
     },
-    "/api/HoaDon/get-all": {
-      "get": {
-        "tags": [
-          "HoaDon"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/HoaDon/get/{id}": {
-      "get": {
-        "tags": [
-          "HoaDon"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/HoaDon/create": {
-      "post": {
-        "tags": [
-          "HoaDon"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHoaDonDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHoaDonDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateHoaDonDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/HoaDon/update/{id}": {
-      "put": {
-        "tags": [
-          "HoaDon"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateHoaDonDTO"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateHoaDonDTO"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateHoaDonDTO"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/HoaDon/delete/{id}": {
-      "delete": {
-        "tags": [
-          "HoaDon"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
     "/api/LoaiPhim/get-all": {
       "get": {
         "tags": [
@@ -888,6 +757,29 @@
         }
       }
     },
+    "/api/SuatChieu/get-by-phim/{maPhim}": {
+      "get": {
+        "tags": [
+          "SuatChieu"
+        ],
+        "parameters": [
+          {
+            "name": "maPhim",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/SuatChieu/create": {
       "post": {
         "tags": [
@@ -1216,26 +1108,6 @@
         },
         "additionalProperties": false
       },
-      "CreateHoaDonDTO": {
-        "type": "object",
-        "properties": {
-          "ngayLap": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "tongTien": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "hinhThucThanhToan": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "CreateLoaiPhimRequest": {
         "type": "object",
         "properties": {
@@ -1407,30 +1279,6 @@
           "maPhong": {
             "type": "integer",
             "format": "int32",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateHoaDonDTO": {
-        "type": "object",
-        "properties": {
-          "maHd": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "ngayLap": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "tongTien": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "hinhThucThanhToan": {
-            "type": "string",
             "nullable": true
           }
         },

@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using System.Linq;
+
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
@@ -39,6 +41,18 @@ namespace CineTicket.Controllers
             var mapped = _mapper.Map<SuatChieuDTO>(suat);
             return Ok(new { status = true, message = "Lấy suất chiếu thành công", data = mapped });
         }
+
+        [HttpGet("get-by-phim/{maPhim}")]
+        public async Task<IActionResult> GetByPhimId(int maPhim)
+        {
+            var suatChieus = await _service.GetByPhimIdAsync(maPhim);
+            if (suatChieus == null || !suatChieus.Any())
+                return NotFound(new { status = false, message = "Không tìm thấy suất chiếu cho phim này", data = (object?)null });
+
+            var mapped = _mapper.Map<IEnumerable<SuatChieuDTO>>(suatChieus);
+            return Ok(new { status = true, message = "Lấy danh sách suất chiếu theo phim thành công", data = mapped });
+        }
+
 
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]

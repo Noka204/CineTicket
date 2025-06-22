@@ -16,6 +16,9 @@ namespace CineTicket.Services.Implementations
 
         public Task<IEnumerable<SuatChieu>> GetAllAsync() => _suatRepo.GetAllAsync();
         public Task<SuatChieu?> GetByIdAsync(int id) => _suatRepo.GetByIdAsync(id);
+        public Task<List<SuatChieu>> GetByPhimIdAsync(int maPhim)
+            => _suatRepo.GetByPhimIdAsync(maPhim);
+
         public Task<SuatChieu> CreateAsync(SuatChieu suatChieu) => _suatRepo.CreateAsync(suatChieu);
         public Task<bool> UpdateAsync(SuatChieu suatChieu) => _suatRepo.UpdateAsync(suatChieu);
         public Task<bool> DeleteAsync(int id) => _suatRepo.DeleteAsync(id);

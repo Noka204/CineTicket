@@ -30,14 +30,19 @@ namespace CineTicket.Data.Repositories.Implementations
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteWithDetailsAsync(int id)
         {
-            var entity = await _context.HoaDons.FindAsync(id);
-            if (entity == null) return false;
+            var hoaDon = await _context.HoaDons.Include(h => h.ChiTietHoaDons)
+                .FirstOrDefaultAsync(h => h.MaHd == id);
 
-            _context.HoaDons.Remove(entity);
+            if (hoaDon == null) return false;
+
+            _context.ChiTietHoaDons.RemoveRange(hoaDon.ChiTietHoaDons);
+            _context.HoaDons.Remove(hoaDon);
+
             await _context.SaveChangesAsync();
             return true;
         }
+
     }
 }
