@@ -1,0 +1,10 @@
+﻿namespace CineTicket.DTOs.HoaDon
+{
+    public class UpdateHoaDonDTO
+    {
+        public int MaHd { get; set; }
+        public DateTime? NgayLap { get; set; }
+        public decimal? TongTien { get; set; }
+        public string? HinhThucThanhToan { get; set; }
+    }
+}

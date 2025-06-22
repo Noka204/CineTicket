@@ -92,6 +92,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IBapNuocRepository, BapNuocRepository>();
 builder.Services.AddScoped<IBapNuocService, BapNuocService>();
+builder.Services.AddScoped<IHoaDonRepository, HoaDonRepository>();
+builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 
 
 

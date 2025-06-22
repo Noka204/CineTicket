@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs;
 using CineTicket.DTOs.Auth;
+using CineTicket.DTOs.HoaDon;
 using CineTicket.DTOs.LoaiPhim;
 using CineTicket.Models;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -19,8 +20,6 @@ namespace CineTicket.MappingProfiles
 
             CreateMap<UpdatePhimRequest, Phim>()
                 .ForMember(dest => dest.MaLoaiPhimNavigation, opt => opt.Ignore()); // Không map Navigation property
-
-
 
             // SuatChieu
             CreateMap<SuatChieu, SuatChieuDTO>()
@@ -53,17 +52,22 @@ namespace CineTicket.MappingProfiles
             CreateMap<CreateLoaiPhimRequest, LoaiPhim>();
             CreateMap<UpdateLoaiPhimRequest, LoaiPhim>();
 
-            //Acccount
+            // Acccount
             CreateMap<RegisterUserRequest, ApplicationUser>();
             CreateMap<ApplicationUser, ApplicationUserDTO>();
 
             CreateMap<UpdateUserInfoRequest, ApplicationUser>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore()); // Tránh update ID
 
+            // BapNuoc
             CreateMap<BapNuoc, BapNuocDTO>().ReverseMap();
             CreateMap<BapNuocCreateDTO, BapNuoc>();
             CreateMap<BapNuocUpdateDTO, BapNuoc>();
 
+            // HoaDon
+            CreateMap<CreateHoaDonDTO, HoaDon>();
+            CreateMap<UpdateHoaDonDTO, HoaDon>();
+            CreateMap<HoaDon, HoaDonDTO>();
         }
     }
 }
