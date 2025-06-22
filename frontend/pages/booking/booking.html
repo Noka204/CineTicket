@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Đặt Vé</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="stylesheet" href="../../assets/css/Phim.css" />
+  <style>
+    body {
+      background-color: #0e0e1b;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background-color: #1a1a2e;
+      border-radius: 10px;
+    }
+    .movie-info {
+      margin-bottom: 30px;
+    }
+    .showtime-select {
+      margin-bottom: 20px;
+    }
+    .seat {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      margin: 5px;
+      background-color: #444;
+      border-radius: 5px;
+      text-align: center;
+      line-height: 30px;
+      cursor: pointer;
+    }
+    .seat.selected {
+      background-color: #ff0055;
+    }
+    .seat.booked {
+      background-color: #666;
+      cursor: not-allowed;
+    }
+    .btn-book {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #ff0055;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎟 Đặt Vé Xem Phim</h1>
+    <div class="movie-info" id="movieInfo">Đang tải thông tin phim...</div>
+
+    <div class="showtime-select">
+      <label for="suatChieu">Chọn suất chiếu:</label>
+      <select id="suatChieu"></select>
+    </div>
+
+    <div class="seat-grid" id="seatGrid">Chọn suất để hiển thị ghế...</div>
+
+    <button class="btn-book" onclick="bookTicket()">Đặt vé</button>
+  </div>
+
+  <script>
+    const phimId = new URLSearchParams(window.location.search).get("phimId");
+    let selectedSeatId = null;
+
+    // Load thông tin phim
+    fetch(`https://localhost:7058/api/phim/get/${phimId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status) {
+          const phim = data.data;
+          document.getElementById("movieInfo").innerHTML = `
+            <h2>${phim.tenPhim}</h2>
+            <p><strong>Thể loại:</strong> ${phim.tenLoaiPhim}</p>
+            <p><strong>Thời lượng:</strong> ${phim.thoiLuong} phút</p>
+            <img src="${phim.poster || '../../assets/images/default-poster.jpg'}" width="200" />
+          `;
+        }
+      });
+
+    // Load danh sách suất chiếu theo phim
+    fetch(`http://localhost:7058/api/suatchieu/get/${phimId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status) {
+          const select = document.getElementById("suatChieu");
+          data.data.forEach(suat => {
+            const opt = document.createElement("option");
+            opt.value = suat.maSuat;
+            opt.textContent = `${suat.ngayChieu} - ${suat.gioChieu}`;
+            select.appendChild(opt);
+          });
+
+          select.addEventListener("change", loadSeats);
+          select.dispatchEvent(new Event("change")); // load seats for first option
+        }
+      });
+
+    // Load danh sách ghế theo suất
+    function loadSeats() {
+      const suatId = document.getElementById("suatChieu").value;
+      selectedSeatId = null;
+      fetch(`https://localhost:7058/api/ghe/by-suat/${suatId}`)
+        .then(res => res.json())
+        .then(data => {
+          const seatGrid = document.getElementById("seatGrid");
+          seatGrid.innerHTML = "";
+          if (data.status) {
+            data.data.forEach(ghe => {
+              const div = document.createElement("div");
+              div.className = "seat" + (ghe.trangThai === "Đã đặt" ? " booked" : "");
+              div.textContent = ghe.tenGhe;
+              if (ghe.trangThai !== "Đã đặt") {
+                div.onclick = () => {
+                  document.querySelectorAll(".seat").forEach(s => s.classList.remove("selected"));
+                  div.classList.add("selected");
+                  selectedSeatId = ghe.maGhe;
+                };
+              }
+              seatGrid.appendChild(div);
+            });
+          }
+        });
+    }
+
+    // Gửi yêu cầu đặt vé
+    function bookTicket() {
+      const suatId = document.getElementById("suatChieu").value;
+      if (!selectedSeatId) {
+        alert("Vui lòng chọn ghế.");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("Vui lòng đăng nhập trước khi đặt vé.");
+        return;
+      }
+
+      fetch("https://localhost:7058/api/ve/dat-ve", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+          maGhe: selectedSeatId,
+          maSuat: suatId,
+          giaVe: 70000 
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status) {
+          alert("Đặt vé thành công!");
+          window.location.href = "../../index.html";
+        } else {
+          alert("Lỗi: " + data.message);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Lỗi kết nối máy chủ.");
+      });
+    }
+  </script>
+</body>
+</html>

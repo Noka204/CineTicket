@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chi Tiết Phim</title>
+  <link rel="stylesheet" href="../../assets/css/Phim.css" />
+  <script src="../../assets/js/login.js"></script> 
+  <link rel="stylesheet" href="../../assets/css/details.css"> 
+
+<body>
+  <!-- Header (load từ file part/header.html) -->
+  <div id="include-header"></div>
+
+  <!-- Movie detail -->
+  <div class="movie-detail-container" id="movieDetail">
+    <!-- Nội dung phim sẽ được render bằng JS -->
+  </div>
+
+
+  <!-- Footer (load từ file part/footer.html) -->
+  <div id="include-footer"></div>
+
+  <script>
+    // Hàm include HTML
+    function includeHTML(id, file) {
+      fetch(file)
+        .then(res => res.text())
+        .then(data => {
+          document.getElementById(id).innerHTML = data;
+          if (id === "include-header") {
+            setTimeout(updateAuthButtons, 100); // Cập nhật thông tin đăng nhập sau khi header load xong
+          }
+        });
+    }
+
+    // Gọi load header và footer
+    includeHTML("include-header", "../../part/header.html");
+    includeHTML("include-footer", "../../part/footer.html");
+
+    // Lấy ID phim từ URL và gọi API
+    const params = new URLSearchParams(window.location.search);
+    const phimId = params.get("id");
+
+    if (!phimId) {
+      document.getElementById("movieDetail").innerHTML = "<p style='color:red'>Không tìm thấy phim.</p>";
+    } else {
+      fetch(`https://localhost:7058/api/phim/get/${phimId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (!data.status || !data.data) {
+            document.getElementById("movieDetail").innerHTML = "<p style='color:red'>Không tìm thấy thông tin phim.</p>";
+            return;
+          }
+
+          const movie = data.data;
+          document.getElementById("movieDetail").innerHTML = `
+            <div class="movie-poster" style="background-image: url('${movie.poster || '../../assets/images/default-poster.jpg'}')"></div>
+            <div class="movie-info">
+              <h1>${movie.tenPhim}</h1>
+              <p><strong>Thể loại:</strong> ${movie.tenLoaiPhim}</p>
+              <p><strong>Thời lượng:</strong> ${movie.thoiLuong} phút</p>
+              <p><strong>Đạo diễn:</strong> ${movie.daoDien}</p>
+              <p><strong>Mô tả:</strong> ${movie.moTa || 'Không có mô tả.'}</p>
+
+
+            <a href="../../pages/booking/booking.html?phimId=${movie.maPhim}" class="btn-booking">🎟 Đặt vé ngay</a>
+
+            </div>
+          `;
+
+          
+        })
+        .catch(err => {
+          console.error("Lỗi:", err);
+          document.getElementById("movieDetail").innerHTML = "<p style='color:red'>Lỗi khi tải dữ liệu phim.</p>";
+        });
+    }
+  </script>
+</body>
+</html>
