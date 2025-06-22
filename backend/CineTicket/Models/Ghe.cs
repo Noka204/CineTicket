@@ -12,7 +12,7 @@ public partial class Ghe
     public string? LoaiGhe { get; set; }
 
     public int? MaPhong { get; set; }
-    public string T { get; set; }
+    public string? TenPhong { get; set; }
 
     public virtual Ve? VeNavigation { get; set; }
 

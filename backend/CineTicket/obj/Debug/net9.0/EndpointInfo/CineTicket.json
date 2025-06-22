@@ -263,6 +263,29 @@
         }
       }
     },
+    "/api/Ghe/get-by-phong/{maPhong}": {
+      "get": {
+        "tags": [
+          "Ghe"
+        ],
+        "parameters": [
+          {
+            "name": "maPhong",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Ghe/create": {
       "post": {
         "tags": [

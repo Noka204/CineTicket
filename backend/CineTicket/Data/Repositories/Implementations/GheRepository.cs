@@ -27,6 +27,14 @@ namespace CineTicket.Repositories.Implementations
                 .Include(g => g.MaPhongNavigation)
                 .FirstOrDefaultAsync(g => g.MaGhe == id);
         }
+        public async Task<IEnumerable<Ghe>> GetByPhongAsync(int maPhong)
+        {
+            return await _context.Ghes
+                .Where(g => g.MaPhong == maPhong)
+                .Include(g => g.MaPhongNavigation)
+                .AsNoTracking()
+                .ToListAsync();
+        }
 
         public async Task<Ghe> CreateAsync(Ghe ghe)
         {

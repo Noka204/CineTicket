@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs;
 using CineTicket.Models;
+using CineTicket.Services.Implementations;
 using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +39,15 @@ namespace CineTicket.Controllers
             var mapped = _mapper.Map<GheDTO>(ghe);
             return Ok(new { status = true, message = "Lấy ghế thành công", data = mapped });
         }
+
+        [HttpGet("get-by-phong/{maPhong}")]
+        public async Task<IActionResult> GetByPhongAsync(int maPhong)
+        {
+            var result = await _service.GetByPhongAsync(maPhong); // Ensure the service method is called to fetch the data
+            var mapped = _mapper.Map<IEnumerable<GheDTO>>(result);
+            return Ok(new { status = true, message = "Lấy danh sách ghế theo phòng thành công", data = mapped });
+        }
+
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateGheRequest request)

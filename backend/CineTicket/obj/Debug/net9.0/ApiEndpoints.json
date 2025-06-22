@@ -175,6 +175,22 @@
   },
   {
     "ContainingType": "CineTicket.Controllers.GheController",
+    "Method": "GetByPhongAsync",
+    "RelativePath": "api/Ghe/get-by-phong/{maPhong}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "maPhong",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CineTicket.Controllers.GheController",
     "Method": "GetById",
     "RelativePath": "api/Ghe/get/{id}",
     "HttpMethod": "GET",

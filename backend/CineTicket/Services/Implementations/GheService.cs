@@ -15,6 +15,8 @@ namespace CineTicket.Services.Implementations
 
         public Task<IEnumerable<Ghe>> GetAllAsync() => _gheRepo.GetAllAsync();
         public Task<Ghe?> GetByIdAsync(int id) => _gheRepo.GetByIdAsync(id);
+        public Task<IEnumerable<Ghe>> GetByPhongAsync(int maPhong) =>
+            _gheRepo.GetByPhongAsync(maPhong);
         public Task<Ghe> CreateAsync(Ghe ghe) => _gheRepo.CreateAsync(ghe);
         public Task<bool> UpdateAsync(Ghe ghe) => _gheRepo.UpdateAsync(ghe);
         public Task<bool> DeleteAsync(int id) => _gheRepo.DeleteAsync(id);
