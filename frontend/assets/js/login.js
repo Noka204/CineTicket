@@ -1,26 +1,36 @@
 function parseJwt(token) {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = decodeURIComponent(atob(base64Url).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-    return JSON.parse(base64);
-  } catch (e) {
-    return null;
-  }
-}
+      try {
+        const base64Url = token.split('.')[1];
+        const base64 = decodeURIComponent(atob(base64Url).split('').map(c =>
+          '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
+        return JSON.parse(base64);
+      } catch (e) {
+        return null;
+      }
+    }
 
-function updateAuthButtons() {
-  const authContainer = document.getElementById("authButtons");
-  if (!authContainer) {
-    console.warn("Không tìm thấy #authButtons trong header.");
-    return;
-  }
+    function updateAuthButtons() {
+      const authContainer = document.getElementById("authButtons");
+      const adminLink = document.getElementById("adminControlLink");
 
-  const token = localStorage.getItem("token");
+      if (!authContainer) {
+        console.warn("Không tìm thấy #authButtons trong header.");
+        return;
+      }
 
-  if (token) {
-    const decoded = parseJwt(token);
-    const fullName = decoded?.FullName || decoded?.name || "Người dùng";
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const decoded = parseJwt(token);
+        const fullName = decoded?.FullName || decoded?.name || "Người dùng";
+        const role = decoded?.Role || decoded?.role || "";
+
+        // Ẩn nút Admin nếu không phải admin
+        if (adminLink) {
+          adminLink.style.display = (role === "Admin") ? "list-item" : "none";
+        }
+
+    
 
     authContainer.innerHTML = `
       <div class="user-profile" style="
