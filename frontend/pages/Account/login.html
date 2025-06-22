@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="../../assets/style.css">
+</head>
+<body>
+    <h2>Đăng nhập tài khoản</h2>
+    <form id="loginForm">
+        <label>Tên đăng nhập:</label><br>
+        <input type="text" id="username" required><br><br>
+
+        <label>Mật khẩu:</label><br>
+        <input type="password" id="password" required><br><br>
+
+        <button type="submit">Đăng nhập</button>
+    </form>
+
+    <p id="message" style="color: red;"></p>
+    <p>Nếu bạn chưa có tài khoản, <a href="register.html">đăng ký tại đây</a>.</p>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const response = await fetch("https://localhost:7058/api/Account/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    userName: document.getElementById("username").value,
+                    password: document.getElementById("password").value
+                })
+            });
+
+            const result = await response.json();
+            const msg = document.getElementById("message");
+
+            if (result.status) {
+                msg.style.color = "green";
+                msg.textContent = "Đăng nhập thành công!";
+                localStorage.setItem("token", result.token);
+                window.location.href = "/pages/Phim/index.html";
+            } else {
+                msg.style.color = "red";
+                msg.textContent = result.message || "Tài khoản không tồn tại hoặc mật khẩu sai.";
+            }
+        });
+    </script>
+</body>
+</html>
