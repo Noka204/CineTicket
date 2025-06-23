@@ -4,6 +4,7 @@ using CineTicket.DTOs.Auth;
 using CineTicket.Helpers;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -56,7 +57,7 @@ public class AccountController : ControllerBase
         var token = _jwtTokenGenerator.GenerateToken(user);
         return Ok(new { status = true, message = "Đăng nhập thành công", token });
     }
-
+    [Authorize(Roles = "Employee,Admin")]
     [HttpGet("get-all-users")]
     public async Task<IActionResult> GetAllUsers()
     {
@@ -73,8 +74,7 @@ public class AccountController : ControllerBase
         return Ok(new { status = true, data = grouped });
     }
 
-
-
+    [Authorize(Roles = "Admin")]
     [HttpPut("update-role")]
     public async Task<IActionResult> UpdateUserRole([FromBody] UpdateRoleDto dto)
     {
@@ -89,7 +89,7 @@ public class AccountController : ControllerBase
         return Ok(new { status = true, message = "Cập nhật quyền thành công" });
     }
 
-
+    [Authorize(Roles = "Admin")]
     [HttpDelete("delete")]
     public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
     {
@@ -108,6 +108,7 @@ public class AccountController : ControllerBase
         return Ok(new { status = true, message = "Đã xóa tài khoản thành công!" });
     }
 
+    [Authorize(Roles = "Employee,Admin")]
     [HttpGet("get-all-roles")]
     public async Task<IActionResult> GetAllRoles()
     {

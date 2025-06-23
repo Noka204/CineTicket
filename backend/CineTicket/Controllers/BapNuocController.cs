@@ -2,6 +2,7 @@
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CineTicket.Controllers;
@@ -49,7 +50,7 @@ public class BapNuocController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = mapped.MaBn }, new { status = true, message = "Tạo bắp nước thành công", data = mapped });
     }
 
-    //[Authorize(Roles = "Employee,Admin")]
+    [Authorize(Roles = "Employee,Admin")]
     [HttpPut("update/{id}")]
     public async Task<IActionResult> Update(int id, [FromBody] BapNuocUpdateDTO request)
     {
@@ -65,7 +66,7 @@ public class BapNuocController : ControllerBase
             return NotFound(new { status = false, message = "Không tìm thấy bắp nước để cập nhật", data = (object?)null });
     }
 
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     [HttpDelete("delete/{id}")]
     public async Task<IActionResult> Delete(int id)
     {

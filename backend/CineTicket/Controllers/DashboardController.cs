@@ -15,7 +15,7 @@ namespace CineTicket.Controllers
         {
             _service = service;
         }
-
+        [Authorize(Roles = "Employee,Admin")]
         [HttpGet("doanh-thu-ngay")]
         public async Task<IActionResult> GetDoanhThuNgay([FromQuery] int year, [FromQuery] int month)
         {

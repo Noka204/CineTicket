@@ -39,7 +39,7 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy vé thành công", data = mapped });
         }
 
-        [Authorize(Roles = "Employee,Admin")]
+        [Authorize(Roles = "Employee,Admin,Customer")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateVeRequest request)
         {
