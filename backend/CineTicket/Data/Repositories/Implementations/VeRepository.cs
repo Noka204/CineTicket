@@ -32,6 +32,7 @@ namespace CineTicket.Repositories.Implementations
 
         public async Task<Ve> CreateAsync(Ve ve)
         {
+            ve.TrangThai = "Đã đặt";
             _context.Ves.Add(ve);
             await _context.SaveChangesAsync();
             return ve;
