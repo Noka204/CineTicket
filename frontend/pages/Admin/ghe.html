@@ -1,52 +1,18 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <title>Quản lý Ghế</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 20px;
-      background: #f4f4f4;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-    }
-
-    th,
-    td {
-      border: 1px solid #ccc;
-      padding: 8px;
-      text-align: center;
-    }
-
-    th {
-      background: #343a40;
-      color: white;
-    }
-
-    .form-inline {
-      display: flex;
-      gap: 10px;
-      margin: 15px 0;
-      flex-wrap: wrap;
-    }
-
-    .pagination-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 15px;
-      align-items: center;
-    }
+    body { font-family: sans-serif; margin: 20px; background: #f4f4f4; }
+    table { width: 100%; border-collapse: collapse; background: white; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    th { background: #343a40; color: white; }
+    .form-inline { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+    .pagination-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; align-items: center; }
   </style>
 </head>
-
 <body>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>💺 Danh sách Ghế</h2>
@@ -56,7 +22,9 @@
   <div class="form-inline">
     <input type="text" id="soGhe" placeholder="Số ghế" class="form-control" />
     <input type="text" id="loaiGhe" placeholder="Loại ghế" class="form-control" />
-    <input type="number" id="maPhong" placeholder="Mã phòng" class="form-control" />
+    <select id="maPhong" class="form-select">
+      <option value="">-- Chọn phòng --</option>
+    </select>
     <button onclick="addGhe()" class="btn btn-primary">➕ Thêm</button>
   </div>
 
@@ -78,7 +46,7 @@
         <th>ID</th>
         <th>Số ghế</th>
         <th>Loại ghế</th>
-        <th>Mã phòng</th>
+        <th>Phòng</th>
         <th>Thao tác</th>
       </tr>
     </thead>
@@ -97,10 +65,28 @@
 
   <script>
     const API_BASE = "https://localhost:7058/api/Ghe";
+    const PHONG_API = "https://localhost:7058/api/phongchieu/get-all";
     const token = localStorage.getItem("token");
+
     let currentPage = 1;
     let totalPages = 1;
     let currentData = [];
+    let phongOptions = [];
+
+    async function loadPhongOptions() {
+      const res = await fetch(PHONG_API);
+      const json = await res.json();
+      phongOptions = json.data || [];
+
+      const select = document.getElementById("maPhong");
+      select.innerHTML = '<option value="">-- Chọn phòng --</option>';
+      phongOptions.forEach(phong => {
+        const opt = document.createElement("option");
+        opt.value = phong.maPhong;
+        opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
+        select.appendChild(opt);
+      });
+    }
 
     async function fetchData() {
       const res = await fetch(`${API_BASE}/get-all`);
@@ -125,12 +111,21 @@
       const paginated = filtered.slice(start, start + pageSize);
 
       paginated.forEach(p => {
+        const phongSelect = (phongOptions || []).map(phong =>
+          `<option value="${phong.maPhong}" ${p.maPhong === phong.maPhong ? 'selected' : ''}>
+            ${phong.tenPhong || `Phòng ${phong.maPhong}`}
+          </option>`).join("");
+
         tbody.innerHTML += `
           <tr>
             <td>${p.maGhe}</td>
             <td><input id="so-${p.maGhe}" value="${p.soGhe || ''}" /></td>
             <td><input id="loai-${p.maGhe}" value="${p.loaiGhe || ''}" /></td>
-            <td><input id="phong-${p.maGhe}" type="number" value="${p.maPhong || 0}" /></td>
+            <td>
+              <select id="phong-${p.maGhe}" class="form-select">
+                ${phongSelect}
+              </select>
+            </td>
             <td>
               <button class="btn btn-success btn-sm" onclick="updateGhe(${p.maGhe})">💾 Sửa</button>
               <button class="btn btn-danger btn-sm" onclick="deleteGhe(${p.maGhe})">❌ Xóa</button>
@@ -142,14 +137,8 @@
       document.getElementById("totalPageSpan").textContent = totalPages;
     }
 
-    function changePage(offset) {
-      goToPage(currentPage + offset);
-    }
-
-    function goToLastPage() {
-      goToPage(totalPages);
-    }
-
+    function changePage(offset) { goToPage(currentPage + offset); }
+    function goToLastPage() { goToPage(totalPages); }
     function jumpToPage() {
       const page = parseInt(document.getElementById("gotoPageInput").value);
       if (!isNaN(page)) goToPage(page);
@@ -220,8 +209,9 @@
       }
     }
 
+    // Khởi động
+    loadPhongOptions();
     fetchData();
   </script>
 </body>
-
 </html>

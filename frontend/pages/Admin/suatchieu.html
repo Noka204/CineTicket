@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <title>Quản lý Suất Chiếu</title>
@@ -12,52 +11,21 @@
       background-color: #f8f9fa;
       padding: 30px;
     }
-
-    h2 {
-      color: #343a40;
-    }
-
-    table {
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    th {
-      background-color: #212529;
-      color: white;
-    }
-
-    .form-inline input,
-    .form-inline select {
-      min-width: 150px;
-    }
-
-    .form-inline label {
-      margin-right: 5px;
-    }
-
+    h2 { color: #343a40; }
+    table { background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+    th { background-color: #212529; color: white; }
+    .form-inline input, .form-inline select { min-width: 150px; }
+    .form-inline label { margin-right: 5px; }
     .pagination-btns {
-      margin-top: 15px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
+      margin-top: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
     }
-
     .form-section {
-      background-color: white;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-      margin-bottom: 20px;
+      background-color: white; padding: 15px; border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); margin-bottom: 20px;
     }
-
-    #pageInputBottom {
-      width: 80px;
-    }
+    #pageInputBottom { width: 80px; }
   </style>
 </head>
-
 <body>
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>🎬 Danh sách Suất Chiếu</h2>
@@ -66,9 +34,13 @@
 
   <div class="form-section">
     <div class="form-inline mb-2">
-      <input type="number" id="maPhim" placeholder="Mã phim" class="form-control" />
-      <input type="number" id="maPhong" placeholder="Mã phòng" class="form-control" />
-      <input type="datetime-local" id="batDau"  class="form-control"  />
+      <select id="maPhim" class="form-select">
+        <option value="">-- Chọn phim --</option>
+      </select>
+      <select id="maPhong" class="form-select">
+        <option value="">-- Chọn phòng --</option>
+      </select>
+      <input type="datetime-local" id="batDau" class="form-control" />
       <input type="datetime-local" id="ketThuc" class="form-control" />
       <input type="date" id="ngayChieu" class="form-control" />
       <button onclick="addSuatChieu()" class="btn btn-primary">➕ Thêm</button>
@@ -91,8 +63,8 @@
     <thead>
       <tr>
         <th>ID</th>
-        <th>Mã Phim</th>
-        <th>Mã Phòng</th>
+        <th>Phim</th>
+        <th>Phòng</th>
         <th>Bắt đầu</th>
         <th>Kết thúc</th>
         <th>Ngày chiếu</th>
@@ -117,6 +89,38 @@
     let currentPage = 1;
     let totalPages = 1;
     let currentData = [];
+    let phimOptions = [];
+    let phongOptions = [];
+
+    async function loadPhimOptions() {
+      const res = await fetch("https://localhost:7058/api/Phim/get-all");
+      const json = await res.json();
+      phimOptions = json.data || [];
+
+      const select = document.getElementById("maPhim");
+      select.innerHTML = '<option value="">-- Chọn phim --</option>';
+      phimOptions.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.maPhim;
+        opt.textContent = p.tenPhim;
+        select.appendChild(opt);
+      });
+    }
+
+    async function loadPhongOptions() {
+      const res = await fetch("https://localhost:7058/api/Phongchieu/get-all");
+      const json = await res.json();
+      phongOptions = json.data || [];
+
+      const select = document.getElementById("maPhong");
+      select.innerHTML = '<option value="">-- Chọn phòng --</option>';
+      phongOptions.forEach(ph => {
+        const opt = document.createElement("option");
+        opt.value = ph.maPhong;
+        opt.textContent = ph.tenPhong || `Phòng ${ph.maPhong}`;
+        select.appendChild(opt);
+      });
+    }
 
     async function fetchData() {
       const res = await fetch(`${API_BASE}/get-all`);
@@ -132,7 +136,6 @@
       tbody.innerHTML = "";
 
       const filtered = currentData.filter(p => (p.maPhim + "").toLowerCase().includes(search));
-
       totalPages = Math.ceil(filtered.length / pageSize);
       if (page < 1) page = 1;
       if (page > totalPages) page = totalPages;
@@ -144,14 +147,28 @@
       const paginated = filtered.slice(start, start + pageSize);
 
       paginated.forEach(p => {
+        const phimSelect = phimOptions.map(phim => `
+          <option value="${phim.maPhim}" ${p.maPhim === phim.maPhim ? "selected" : ""}>
+            ${phim.tenPhim}
+          </option>`).join("");
+
+        const phongSelect = phongOptions.map(phong => `
+          <option value="${phong.maPhong}" ${p.maPhong === phong.maPhong ? "selected" : ""}>
+            ${phong.tenPhong}
+          </option>`).join("");
+
         tbody.innerHTML += `
           <tr>
             <td>${p.maSuat}</td>
-            <td><input id="phim-${p.maSuat}" value="${p.maPhim || ''}" class="form-control form-control-sm" /></td>
-            <td><input id="phong-${p.maSuat}" value="${p.maPhong || ''}" class="form-control form-control-sm" /></td>
-            <td><input id="batDau-${p.maSuat}" type="datetime-local" value="${p.thoiGianBatDau?.slice(0, 16)}" class="form-control form-control-sm" /></td>
-            <td><input id="ketThuc-${p.maSuat}" type="datetime-local" value="${p.thoiGianKetThuc?.slice(0, 16)}" class="form-control form-control-sm" /></td>
-            <td><input id="ngay-${p.maSuat}" type="date" value="${p.ngayChieu}" class="form-control form-control-sm" /></td>
+            <td>
+              <select id="phim-${p.maSuat}" class="form-select">${phimSelect}</select>
+            </td>
+            <td>
+              <select id="phong-${p.maSuat}" class="form-select">${phongSelect}</select>
+            </td>
+            <td><input id="batDau-${p.maSuat}" type="datetime-local" value="${p.thoiGianBatDau?.slice(0, 16)}" class="form-control" /></td>
+            <td><input id="ketThuc-${p.maSuat}" type="datetime-local" value="${p.thoiGianKetThuc?.slice(0, 16)}" class="form-control" /></td>
+            <td><input id="ngay-${p.maSuat}" type="date" value="${p.ngayChieu}" class="form-control" /></td>
             <td>
               <button class="btn btn-success btn-sm" onclick="updateSuat(${p.maSuat})">💾</button>
               <button class="btn btn-danger btn-sm" onclick="deleteSuat(${p.maSuat})">❌</button>
@@ -160,17 +177,11 @@
       });
     }
 
-    function changePage(offset) {
-      goToPage(currentPage + offset);
-    }
-
-    function goToLastPage() {
-      goToPage(totalPages);
-    }
-
+    function changePage(offset) { goToPage(currentPage + offset); }
+    function goToLastPage() { goToPage(totalPages); }
     function goToPageInputBottom() {
-      const inputPage = parseInt(document.getElementById("pageInputBottom").value);
-      if (!isNaN(inputPage)) goToPage(inputPage);
+      const page = parseInt(document.getElementById("pageInputBottom").value);
+      if (!isNaN(page)) goToPage(page);
     }
 
     async function addSuatChieu() {
@@ -242,8 +253,10 @@
       }
     }
 
+    // Gọi khi trang khởi động
+    loadPhimOptions();
+    loadPhongOptions();
     fetchData();
   </script>
 </body>
-
 </html>
