@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Quản lý tài khoản</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .container {
+      max-width: 1000px;
+      margin-top: 30px;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+    }
+    .table th {
+      background-color: #343a40;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="mb-4 fw-bold">Danh sách người dùng theo quyền</h2>
+    <a href="../Admin/index.html" class="btn btn-outline-dark">🔙 Quay lại</a>
+
+    <!-- Modal chỉnh sửa quyền -->
+    <div class="modal fade" id="editRoleModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Chỉnh sửa quyền</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p id="modal-username"></p>
+            <select id="select-role" class="form-select"></select>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button class="btn btn-primary" onclick="updateRole()">Cập nhật</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Khu vực hiển thị danh sách người dùng -->
+    <div id="user-container"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let selectedUsername = "";
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadUsers();
+    });
+
+    async function loadUsers() {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await fetch("https://localhost:7058/api/account/get-all-users", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        const result = await response.json();
+        const container = document.getElementById("user-container");
+        container.innerHTML = '';
+
+        if (!result.status || !result.data) {
+          container.innerHTML = "<p class='text-danger'>Không có dữ liệu người dùng.</p>";
+          return;
+        }
+
+        for (let role in result.data) {
+          const users = result.data[role];
+          let tableHTML = `
+            <h4 class="text-primary">${role} (${users.length})</h4>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th><i class="fas fa-user"></i> Tên người dùng</th>
+                  <th><i class="fas fa-envelope"></i> Email</th>
+                  <th><i class="fas fa-id-badge"></i> Tên tài khoản</th>
+                  <th><i class="fas fa-user-shield"></i> Quyền</th>
+                  <th><i class="fas fa-cogs"></i> Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${users.map(u => `
+                  <tr>
+                    <td>${u.fullName}</td>
+                    <td>${u.email}</td>
+                    <td>${u.userName}</td>
+                    <td>${u.role}</td>
+                    <td>
+                      <button class="btn btn-sm btn-info me-2" onclick="showRoleModal('${u.userName}', '${u.role}')">Chỉnh sửa quyền</button>
+                      <button class="btn btn-sm btn-danger" onclick="deleteUser('${u.userName}')">Xóa</button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+          container.innerHTML += tableHTML;
+        }
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("user-container").innerHTML = "<p class='text-danger'>Lỗi khi tải dữ liệu.</p>";
+      }
+    }
+
+    async function showRoleModal(userName, currentRole) {
+      selectedUsername = userName;
+      document.getElementById("modal-username").textContent = `Đổi quyền cho tài khoản: ${userName}`;
+
+      const token = localStorage.getItem("token");
+      const select = document.getElementById("select-role");
+      select.innerHTML = ""; // Xóa tất cả option cũ
+
+      try {
+        const res = await fetch("https://localhost:7058/api/account/get-all-roles", {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        const result = await res.json();
+        const roles = result.data;
+
+        roles.forEach(role => {
+          const option = document.createElement("option");
+          option.value = role;
+          option.textContent = role;
+          if (role.toLowerCase() === currentRole.toLowerCase()) option.selected = true;
+          select.appendChild(option);
+        });
+
+        new bootstrap.Modal(document.getElementById("editRoleModal")).show();
+
+      } catch (err) {
+        console.error("Lỗi khi lấy danh sách quyền:", err);
+        alert("Không thể tải danh sách quyền!");
+      }
+    }
+
+    async function updateRole() {
+      const newRole = document.getElementById("select-role").value;
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("https://localhost:7058/api/account/update-role", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          userName: selectedUsername,
+          role: newRole
+        })
+      });
+
+      if (res.ok) {
+        alert("Cập nhật quyền thành công!");
+        bootstrap.Modal.getInstance(document.getElementById("editRoleModal")).hide();
+        loadUsers(); // Reload danh sách
+      } else {
+        const error = await res.json();
+        alert("Lỗi: " + (error.message || "Không thể cập nhật quyền"));
+      }
+    }
+
+    async function deleteUser(userName) {
+      if (!confirm(`Bạn có chắc muốn xóa tài khoản "${userName}" không?`)) return;
+      const token = localStorage.getItem("token");
+
+      const res = await fetch("https://localhost:7058/api/account/delete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ userName })
+      });
+
+      if (res.ok) {
+        alert("Đã xóa tài khoản!");
+        loadUsers();
+      } else {
+        const error = await res.json();
+        alert("Lỗi khi xóa tài khoản: " + (error.message || "Không rõ lỗi."));
+      }
+    }
+  </script>
+</body>
+</html>

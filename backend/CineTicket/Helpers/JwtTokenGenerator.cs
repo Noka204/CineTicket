@@ -26,7 +26,8 @@ namespace CineTicket.Helpers
                 new Claim("FullName", user.FullName ?? string.Empty),
                 new Claim("PhoneNumber", user.PhoneNumber ?? string.Empty),
                 new Claim("Address", user.Address ?? string.Empty),
-                new Claim(ClaimTypes.Role, user.Role ?? string.Empty)
+                new Claim(ClaimTypes.Role, user.Role ?? string.Empty),
+                new Claim("Role", user.Role ?? string.Empty)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));

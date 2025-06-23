@@ -155,7 +155,7 @@
             <td><input id="dd-${p.maPhim}" value="${p.daoDien || ''}" /></td>
             <td><textarea id="mt-${p.maPhim}" rows="2">${p.moTa || ''}</textarea></td>
             <td><input id="poster-${p.maPhim}" value="${p.poster || ''}" /></td>
-            <td><input id="loai-${p.maPhim}" value="${p.maLoaiPhim || ''}" /></td>
+            <td><input id="loai-${p.maPhim}" value="${p.tenLoaiPhim || ''}" /></td>
             <td>
               <button class="btn btn-success btn-sm mb-1" onclick="updatePhim(${p.maPhim})">💾 Sửa</button>
               <button class="btn btn-danger btn-sm" onclick="deletePhim(${p.maPhim})">❌ Xoá</button>
@@ -182,7 +182,7 @@
         tenPhim: document.getElementById("tenPhim").value,
         thoiLuong: document.getElementById("thoiLuong").value,
         daoDien: document.getElementById("daoDien").value,
-        moTa: document.getElementById("moTa").value,
+        moTa: document.getElementById("moTa").value,  
         poster: document.getElementById("poster").value,
         maLoaiPhim: parseInt(document.getElementById("maLoaiPhim").value)
       };

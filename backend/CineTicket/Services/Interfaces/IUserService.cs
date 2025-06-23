@@ -14,6 +14,9 @@ namespace CineTicket.Services.Interfaces
         Task<bool> ResetPasswordAsync(ApplicationUser user, string token, string newPassword);
         Task<bool> UpdateUserInfoAsync(ApplicationUser user);
         Task<bool> AssignRoleAsync(ApplicationUser user, string role);
+        Task<List<ApplicationUser>> GetAllUsersAsync();
+        Task<IdentityResult> UpdateUserRoleAsync(ApplicationUser user, string newRole);
+        Task<List<string>> GetAllRolesAsync();
 
     }
 }

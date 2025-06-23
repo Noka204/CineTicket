@@ -2,7 +2,6 @@
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CineTicket.Controllers;

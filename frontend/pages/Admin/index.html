@@ -1,19 +1,269 @@
-<!-- Trong phần header hoặc sidebar -->
-<div class="dropdown">
-    <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        Admin Control
-    </button>
-    <a href="/index.html" class="btn btn-secondary" style="float: right;">
-        🔙 Quay lại
-    </a>
-    <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="loaiphim.html">📂 Quản lý Loại Phim</a></li>
-        <li><a class="dropdown-item" href="phim.html">📂 Quản lý Phim</a></li>
-        <li><a class="dropdown-item" href="phongchieu.html">🏢 Quản lý Phòng Chiếu</a></li>
-        <li><a class="dropdown-item" href="ghe.html">🎬 Quản lý Ghế</a></li>
-        <li><a class="dropdown-item" href="bapnuoc.html">🎬 Quản lý Bắp Nước</a></li>
-        <li><a class="dropdown-item" href="suatchieu.html">🎬 Quản lý Suất Chiếu</a></li>
-        <li><a class="dropdown-item" href="ve.html">🎬 Quản lý Vé</a></li>
-        <!-- có thể thêm mục khác ở đây -->
-    </ul>
-</div>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Cinema Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/adminindex.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="admin-header">
+        <div class="container">
+            <h1 class="admin-title">
+                <i class="fas fa-crown"></i> Admin Panel
+            </h1>
+            <p class="admin-subtitle">Hệ Thống Quản lý Phim</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Navigation Controls -->
+        <div class="nav-controls">
+            <div class="admin-dropdown">
+                <button class="dropdown-btn" onclick="toggleDropdown()">
+                    <i class="fas fa-cog"></i>
+                    Admin Control
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div id="dropdownMenu" class="dropdown-menu-custom">
+                    <a href="quanlytaikhoan.html" class="dropdown-item-custom">
+                        <i class="fas fa-users"></i>
+                        Quản lý Tài Khoản
+                    </a>
+                    <a href="loaiphim.html" class="dropdown-item-custom">
+                        <i class="fas fa-film"></i>
+                        Quản lý Loại Phim
+                    </a>
+                    <a href="phim.html" class="dropdown-item-custom">
+                        <i class="fas fa-video"></i>
+                        Quản lý Phim
+                    </a>
+                    <a href="phongchieu.html" class="dropdown-item-custom">
+                        <i class="fas fa-building"></i>
+                        Quản lý Phòng Chiếu
+                    </a>
+                    <a href="ghe.html" class="dropdown-item-custom">
+                        <i class="fas fa-chair"></i>
+                        Quản lý Ghế
+                    </a>
+                    <a href="bapnuoc.html" class="dropdown-item-custom">
+                        <i class="fas fa-glass-martini-alt"></i>
+                        Quản lý Bắp Nước
+                    </a>
+                    <a href="suatchieu.html" class="dropdown-item-custom">
+                        <i class="fas fa-clock"></i>
+                        Quản lý Suất Chiếu
+                    </a>
+                    <a href="ve.html" class="dropdown-item-custom">
+                        <i class="fas fa-ticket-alt"></i>
+                        Quản lý Vé
+                    </a>
+                </div>
+            </div>
+            
+            <a href="/index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+                Quay lại trang chủ
+            </a>
+        </div>
+
+        <!-- Stats Section -->
+        <!-- <div class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">127</span>
+                    <div class="stat-label">Tổng số phim</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">8</span>
+                    <div class="stat-label">Phòng chiếu</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">1,234</span>
+                    <div class="stat-label">Vé đã bán</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">45</span>
+                    <div class="stat-label">Suất chiếu hôm nay</div>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- Admin Cards Grid -->
+        <div class="admin-grid">
+            <div class="admin-card" onclick="navigateTo('quanlytaikhoan.html')">
+                <i class="fas fa-users card-icon"></i>
+                <h3 class="card-title">Quản lý Tài Khoản</h3>
+                <p class="card-description">Chỉnh sửa quyền và xóa các tài khoản người dùng</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('loaiphim.html')">
+                <i class="fas fa-film card-icon"></i>
+                <h3 class="card-title">Quản lý Loại Phim</h3>
+                <p class="card-description">Thêm, sửa, xóa các thể loại phim</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('phim.html')">
+                <i class="fas fa-video card-icon"></i>
+                <h3 class="card-title">Quản lý Phim</h3>
+                <p class="card-description">Quản lý thông tin phim, poster, thời lượng, mô tả và các chi tiết khác</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('phongchieu.html')">
+                <i class="fas fa-building card-icon"></i>
+                <h3 class="card-title">Quản lý Phòng Chiếu</h3>
+                <p class="card-description">Thiết lập và quản lý các phòng chiếu, sức chứa và thiết bị</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('ghe.html')">
+                <i class="fas fa-chair card-icon"></i>
+                <h3 class="card-title">Quản lý Ghế</h3>
+                <p class="card-description">Sắp xếp và quản lý sơ đồ ghế ngồi cho từng phòng chiếu</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('bapnuoc.html')">
+                <i class="fas fa-glass-martini-alt card-icon"></i>
+                <h3 class="card-title">Quản lý Bắp Nước</h3>
+                <p class="card-description">Quản lý menu đồ ăn, thức uống và giá cả tại rạp</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('suatchieu.html')">
+                <i class="fas fa-clock card-icon"></i>
+                <h3 class="card-title">Quản lý Suất Chiếu</h3>
+                <p class="card-description">Lên lịch chiếu phim, quản lý thời gian và phòng chiếu</p>
+            </div>
+
+            <div class="admin-card" onclick="navigateTo('ve.html')">
+                <i class="fas fa-ticket-alt card-icon"></i>
+                <h3 class="card-title">Quản lý Vé</h3>
+                <p class="card-description">Theo dõi và quản lý việc bán vé, đặt chỗ của khách hàng</p>
+            </div>
+
+            <div class="admin-card" onclick="showComingSoon()">
+                <i class="fas fa-chart-bar card-icon"></i>
+                <h3 class="card-title">Báo Cáo & Thống Kê</h3>
+                <p class="card-description">Xem báo cáo doanh thu, thống kê khách hàng và hiệu suất rạp</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        function navigateTo(url) {
+            // Add loading effect
+            const card = event.currentTarget;
+            const originalContent = card.innerHTML;
+            card.innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div class="loading-spinner"></div>
+                    <p style="margin-top: 10px;">Đang chuyển hướng...</p>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                window.location.href = url;
+            }, 800);
+        }
+
+        function showComingSoon() {
+            alert('Tính năng này sẽ được cập nhật trong phiên bản tiếp theo!');
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('dropdownMenu');
+            const button = document.querySelector('.dropdown-btn');
+            
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.remove('show');
+            }
+        });
+
+        // Add smooth entrance animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.admin-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+
+            // Animate stats
+            const statNumbers = document.querySelectorAll('.stat-number');
+            statNumbers.forEach(stat => {
+                const finalNumber = stat.textContent;
+                stat.textContent = '0';
+                
+                setTimeout(() => {
+                    animateNumber(stat, finalNumber, 2000);
+                }, 500);
+            });
+        });
+
+        function animateNumber(element, target, duration) {
+            const start = 0;
+            const end = parseInt(target.replace(/,/g, ''));
+            const increment = end / (duration / 16);
+            let current = start;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= end) {
+                    element.textContent = target;
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Add particles effect
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.style.position = 'fixed';
+            particle.style.width = '4px';
+            particle.style.height = '4px';
+            particle.style.background = 'rgba(255, 255, 255, 0.5)';
+            particle.style.borderRadius = '50%';
+            particle.style.pointerEvents = 'none';
+            particle.style.zIndex = '-1';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 'px';
+            
+            document.body.appendChild(particle);
+            
+            let position = window.innerHeight;
+            const speed = Math.random() * 2 + 1;
+            
+            const animate = () => {
+                position -= speed;
+                particle.style.top = position + 'px';
+                
+                if (position < -10) {
+                    document.body.removeChild(particle);
+                } else {
+                    requestAnimationFrame(animate);
+                }
+            };
+            
+            animate();
+        }
+
+        // Create particles periodically
+        setInterval(createParticle, 300);
+    </script>
+</body>
+</html>
