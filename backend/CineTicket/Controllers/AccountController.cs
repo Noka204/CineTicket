@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CineTicket.DTOs.Accout;
 using CineTicket.DTOs.Auth;
 using CineTicket.Helpers;
 using CineTicket.Models;
@@ -55,6 +56,66 @@ public class AccountController : ControllerBase
         var token = _jwtTokenGenerator.GenerateToken(user);
         return Ok(new { status = true, message = "Đăng nhập thành công", token });
     }
+
+    [HttpGet("get-all-users")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        var users = await _userService.GetAllUsersAsync();
+        var grouped = users
+            .GroupBy(u => u.Role)
+            .ToDictionary(g => g.Key, g => g.Select(u => new {
+                u.FullName,
+                u.Email,
+                u.UserName,
+                u.Role
+            }));
+
+        return Ok(new { status = true, data = grouped });
+    }
+
+
+
+    [HttpPut("update-role")]
+    public async Task<IActionResult> UpdateUserRole([FromBody] UpdateRoleDto dto)
+    {
+        var user = await _userService.GetByUserNameAsync(dto.UserName);
+        if (user == null)
+            return NotFound(new { status = false, message = "Người dùng không tồn tại" });
+
+        var result = await _userService.UpdateUserRoleAsync(user, dto.Role);
+        if (!result.Succeeded)
+            return BadRequest(new { status = false, message = "Cập nhật quyền thất bại", errors = result.Errors });
+
+        return Ok(new { status = true, message = "Cập nhật quyền thành công" });
+    }
+
+
+    [HttpDelete("delete")]
+    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest request)
+    {
+        var user = await _userService.GetByUserNameAsync(request.UserName);
+        if (user == null)
+        {
+            return NotFound(new { status = false, message = "Người dùng không tồn tại." });
+        }
+
+        var result = await _userManager.DeleteAsync(user);
+        if (!result.Succeeded)
+        {
+            return BadRequest(new { status = false, message = "Xóa thất bại", errors = result.Errors });
+        }
+
+        return Ok(new { status = true, message = "Đã xóa tài khoản thành công!" });
+    }
+
+    [HttpGet("get-all-roles")]
+    public async Task<IActionResult> GetAllRoles()
+    {
+        var roles = await _userService.GetAllRolesAsync();
+        return Ok(new { status = true, data = roles });
+    }
+
+
 
     //[HttpPost("forgot-password")]
     //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
