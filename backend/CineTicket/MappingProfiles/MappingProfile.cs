@@ -15,9 +15,11 @@ namespace CineTicket.MappingProfiles
         {
             // Phim
             CreateMap<Phim, PhimDTO>()
-                .ForMember(dest => dest.TenLoaiPhim, opt => opt.MapFrom(src => src.MaLoaiPhimNavigation != null ? src.MaLoaiPhimNavigation.TenLoaiPhim : null));
-            CreateMap<CreatePhimRequest, Phim>()
-                .ForMember(dest => dest.MaPhim, opt => opt.Ignore());
+                .ForMember(dest => dest.TenLoaiPhim,
+                           opt => opt.MapFrom(src => src.MaLoaiPhimNavigation.TenLoaiPhim));
+
+            CreateMap<CreatePhimRequest, Phim>();
+
 
             CreateMap<UpdatePhimRequest, Phim>()
                 .ForMember(dest => dest.MaLoaiPhimNavigation, opt => opt.Ignore()); // Không map Navigation property
@@ -47,6 +49,11 @@ namespace CineTicket.MappingProfiles
             //Ghe
             CreateMap<Ghe, GheDTO>()
                 .ForMember(dest => dest.TenPhong, opt => opt.MapFrom(src => src.MaPhongNavigation.TenPhong));
+                 CreateMap<Ghe, GheDTO>()
+                .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src =>
+                   src.Ves.Any(v => v.TrangThai == "Đã đặt" || v.TrangThai == "Đã mua")
+            ));
+
 
             CreateMap<CreateGheRequest, Ghe>();
             CreateMap<UpdateGheRequest, Ghe>();

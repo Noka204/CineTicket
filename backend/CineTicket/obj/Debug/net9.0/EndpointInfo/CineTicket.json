@@ -1399,6 +1399,10 @@
             "type": "integer",
             "format": "int32",
             "nullable": true
+          },
+          "tenLoaiPhim": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -1615,6 +1619,10 @@
           "maLoaiPhim": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "tenLoaiPhim": {
+            "type": "string",
             "nullable": true
           }
         },

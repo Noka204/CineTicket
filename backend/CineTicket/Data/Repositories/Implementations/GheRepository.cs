@@ -32,9 +32,11 @@ namespace CineTicket.Repositories.Implementations
             return await _context.Ghes
                 .Where(g => g.MaPhong == maPhong)
                 .Include(g => g.MaPhongNavigation)
+                .Include(g => g.Ves) // ✅ Thêm dòng này để lấy trạng thái vé
                 .AsNoTracking()
                 .ToListAsync();
         }
+
 
         public async Task<Ghe> CreateAsync(Ghe ghe)
         {

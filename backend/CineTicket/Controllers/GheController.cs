@@ -43,10 +43,12 @@ namespace CineTicket.Controllers
         [HttpGet("get-by-phong/{maPhong}")]
         public async Task<IActionResult> GetByPhongAsync(int maPhong)
         {
-            var result = await _service.GetByPhongAsync(maPhong); // Ensure the service method is called to fetch the data
-            var mapped = _mapper.Map<IEnumerable<GheDTO>>(result);
-            return Ok(new { status = true, message = "Lấy danh sách ghế theo phòng thành công", data = mapped });
+            var ghes = await _service.GetByPhongAsync(maPhong);
+            var mapped = _mapper.Map<IEnumerable<GheDTO>>(ghes);
+
+            return Ok(new { status = true, data = mapped });
         }
+
 
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
