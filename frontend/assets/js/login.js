@@ -119,7 +119,7 @@ function logout() {
 
   setTimeout(() => {
     localStorage.removeItem("token");
-    window.location.href = "../../index.html";
+    window.location.href = "../../pages/Home/index.html";
   }, 300);
 }
 
