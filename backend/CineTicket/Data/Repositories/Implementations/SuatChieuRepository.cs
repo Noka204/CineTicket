@@ -34,13 +34,17 @@ namespace CineTicket.Repositories.Implementations
 
         public async Task<List<SuatChieu>> GetByPhimIdAsync(int maPhim)
         {
+            var currentTime = DateTime.Now;
+
             return await _context.SuatChieus
-                .Where(s => s.MaPhim == maPhim)
+                .Where(s => s.MaPhim == maPhim && s.ThoiGianBatDau > currentTime)
                 .Include(s => s.MaPhimNavigation)
                 .Include(s => s.MaPhongNavigation)
                 .Include(s => s.Ves)
                 .ToListAsync();
         }
+
+
         public async Task<SuatChieu> CreateAsync(SuatChieu suatChieu)
         {
             _context.SuatChieus.Add(suatChieu);
