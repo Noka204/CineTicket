@@ -1,4 +1,5 @@
-﻿using CineTicket.Models;
+﻿using CineTicket.DTOs;
+using CineTicket.Models;
 
 namespace CineTicket.Services.Interfaces
 {
@@ -9,5 +10,6 @@ namespace CineTicket.Services.Interfaces
         Task<PhongChieu> CreateAsync(PhongChieu phongChieu);
         Task<bool> UpdateAsync(PhongChieu phongChieu);
         Task<bool> DeleteAsync(int id);
+        Task<PhongChieuDTO> CreateWithSeatsAsync(CreatePhongChieuRequest request);
     }
 }

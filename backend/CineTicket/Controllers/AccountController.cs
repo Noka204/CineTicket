@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs.Accout;
 using CineTicket.DTOs.Auth;
-using CineTicket.Helpers;
 using CineTicket.Models;
+using CineTicket.Services;
 using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,14 +21,18 @@ public class AccountController : ControllerBase
     private readonly IConfiguration _config;
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly JwtTokenGenerator _jwtTokenGenerator;
+    private static Dictionary<string, (string otp, DateTime expires)> OtpStore = new();
+    private readonly MailService _mailService;
 
-    public AccountController(IUserService userService, IMapper mapper, IConfiguration config, UserManager<ApplicationUser> userManager, JwtTokenGenerator jwtTokenGenerator)
+
+    public AccountController(IUserService userService, IMapper mapper, IConfiguration config, UserManager<ApplicationUser> userManager, JwtTokenGenerator jwtTokenGenerator,MailService mailService)
     {
         _userService = userService;
         _mapper = mapper;
         _config = config;
         _userManager = userManager;
         _jwtTokenGenerator = jwtTokenGenerator;
+        _mailService = mailService;
     }
 
     [HttpPost("register")]
@@ -38,15 +42,23 @@ public class AccountController : ControllerBase
         user.Role = SD.Role_Customer;
         var result = await _userService.RegisterAsync(user, request.Password);
         if (!result.Succeeded)
-            return BadRequest(new { status = false, message = string.Join("; ", result.Errors.Select(e => e.Description)) });
-
+        {
+            return BadRequest(new
+            {
+                status = false,
+                message = string.Join("; ", result.Errors.Select(e => e.Description))
+            });
+        }
         await _userService.AssignRoleAsync(user, SD.Role_Customer);
-
         var createdUser = await _userService.GetByUserNameAsync(request.UserName);
-        return Ok(new { status = true, message = "Đăng ký thành công" });
+        var token = _jwtTokenGenerator.GenerateToken(createdUser);
+        return Ok(new
+        {
+            status = true,
+            message = "Đăng ký thành công",
+            token = token
+        });
     }
-
-
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
     {
@@ -57,6 +69,44 @@ public class AccountController : ControllerBase
         var token = _jwtTokenGenerator.GenerateToken(user);
         return Ok(new { status = true, message = "Đăng nhập thành công", token });
     }
+    [HttpPost("forgot-password")]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+    {
+        var email = request.Email;
+        var user = await _userService.GetByEmailAsync(email);
+        if (user == null)
+            return NotFound(new { status = false, message = "Email không tồn tại trong hệ thống." });
+
+        var otp = new Random().Next(100000, 999999).ToString();
+        await _mailService.SendOtpEmailAsync(email, otp);
+        OtpStore[email] = (otp, DateTime.UtcNow.AddMinutes(5));
+
+        return Ok(new { status = true, message = "Mã OTP đã được gửi đến email của bạn." });
+    }
+    [HttpPost("reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
+    {
+        if (!OtpStore.TryGetValue(request.Email, out var otpInfo))
+            return BadRequest(new { status = false, message = "OTP không tồn tại hoặc email sai." });
+
+        if (DateTime.UtcNow > otpInfo.expires)
+            return BadRequest(new { status = false, message = "Mã OTP đã hết hạn." });
+
+        if (otpInfo.otp != request.Otp)
+            return BadRequest(new { status = false, message = "Mã OTP không đúng." });
+
+        var user = await _userService.GetByEmailAsync(request.Email);
+        if (user == null)
+            return NotFound(new { status = false, message = "Không tìm thấy người dùng." });
+
+        var result = await _userService.ResetPasswordAsync(user, request.NewPassword);
+        if (!result.Succeeded)
+            return BadRequest(new { status = false, message = "Không thể đặt lại mật khẩu." });
+
+        OtpStore.Remove(request.Email);
+        return Ok(new { status = true, message = "Đặt lại mật khẩu thành công." });
+    }
+
     [Authorize(Roles = "Employee,Admin")]
     [HttpGet("get-all-users")]
     public async Task<IActionResult> GetAllUsers()
@@ -115,37 +165,4 @@ public class AccountController : ControllerBase
         var roles = await _userService.GetAllRolesAsync();
         return Ok(new { status = true, data = roles });
     }
-
-
-
-    //[HttpPost("forgot-password")]
-    //public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
-    //{
-    //    var user = await _userService.GetByEmailAsync(request.Email);
-    //    if (user == null) return NotFound();
-    //    var token = await _userService.GeneratePasswordResetTokenAsync(user);
-    //    return Ok(new { status = true, token });
-    //}
-
-    //[HttpPost("reset-password")]
-    //public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest request)
-    //{
-    //    var user = await _userService.GetByEmailAsync(request.Email);
-    //    if (user == null) return NotFound();
-    //    var success = await _userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
-    //    return success ? Ok(new { status = true }) : BadRequest(new { status = false });
-    //}
-
-    //[HttpPut("update-info")]
-    //public async Task<IActionResult> UpdateInfo([FromBody] UpdateUserInfoRequest request)
-    //{
-    //    var user = await _userService.GetByIdAsync(request.Id);
-    //    if (user == null) return NotFound();
-    //    user.FullName = request.FullName;
-    //    user.Address = request.Address;
-    //    user.PhoneNumber = request.PhoneNumber;
-    //    var success = await _userService.UpdateUserInfoAsync(user);
-    //    return success ? Ok(new { status = true }) : BadRequest(new { status = false });
-    //}
-
 }

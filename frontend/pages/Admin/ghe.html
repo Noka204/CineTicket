@@ -36,8 +36,13 @@
       <option value="20">20 dòng</option>
     </select>
 
-    <label for="searchText">Tìm kiếm:</label>
-    <input type="text" id="searchText" class="form-control" placeholder="Tìm theo số ghế..." oninput="goToPage(1)" />
+    <label for="searchText">Tìm theo ghế:</label>
+    <input type="text" id="searchText" class="form-control" placeholder="Nhập số ghế..." oninput="goToPage(1)" />
+
+    <label for="searchPhong">Phòng:</label>
+    <select id="searchPhong" class="form-select w-auto" onchange="goToPage(1)">
+      <option value="">-- Tất cả phòng --</option>
+    </select>
   </div>
 
   <table class="table">
@@ -86,6 +91,16 @@
         opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
         select.appendChild(opt);
       });
+
+      // Cũng thêm vào dropdown tìm kiếm phòng
+      const searchSelect = document.getElementById("searchPhong");
+      searchSelect.innerHTML = '<option value="">-- Tất cả phòng --</option>';
+      phongOptions.forEach(phong => {
+        const opt = document.createElement("option");
+        opt.value = phong.maPhong;
+        opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
+        searchSelect.appendChild(opt);
+      });
     }
 
     async function fetchData() {
@@ -97,11 +112,16 @@
 
     function goToPage(page) {
       const search = document.getElementById("searchText").value.toLowerCase();
+      const selectedMaPhong = document.getElementById("searchPhong").value;
       const pageSize = parseInt(document.getElementById("pageSize").value);
       const tbody = document.getElementById("gheTableBody");
       tbody.innerHTML = "";
 
-      const filtered = currentData.filter(p => p.soGhe?.toLowerCase().includes(search));
+      const filtered = currentData.filter(p =>
+        p.soGhe?.toLowerCase().includes(search) &&
+        (selectedMaPhong === "" || p.maPhong == parseInt(selectedMaPhong))
+      );
+
       totalPages = Math.ceil(filtered.length / pageSize);
       if (page < 1) page = 1;
       if (page > totalPages) page = totalPages;

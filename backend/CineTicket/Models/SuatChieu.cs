@@ -17,6 +17,7 @@ public partial class SuatChieu
 
     public DateOnly? NgayChieu { get; set; }
 
+    public string? GioChieu { get; set; }
     public virtual Phim? MaPhimNavigation { get; set; }
 
     public virtual PhongChieu? MaPhongNavigation { get; set; }

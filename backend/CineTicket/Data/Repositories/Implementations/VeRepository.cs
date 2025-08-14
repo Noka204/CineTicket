@@ -21,7 +21,14 @@ namespace CineTicket.Repositories.Implementations
                 .Include(v => v.MaSuatNavigation)
                 .ToListAsync();
         }
-
+        //get bt ghe and suat
+        public async Task<Ve?> GetByGheAndSuatAsync(int maGhe, int maSuat)
+        {
+            return await _context.Ves
+                .Include(v => v.MaGheNavigation)
+                .Include(v => v.MaSuatNavigation)
+                .FirstOrDefaultAsync(v => v.MaGhe == maGhe && v.MaSuat == maSuat);
+        }
         public async Task<Ve?> GetByIdAsync(int id)
         {
             return await _context.Ves
@@ -29,14 +36,25 @@ namespace CineTicket.Repositories.Implementations
                 .Include(v => v.MaSuatNavigation)
                 .FirstOrDefaultAsync(v => v.MaVe == id);
         }
+        public async Task<IEnumerable<Ve>> TinhGiaVe(int maGhe, int maSuat)
+        {
+            return await _context.Ves
+                .Include(v => v.MaGheNavigation)
+                .Where(v => v.MaSuat == maSuat)
+                .ToListAsync();
+        }
 
         public async Task<Ve> CreateAsync(Ve ve)
         {
-            ve.TrangThai = "Đã đặt";
             _context.Ves.Add(ve);
             await _context.SaveChangesAsync();
             return ve;
         }
+        public async Task<bool> SaveAsync()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
+
 
         public async Task<bool> UpdateAsync(Ve ve)
         {

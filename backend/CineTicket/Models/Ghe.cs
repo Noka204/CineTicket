@@ -9,7 +9,7 @@ public partial class Ghe
 
     public string? SoGhe { get; set; }
 
-    public string? LoaiGhe { get; set; }
+    public string? LoaiGhe { get; set; }    
 
     public int? MaPhong { get; set; }
     public string? TenPhong { get; set; }

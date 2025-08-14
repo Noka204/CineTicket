@@ -4,11 +4,10 @@
     {
         public int MaVe { get; set; }
         public int? MaGhe { get; set; }
-        public string? SoGhe { get; set; } // từ MaGheNavigation
+        public string? SoGhe { get; set; } 
 
         public int? MaSuat { get; set; }
-        public DateTime? ThoiGianBatDau { get; set; } // từ MaSuatNavigation
-
+        public DateTime? ThoiGianBatDau { get; set; } 
         public decimal? GiaVe { get; set; }
         public string? TrangThai { get; set; }
     }

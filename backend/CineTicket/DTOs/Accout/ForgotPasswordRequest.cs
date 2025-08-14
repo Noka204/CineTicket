@@ -1,7 +1,12 @@
-﻿namespace CineTicket.DTOs.Auth
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+
+namespace CineTicket.DTOs.Auth
 {
     public class ForgotPasswordRequest
     {
-        public string Email { get; set; } = null!;
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
     }
+
 }

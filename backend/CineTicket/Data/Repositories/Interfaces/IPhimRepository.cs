@@ -9,5 +9,8 @@ namespace CineTicket.Repositories.Interfaces
         Task<Phim> CreateAsync(Phim phim);
         Task<bool> UpdateAsync(Phim phim);
         Task<bool> DeleteAsync(int id);
+        IQueryable<Phim> Query();
+        Task AddLoaiPhimToPhimAsync(List<ChiTietLoaiPhim> list);
+        Task UpdateLoaiPhimOfPhimAsync(int maPhim, List<int> maLoaiPhims);
     }
 }

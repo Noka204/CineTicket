@@ -1,13 +1,20 @@
 function parseJwt(token) {
   try {
     const base64Url = token.split('.')[1];
-    const base64 = decodeURIComponent(atob(base64Url).split('').map(c =>
-      '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-    return JSON.parse(base64);
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
   } catch (e) {
+    console.error("Lỗi parseJwt:", e);
     return null;
   }
 }
+
 
 function updateAuthButtons() {
   const authContainer = document.getElementById("authButtons");
@@ -119,7 +126,7 @@ function logout() {
 
   setTimeout(() => {
     localStorage.removeItem("token");
-    window.location.href = "../../index.html";
+    window.location.href = "../Phim/index.html";
   }, 300);
 }
 
@@ -140,3 +147,4 @@ function addAnimationStyles() {
 
 addAnimationStyles();
 updateAuthButtons();
+

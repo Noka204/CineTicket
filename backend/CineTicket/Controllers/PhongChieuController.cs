@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CineTicket.DTOs;
 using CineTicket.Models;
+using CineTicket.Services.Implementations;
 using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,14 @@ namespace CineTicket.Controllers
     {
         private readonly IPhongChieuService _phongService;
         private readonly IMapper _mapper;
+        private readonly IGheService _gheService;
 
-        public PhongChieuController(IPhongChieuService phongService, IMapper mapper)
+        public PhongChieuController(IPhongChieuService phongService, IMapper mapper, IGheService gheService )
         {
             _phongService = phongService;
             _mapper = mapper;
+            _gheService = gheService;
+
         }
 
         [HttpGet("get-all")]
@@ -43,12 +47,17 @@ namespace CineTicket.Controllers
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreatePhongChieuRequest request)
         {
-            var phong = _mapper.Map<PhongChieu>(request);
-            var created = await _phongService.CreateAsync(phong);
-            var mapped = _mapper.Map<PhongChieuDTO>(created);
+            var result = await _phongService.CreateWithSeatsAsync(request);
 
-            // Theo REST chuẩn, khi tạo mới nên trả 201 Created
-            return CreatedAtAction(nameof(GetById), new { id = mapped.MaPhong }, new { status = true, message = "Tạo phòng chiếu thành công", data = mapped });
+            return CreatedAtAction(nameof(GetById), new
+            {
+                id = result.MaPhong
+            }, new
+            {
+                status = true,
+                message = "Tạo phòng chiếu thành công kèm danh sách ghế",
+                data = result
+            });
         }
 
         [Authorize(Roles = "Employee,Admin")]
@@ -62,7 +71,7 @@ namespace CineTicket.Controllers
             var updated = await _phongService.UpdateAsync(phong);
 
             if (updated)
-                return NoContent(); // Chuẩn REST: 204 NoContent khi update OK
+                return NoContent(); 
             else
                 return NotFound(new { status = false, message = "Không tìm thấy phòng để cập nhật", data = (object?)null });
         }
@@ -73,7 +82,7 @@ namespace CineTicket.Controllers
         {
             var deleted = await _phongService.DeleteAsync(id);
             if (deleted)
-                return NoContent(); // Chuẩn REST
+                return NoContent();
             else
                 return NotFound(new { status = false, message = "Không tìm thấy phòng để xoá", data = (object?)null });
         }

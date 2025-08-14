@@ -13,16 +13,27 @@ namespace CineTicket.MappingProfiles
     {
         public MappingProfile()
         {
-            // Phim
+            //phim
             CreateMap<Phim, PhimDTO>()
-                .ForMember(dest => dest.TenLoaiPhim,
-                           opt => opt.MapFrom(src => src.MaLoaiPhimNavigation.TenLoaiPhim));
+                .ForMember(dest => dest.LoaiPhims,
+                    opt => opt.MapFrom(src =>
+                        src.ChiTietLoaiPhims.Select(ct => ct.LoaiPhim).ToList()
+                    ));
 
             CreateMap<CreatePhimRequest, Phim>();
 
-
             CreateMap<UpdatePhimRequest, Phim>()
-                .ForMember(dest => dest.MaLoaiPhimNavigation, opt => opt.Ignore()); // Không map Navigation property
+                .ForMember(dest => dest.ChiTietLoaiPhims, opt => opt.Ignore());
+
+            //ChiTiecLoaiPhim
+            CreateMap<ChiTietLoaiPhim, ChiTietLoaiPhimDTO>()
+            .ForMember(dest => dest.TenPhim, opt => opt.MapFrom(src => src.Phim.TenPhim))
+            .ForMember(dest => dest.TenLoaiPhim, opt => opt.MapFrom(src => src.LoaiPhim.TenLoaiPhim));
+
+            CreateMap<CreateChiTietLoaiPhimDTO, List<ChiTietLoaiPhim>>()
+                .ConvertUsing(src => src.DanhSachMaLoaiPhim
+                    .Select(maLoai => new ChiTietLoaiPhim { MaPhim = src.MaPhim, MaLoaiPhim = maLoai })
+                    .ToList());
 
             // SuatChieu
             CreateMap<SuatChieu, SuatChieuDTO>()
@@ -76,11 +87,14 @@ namespace CineTicket.MappingProfiles
             CreateMap<BapNuocUpdateDTO, BapNuoc>();
 
             // HoaDon
-            CreateMap<CreateHoaDonDTO, HoaDon>();
-            CreateMap<UpdateHoaDonDTO, HoaDon>();
-            CreateMap<HoaDon, HoaDonDTO>();
+            // HoaDon
+            CreateMap<CreateHoaDonDTO, HoaDon>()
+                .ForMember(d => d.ChiTietHoaDons,
+                           o => o.MapFrom(s => s.ChiTietHoaDons));
 
-            CreateMap<CreateHoaDonDTO, HoaDon>();
+
+            CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
+
             CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
             CreateMap<UpdateHoaDonDTO, HoaDon>();
             CreateMap<HoaDon, HoaDonDTO>();

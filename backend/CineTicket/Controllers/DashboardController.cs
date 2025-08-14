@@ -23,16 +23,13 @@ namespace CineTicket.Controllers
             {
                 return BadRequest(new { status = false, message = "Invalid year or month." });
             }
-
             var data = await _service.GetDoanhThuTheoNgayTrongThang(year, month);
             if (data == null)
             {
                 return Ok(new { status = true, data = new List<object>() });
             }
-
             int daysInMonth = DateTime.DaysInMonth(year, month);
             var doanhThuDict = data.ToDictionary(d => d.Ngay.Date, d => d.TongTien);
-
             var result = Enumerable.Range(1, daysInMonth)
                 .Select(day =>
                 {
@@ -44,7 +41,6 @@ namespace CineTicket.Controllers
                         TongTien = tongTien
                     };
                 });
-
             return Ok(new { status = true, data = result });
         }
     }

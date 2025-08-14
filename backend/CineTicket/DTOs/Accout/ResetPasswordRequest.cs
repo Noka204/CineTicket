@@ -2,8 +2,9 @@
 {
     public class ResetPasswordRequest
     {
-        public string Email { get; set; } = null!;
-        public string Token { get; set; } = null!;
-        public string NewPassword { get; set; } = null!;
+        public string Email { get; set; }
+        public string Otp { get; set; }
+        public string NewPassword { get; set; }
     }
+
 }

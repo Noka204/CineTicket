@@ -5,7 +5,7 @@ namespace CineTicket.Services.Interfaces
 {
     public interface IHoaDonService
     {
-        Task<HoaDon> CreateWithDetailsAsync(CreateHoaDonDTO dto);
+        Task<HoaDon> CreateWithDetailsAsync(CreateHoaDonDTO dto, string userId);
         Task<HoaDon?> GetByIdAsync(int id);
         Task<IEnumerable<HoaDon>> GetAllAsync();
         Task<bool> UpdateAsync(UpdateHoaDonDTO dto);

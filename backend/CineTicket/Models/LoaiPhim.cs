@@ -9,5 +9,6 @@ public partial class LoaiPhim
 
     public string TenLoaiPhim { get; set; } = null!;
 
-    public virtual ICollection<Phim> Phims { get; set; } = new List<Phim>();
+    public virtual ICollection<ChiTietLoaiPhim> ChiTietLoaiPhims { get; set; } = new List<ChiTietLoaiPhim>();
+
 }

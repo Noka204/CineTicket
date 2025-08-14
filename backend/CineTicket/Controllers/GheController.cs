@@ -40,15 +40,13 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy ghế thành công", data = mapped });
         }
 
-        [HttpGet("get-by-phong/{maPhong}")]
-        public async Task<IActionResult> GetByPhongAsync(int maPhong)
+        // GheController.cs
+        [HttpGet("get-trang-thai")]
+        public async Task<IActionResult> GetTrangThai([FromQuery] int maPhong, [FromQuery] int maSuat)
         {
-            var ghes = await _service.GetByPhongAsync(maPhong);
-            var mapped = _mapper.Map<IEnumerable<GheDTO>>(ghes);
-
-            return Ok(new { status = true, data = mapped });
+            var data = await _service.GetTrangThaiGheAsync(maPhong, maSuat);
+            return Ok(new { status = true, data });
         }
-
 
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]

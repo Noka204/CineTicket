@@ -5,40 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chi Tiết Phim</title>
   <link rel="stylesheet" href="../../assets/css/Phim.css" />
-  <script src="../../assets/js/login.js"></script> 
   <link rel="stylesheet" href="../../assets/css/details.css"> 
+  <script src="../../assets/js/login.js"></script> 
 
+</head>
 <body>
-  <!-- Header (load từ file part/header.html) -->
   <div id="include-header"></div>
 
-  <!-- Movie detail -->
   <div class="movie-detail-container" id="movieDetail">
-    <!-- Nội dung phim sẽ được render bằng JS -->
+    <!-- Nội dung sẽ được chèn vào bằng JavaScript -->
   </div>
 
-
-  <!-- Footer (load từ file part/footer.html) -->
   <div id="include-footer"></div>
 
   <script>
-    // Hàm include HTML
     function includeHTML(id, file) {
       fetch(file)
         .then(res => res.text())
         .then(data => {
           document.getElementById(id).innerHTML = data;
           if (id === "include-header") {
-            setTimeout(updateAuthButtons, 100); // Cập nhật thông tin đăng nhập sau khi header load xong
+            setTimeout(updateAuthButtons, 100);
           }
         });
     }
 
-    // Gọi load header và footer
     includeHTML("include-header", "../../part/header.html");
     includeHTML("include-footer", "../../part/footer.html");
 
-    // Lấy ID phim từ URL và gọi API
     const params = new URLSearchParams(window.location.search);
     const phimId = params.get("id");
 
@@ -54,27 +48,60 @@
           }
 
           const movie = data.data;
+
+          const posterUrl = movie.poster 
+            ? 'https://localhost:7058' + movie.poster 
+            : '../../assets/images/default-poster.jpg';
+
+          const theLoaiText = movie.loaiPhims && movie.loaiPhims.length > 0
+            ? movie.loaiPhims.map(l => l.tenLoaiPhim).join(', ')
+            : 'Chưa cập nhật';
+
           document.getElementById("movieDetail").innerHTML = `
-            <div class="movie-poster" style="background-image: url('${movie.poster || '../../assets/images/default-poster.jpg'}')"></div>
+            <div class="movie-poster-wrapper">
+              <div class="movie-poster" style="background-image: url('${posterUrl}')"></div>
+              <button class="btn-trailer" onclick="showTrailer()">▶️ Xem trailer</button>
+            </div>
             <div class="movie-info">
               <h1>${movie.tenPhim}</h1>
-              <p><strong>Thể loại:</strong> ${movie.tenLoaiPhim}</p>
+              <p><strong>Thể loại:</strong> ${theLoaiText}</p>
               <p><strong>Thời lượng:</strong> ${movie.thoiLuong} phút</p>
               <p><strong>Đạo diễn:</strong> ${movie.daoDien}</p>
+              <p><strong>Ngôn ngữ:</strong> ${movie.ngonNgu || 'Chưa cập nhật'}</p>
+              <p><strong>Diễn viên:</strong> ${movie.dienVien || 'Chưa cập nhật'}</p>
+              <p><strong>Khởi chiếu:</strong> ${movie.khoiChieu || 'Chưa cập nhật'}</p>
               <p><strong>Mô tả:</strong> ${movie.moTa || 'Không có mô tả.'}</p>
 
+              <a href="../../pages/booking/booking.html?phimId=${movie.maPhim}" class="btn-booking">🎟 Đặt vé ngay</a>
 
-            <a href="../../pages/booking/booking.html?phimId=${movie.maPhim}" class="btn-booking">🎟 Đặt vé ngay</a>
-
+              <div id="trailerContainer" class="trailer-container" style="display:none;">
+                <iframe id="trailerFrame" width="100%" height="400" frameborder="0" allowfullscreen></iframe>
+              </div>
             </div>
           `;
 
-          
+          // gắn biến toàn cục
+          window.movie = movie;
         })
         .catch(err => {
           console.error("Lỗi:", err);
           document.getElementById("movieDetail").innerHTML = "<p style='color:red'>Lỗi khi tải dữ liệu phim.</p>";
         });
+    }
+
+    function showTrailer() {
+      const trailerUrl = window.movie.trailer;
+      const youtubeId = extractYoutubeId(trailerUrl);
+      const embedUrl = `https://www.youtube.com/embed/${youtubeId}`;
+
+      document.getElementById("trailerFrame").src = embedUrl;
+      document.getElementById("trailerContainer").style.display = 'block';
+    }
+
+    function extractYoutubeId(url) {
+      const regex = /(?:youtube\.com\/.*v=|youtu\.be\/)([^&?/]+)/;
+      const match = url.match(regex);
+      return match ? match[1] : '';
     }
   </script>
 </body>

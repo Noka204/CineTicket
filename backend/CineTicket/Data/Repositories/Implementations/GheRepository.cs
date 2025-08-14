@@ -1,4 +1,5 @@
 ﻿using CineTicket.Data;
+using CineTicket.DTOs.Ghe;
 using CineTicket.Models;
 using CineTicket.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,20 @@ namespace CineTicket.Repositories.Implementations
                 .Include(g => g.MaPhongNavigation)
                 .FirstOrDefaultAsync(g => g.MaGhe == id);
         }
+        public async Task<IEnumerable<GheTrangThaiDTO>> GetGheTrangThaiAsync(int maPhong, int maSuatChieu)
+        {
+            return await _context.Ghes
+                .Include(g => g.Ves) // để dùng g.Ves.Any(...)
+                .Where(g => g.MaPhong == maPhong)
+                .Select(g => new GheTrangThaiDTO
+                {
+                    MaGhe = g.MaGhe,
+                    SoGhe = g.SoGhe,
+                    MaPhong = g.MaPhong ?? 0,
+                    Disable = g.Ves.Any(v => v.MaSuat == maSuatChieu) // ✔️ chính xác
+                })
+                .ToListAsync();
+        }
         public async Task<IEnumerable<Ghe>> GetByPhongAsync(int maPhong)
         {
             return await _context.Ghes
@@ -36,8 +51,6 @@ namespace CineTicket.Repositories.Implementations
                 .AsNoTracking()
                 .ToListAsync();
         }
-
-
         public async Task<Ghe> CreateAsync(Ghe ghe)
         {
             _context.Ghes.Add(ghe);

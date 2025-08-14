@@ -4,16 +4,11 @@
   <meta charset="UTF-8" />
   <title>Quản lý Phim</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
   <style>
     body { background-color: #f8f9fa; padding: 20px; }
     h2 { font-weight: bold; }
-    table input, table textarea { width: 100%; padding: 4px; font-size: 14px; }
-    .form-inline { gap: 10px; flex-wrap: wrap; }
-    .pagination-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
-    .pagination-controls input { width: 60px; }
     textarea { resize: vertical; }
-    .table thead th { background-color: #343a40; color: white; }
   </style>
 </head>
 <body>
@@ -22,214 +17,176 @@
     <a href="../Admin/index.html" class="btn btn-outline-dark">🔙 Quay lại</a>
   </div>
 
-  <div class="d-flex flex-wrap form-inline mb-3">
-    <input type="text" id="tenPhim" class="form-control" placeholder="Tên phim">
-    <input type="text" id="thoiLuong" class="form-control" placeholder="Thời lượng (phút)">
-    <input type="text" id="daoDien" class="form-control" placeholder="Đạo diễn">
-    <input type="text" id="poster" class="form-control" placeholder="Poster URL">
-    <textarea id="moTa" class="form-control" placeholder="Mô tả" rows="1"></textarea>
-    <select id="maLoaiPhim" class="form-select">
-      <option value="">-- Chọn loại phim --</option>
-    </select>
-    <button class="btn btn-primary" onclick="addPhim()">➕ Thêm</button>
-  </div>
-
-  <div class="d-flex align-items-center gap-2 mb-2">
-    <label class="me-2">Hiển thị:</label>
-    <select id="pageSize" class="form-select w-auto" onchange="goToPage(1)">
-      <option value="5">5 dòng</option>
-      <option value="10" selected>10 dòng</option>
-      <option value="20">20 dòng</option>
-    </select>
-    <label class="ms-3 me-2">Tìm kiếm:</label>
-    <input type="text" id="searchText" class="form-control" placeholder="Nhập tên phim..." oninput="goToPage(1)">
+  <div class="container-fluid mb-3">
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Tên phim:</label><div class="col-sm-10"><input id="tenPhim" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Thời lượng:</label><div class="col-sm-10"><input id="thoiLuong" class="form-control" placeholder="VD: 120"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Đạo diễn:</label><div class="col-sm-10"><input id="daoDien" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Ngôn ngữ:</label><div class="col-sm-10"><input id="ngonNgu" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Diễn viên:</label><div class="col-sm-10"><input id="dienVien" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Khởi chiếu:</label><div class="col-sm-10"><input id="khoiChieu" type="date" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Poster:</label><div class="col-sm-10"><input id="poster" type="file" class="form-control" accept="image/*"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Banner:</label><div class="col-sm-10"><input id="banner" type="file" class="form-control" accept="image/*"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Trailer:</label><div class="col-sm-10"><input id="trailer" class="form-control"></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Mô tả:</label><div class="col-sm-10"><textarea id="moTa" class="form-control" rows="2"></textarea></div></div>
+    <div class="row mb-2"><label class="col-sm-2 col-form-label">Các loại phim:</label><div class="col-sm-10" id="checkboxLoaiPhims"></div></div>
+    <div class="row mt-3"><div><button class="btn btn-primary" onclick="handleAddPhim()">➕ Thêm</button></div></div>
   </div>
 
   <div class="table-responsive">
-    <table class="table table-bordered table-striped align-middle text-center">
+    <table id="phimTable" class="table table-bordered table-striped align-middle text-center">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Tên</th>
-          <th>Thời lượng</th>
-          <th>Đạo diễn</th>
-          <th>Mô tả</th>
-          <th>Poster</th>
-          <th>Loại</th>
-          <th>Thao tác</th>
+          <th>ID</th><th>Tên</th><th>Thời lượng</th><th>Đạo diễn</th>
+          <th>Ngôn ngữ</th><th>Diễn viên</th><th>Khởi chiếu</th>
+          <th>Mô tả</th><th>Poster</th><th>Trailer</th><th>Loại</th><th>Thao tác</th>
         </tr>
       </thead>
       <tbody id="phimTableBody"></tbody>
     </table>
   </div>
 
-  <div class="pagination-controls">
-    <button class="btn btn-outline-secondary" onclick="goToPage(1)">Trang đầu</button>
-    <button class="btn btn-outline-secondary" onclick="changePage(-1)">← Trước</button>
-    <span>Trang</span>
-    <input type="number" id="pageInput" min="1" onchange="jumpToPage()" class="form-control form-control-sm">
-    <span>/ <span id="totalPageText">1</span></span>
-    <button class="btn btn-outline-secondary" onclick="changePage(1)">Tiếp →</button>
-    <button class="btn btn-outline-secondary" onclick="goToLastPage()">Trang cuối</button>
-  </div>
-
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
   <script>
-    const API_BASE = "https://localhost:7058/api/Phim";
+    const API = "https://localhost:7058/api/Phim";
     const token = localStorage.getItem("token");
-    let currentPage = 1;
-    let totalPages = 1;
-    let currentData = [];
-    let loaiPhimOptions = [];
+    let loaiPhimList = [];
+
+    $(async function () {
+      await loadLoaiPhim();
+      await loadPhimData();
+    });
 
     async function loadLoaiPhim() {
       const res = await fetch("https://localhost:7058/api/LoaiPhim/get-all");
-      const json = await res.json();
-      loaiPhimOptions = json.data || [];
+      const data = await res.json();
+      loaiPhimList = data.data || [];
 
-      const select = document.getElementById("maLoaiPhim");
-      select.innerHTML = `<option value="">-- Chọn loại phim --</option>`;
-      loaiPhimOptions.forEach(loai => {
-        const opt = document.createElement("option");
-        opt.value = loai.maLoaiPhim;
-        opt.textContent = loai.tenLoaiPhim;
-        select.appendChild(opt);
+      const container = $("#checkboxLoaiPhims").empty();
+      loaiPhimList.forEach(loai => {
+        container.append(`
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" id="chk-${loai.maLoaiPhim}" value="${loai.maLoaiPhim}">
+            <label class="form-check-label" for="chk-${loai.maLoaiPhim}">${loai.tenLoaiPhim}</label>
+          </div>
+        `);
       });
     }
 
-    async function fetchData() {
-      const res = await fetch(`${API_BASE}/get-all`);
-      const json = await res.json();
-      currentData = json.data || [];
-      goToPage(1);
-    }
+    async function loadPhimData() {
+      const res = await fetch(`${API}/get-all`);
+      const data = (await res.json()).data || [];
+      const tbody = $("#phimTableBody").empty();
 
-    function goToPage(page) {
-      const search = document.getElementById("searchText").value.toLowerCase();
-      const pageSize = parseInt(document.getElementById("pageSize").value);
-      const tbody = document.getElementById("phimTableBody");
-      tbody.innerHTML = "";
+      if ($.fn.DataTable.isDataTable("#phimTable")) {
+        $("#phimTable").DataTable().destroy();
+      }
 
-      const filtered = currentData.filter(p => p.tenPhim?.toLowerCase().includes(search));
-
-      totalPages = Math.ceil(filtered.length / pageSize);
-      if (page < 1) page = 1;
-      if (page > totalPages) page = totalPages;
-      currentPage = page;
-
-      document.getElementById("pageInput").value = currentPage;
-      document.getElementById("totalPageText").textContent = totalPages;
-
-      const start = (currentPage - 1) * pageSize;
-      const paginated = filtered.slice(start, start + pageSize);
-
-      paginated.forEach(p => {
-        const loaiSelect = (loaiPhimOptions || []).map(loai =>
-          `<option value="${loai.maLoaiPhim}" ${p.maLoaiPhim === loai.maLoaiPhim ? 'selected' : ''}>
-            ${loai.tenLoaiPhim}
-          </option>`).join("");
-
-        tbody.innerHTML += `
+      data.forEach(p => {
+        const loaiText = (p.loaiPhims || []).map(lp => lp.tenLoaiPhim).join(", ");
+        tbody.append(`
           <tr>
             <td>${p.maPhim}</td>
-            <td><input id="ten-${p.maPhim}" value="${p.tenPhim || ''}" /></td>
-            <td><input id="tl-${p.maPhim}" value="${p.thoiLuong || ''}" /></td>
-            <td><input id="dd-${p.maPhim}" value="${p.daoDien || ''}" /></td>
-            <td><textarea id="mt-${p.maPhim}" rows="2">${p.moTa || ''}</textarea></td>
-            <td><input id="poster-${p.maPhim}" value="${p.poster || ''}" /></td>
+            <td><input class="form-control" id="ten-${p.maPhim}" value="${p.tenPhim}"></td>
+            <td><input class="form-control" id="tl-${p.maPhim}" value="${p.thoiLuong}"></td>
+            <td><input class="form-control" id="dd-${p.maPhim}" value="${p.daoDien}"></td>
+            <td><input class="form-control" id="ngonngu-${p.maPhim}" value="${p.ngonNgu || ''}"></td>
+            <td><input class="form-control" id="dienvien-${p.maPhim}" value="${p.dienVien || ''}"></td>
+            <td><input class="form-control" id="khoichieu-${p.maPhim}" value="${p.khoiChieu || ''}"></td>
+            <td><textarea class="form-control" id="mt-${p.maPhim}">${p.moTa || ''}</textarea></td>
+            <td><input class="form-control" id="poster-${p.maPhim}" value="${p.poster || ''}"></td>
+            <td><input class="form-control" id="trailer-${p.maPhim}" value="${p.trailer || ''}"></td>
+            <td>${loaiText}</td>
             <td>
-              <select id="loai-${p.maPhim}" class="form-select">
-                ${loaiSelect}
-              </select>
+              <button class="btn btn-success btn-sm mb-1" onclick="handleUpdate(${p.maPhim})">💾</button>
+              <button class="btn btn-danger btn-sm" onclick="handleDelete(${p.maPhim})">❌</button>
             </td>
-            <td>
-              <button class="btn btn-success btn-sm mb-1" onclick="updatePhim(${p.maPhim})">💾 Sửa</button>
-              <button class="btn btn-danger btn-sm" onclick="deletePhim(${p.maPhim})">❌ Xoá</button>
-            </td>
-          </tr>`;
+          </tr>
+        `);
       });
+
+      $("#phimTable").DataTable();
     }
 
-    function changePage(offset) { goToPage(currentPage + offset); }
-    function goToLastPage() { goToPage(totalPages); }
-    function jumpToPage() {
-      const input = parseInt(document.getElementById("pageInput").value);
-      if (!isNaN(input)) goToPage(input);
-    }
+    async function handleAddPhim() {
+      const selectedLoaiPhimIds = [];
+      $("#checkboxLoaiPhims input[type='checkbox']:checked").each(function () {
+        selectedLoaiPhimIds.push(parseInt($(this).val()));
+      });
 
-    async function addPhim() {
-      const body = {
-        tenPhim: document.getElementById("tenPhim").value,
-        thoiLuong: document.getElementById("thoiLuong").value,
-        daoDien: document.getElementById("daoDien").value,
-        moTa: document.getElementById("moTa").value,
-        poster: document.getElementById("poster").value,
-        maLoaiPhim: parseInt(document.getElementById("maLoaiPhim").value)
-      };
+      const form = new FormData();
+      form.append("tenPhim", $("#tenPhim").val());
+      form.append("thoiLuong", $("#thoiLuong").val());
+      form.append("daoDien", $("#daoDien").val());
+      form.append("ngonNgu", $("#ngonNgu").val());
+      form.append("dienVien", $("#dienVien").val());
+      form.append("khoiChieu", $("#khoiChieu").val());
+      form.append("moTa", $("#moTa").val());
+      form.append("trailer", $("#trailer").val());
+      form.append("isHot", "0");
 
-      const res = await fetch(`${API_BASE}/create`, {
+      const poster = $("#poster")[0].files[0];
+      const banner = $("#banner")[0].files[0];
+      if (poster) form.append("poster", poster);
+      if (banner) form.append("banner", banner);
+
+      // ✅ Thêm từng maLoaiPhims như key-value
+      selectedLoaiPhimIds.forEach(id => form.append("maLoaiPhims", id));
+
+      const res = await fetch(`${API}/create`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
+        headers: { Authorization: `Bearer ${token}` },
+        body: form
       });
 
       if (res.ok) {
-        alert("✅ Đã thêm phim");
-        fetchData();
+        alert("✅ Đã thêm");
+        loadPhimData();
       } else {
-        alert("❌ Thêm thất bại");
+        const err = await res.json().catch(() => ({}));
+        alert("❌ Thêm thất bại: " + (err?.message || "Kiểm tra dữ liệu đầu vào"));
       }
     }
 
-    async function updatePhim(id) {
+
+    async function handleUpdate(id) {
       const body = {
         maPhim: id,
-        tenPhim: document.getElementById(`ten-${id}`).value,
-        thoiLuong: document.getElementById(`tl-${id}`).value,
-        daoDien: document.getElementById(`dd-${id}`).value,
-        moTa: document.getElementById(`mt-${id}`).value,
-        poster: document.getElementById(`poster-${id}`).value,
-        maLoaiPhim: parseInt(document.getElementById(`loai-${id}`).value)
+        tenPhim: $(`#ten-${id}`).val(),
+        thoiLuong: parseInt($(`#tl-${id}`).val()),
+        daoDien: $(`#dd-${id}`).val(),
+        ngonNgu: $(`#ngonngu-${id}`).val(),
+        dienVien: $(`#dienvien-${id}`).val(),
+        khoiChieu: $(`#khoichieu-${id}`).val(),
+        moTa: $(`#mt-${id}`).val(),
+        poster: $(`#poster-${id}`).val(),
+        trailer: $(`#trailer-${id}`).val()
       };
 
-      const res = await fetch(`${API_BASE}/update/${id}`, {
+      const res = await fetch(`${API}/update/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(body)
       });
 
-      if (res.ok) {
-        alert("✅ Đã cập nhật");
-        fetchData();
-      } else {
-        alert("❌ Cập nhật thất bại");
-      }
+      res.ok ? alert("✅ Đã cập nhật") : alert("❌ Cập nhật thất bại");
+      loadPhimData();
     }
 
-    async function deletePhim(id) {
-      if (!confirm("Bạn có chắc muốn xoá?")) return;
+    async function handleDelete(id) {
+      if (!confirm("Bạn chắc chắn muốn xoá?")) return;
 
-      const res = await fetch(`${API_BASE}/delete/${id}`, {
+      const res = await fetch(`${API}/delete/${id}`, {
         method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (res.ok) {
-        alert("✅ Đã xoá");
-        fetchData();
-      } else {
-        alert("❌ Xoá thất bại");
-      }
+      res.ok ? alert("✅ Đã xoá") : alert("❌ Xoá thất bại");
+      loadPhimData();
     }
-
-    // Gọi khi khởi động
-    loadLoaiPhim();
-    fetchData();
   </script>
 </body>
 </html>

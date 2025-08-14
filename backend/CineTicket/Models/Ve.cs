@@ -14,12 +14,15 @@ namespace CineTicket.Models
         public decimal? GiaVe { get; set; }
 
         public string? TrangThai { get; set; }
+        public DateTime? NgayDat { get; set; }
 
+        public DateTime? ThoiGianTamGiu { get; set; }
         public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
 
         public virtual Ghe? MaGheNavigation { get; set; }
 
         public virtual SuatChieu? MaSuatNavigation { get; set; }
+        public string? NguoiGiuId { get; set; }
     }
 
 }

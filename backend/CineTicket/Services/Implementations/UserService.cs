@@ -65,6 +65,10 @@ namespace CineTicket.Services.Implementations
             return await Task.FromResult(_roleManager.Roles.Select(r => r.Name).ToList());
         }
 
-
+        public async Task<IdentityResult> ResetPasswordAsync(ApplicationUser user, string newPassword)
+        {
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            return await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
     }
 }

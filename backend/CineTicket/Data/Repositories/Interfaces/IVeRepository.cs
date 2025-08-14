@@ -9,5 +9,8 @@ namespace CineTicket.Repositories.Interfaces
         Task<Ve> CreateAsync(Ve ve);
         Task<bool> UpdateAsync(Ve ve);
         Task<bool> DeleteAsync(int id);
+        Task<bool> SaveAsync();
+        //get bt ghe and suat
+        Task<Ve?> GetByGheAndSuatAsync(int maGhe, int maSuat);
     }
 }

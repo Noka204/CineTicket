@@ -68,7 +68,7 @@
                 msg.style.color = "green";
                 msg.textContent = "Đăng ký thành công!";
                 localStorage.setItem("token", result.token);
-                window.location.href = "/pages/Phim/index.html";
+                window.location.href = "../Phim/index.html";
             } else {
                 msg.style.color = "red";
                 msg.textContent = result.message || "Đăng ký thất bại.";

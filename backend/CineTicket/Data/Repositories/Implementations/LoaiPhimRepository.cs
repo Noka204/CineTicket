@@ -35,7 +35,6 @@ namespace CineTicket.Repositories.Implementations
         {
             var entity = await _context.LoaiPhims.FindAsync(id);
             if (entity == null) return false;
-
             _context.LoaiPhims.Remove(entity);
             return await _context.SaveChangesAsync() > 0;
         }

@@ -12,8 +12,12 @@ using CineTicket.Data.Repositories.Interfaces;
 using CineTicket.MappingProfiles;
 using CineTicket.Models;
 using Microsoft.AspNetCore.Identity;
-using CineTicket.Helpers;
-using CineTicket.Data.Repositories.Implementations;  // 👈 thêm dòng này!
+using CineTicket.Data.Repositories.Implementations;
+using CineTicket.Services;
+using Microsoft.Extensions.FileProviders;
+using CineTicket.Models.Momo;
+using CineTicket.Hubs;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,13 +65,14 @@ builder.Services.AddDbContext<CineTicketDbContext>(options =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowLocalhost", policy =>
     {
-        policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500") // nếu bạn dùng Live Server bên VS xanh
+        policy.WithOrigins("http://127.0.0.1:5500", "http://localhost:5500")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
 
 
 
@@ -98,16 +103,46 @@ builder.Services.AddScoped<IHoaDonRepository, HoaDonRepository>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IDashboardService, DashboardService>();
+builder.Services.AddScoped<FileService>();
+builder.Services.AddScoped<MailService>();
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Services.AddScoped<IMomoService, MomoService>();
+builder.Services.Configure<MomoOptionModel>(
+    builder.Configuration.GetSection("Momo"));
 
+builder.Services.AddScoped<IMomoService, MomoService>();
+// Program.cs
+builder.Services.AddSignalR();
+builder.Services.AddHostedService<SeatHoldExpiryWorker>(); // job auto nhả ghế
 
 
 
 
 var app = builder.Build();
 
-app.UseCors();
+// PHẢI đặt rất sớm, trước UseHttpsRedirection
+var fwd = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor
+};
+// ngrok không nằm trong KnownNetworks/Proxies -> clear để chấp nhận
+fwd.KnownNetworks.Clear();
+fwd.KnownProxies.Clear();
+app.UseForwardedHeaders(fwd);
 
-// Configure middleware
+app.UseStaticFiles();
+app.MapHub<SeatHub>("/seatHub");
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")),
+    RequestPath = "/Images"
+});
+
+app.UseCors("AllowLocalhost");
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -119,12 +154,16 @@ using (var scope = app.Services.CreateScope())
     var serviceProvider = scope.ServiceProvider;
     await IdentitySeeder.SeedRolesAsync(serviceProvider);
 }
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage(); // Bật toàn bộ lỗi chi tiết
+}
 
 
 app.UseHttpsRedirection();
 
-// Bắt buộc phải có thứ tự: Authentication → Authorization
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

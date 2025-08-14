@@ -76,7 +76,7 @@ namespace CineTicket.Controllers
             var updated = await _service.UpdateAsync(model);
 
             if (updated)
-                return NoContent(); // REST chuẩn
+                return NoContent();
             else
                 return NotFound(new { status = false, message = "Không tìm thấy suất chiếu để cập nhật", data = (object?)null });
         }
@@ -87,7 +87,7 @@ namespace CineTicket.Controllers
         {
             var deleted = await _service.DeleteAsync(id);
             if (deleted)
-                return NoContent(); // REST chuẩn
+                return NoContent();
             else
                 return NotFound(new { status = false, message = "Không tìm thấy suất chiếu để xoá", data = (object?)null });
         }

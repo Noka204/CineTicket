@@ -56,10 +56,8 @@ public class BapNuocController : ControllerBase
     {
         if (id != request.MaBn)
             return BadRequest(new { status = false, message = "Mã bắp nước không khớp", data = (object?)null });
-
         var model = _mapper.Map<BapNuoc>(request);
         var updated = await _service.UpdateAsync(model);
-
         if (updated)
             return NoContent();
         else

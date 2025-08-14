@@ -1,9 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Security.Claims;
+using AutoMapper;
+using CineTicket.Data;
 using CineTicket.DTOs;
+using CineTicket.DTOs.Ve;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using static CineTicket.Services.Interfaces.IVeService;
 
 namespace CineTicket.Controllers
 {
@@ -13,11 +18,14 @@ namespace CineTicket.Controllers
     {
         private readonly IVeService _service;
         private readonly IMapper _mapper;
+        private readonly CineTicketDbContext _context;
 
-        public VeController(IVeService service, IMapper mapper)
+        public VeController(IVeService service, IMapper mapper, CineTicketDbContext context)
         {
             _service = service;
             _mapper = mapper;
+            _context = context;
+
         }
 
         [HttpGet("get-all")]
@@ -28,18 +36,52 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy danh sách vé thành công", data = mapped });
         }
 
-        [HttpGet("get/{id}")]
-        public async Task<IActionResult> GetById(int id)
+        [HttpGet("tinh-gia-ve")]
+        public async Task<IActionResult> TinhGiaVe(int maGhe, int maSuat)
         {
-            var ve = await _service.GetByIdAsync(id);
-            if (ve == null)
-                return NotFound(new { status = false, message = "Không tìm thấy vé", data = (object?)null });
+            var result = await _service.TinhGiaVeAsync(maGhe, maSuat);
 
-            var mapped = _mapper.Map<VeDTO>(ve);
-            return Ok(new { status = true, message = "Lấy vé thành công", data = mapped });
+            if (result == null)
+            {
+                return BadRequest(new
+                {
+                    status = false,
+                    message = "Không tìm thấy ghế hoặc suất chiếu."
+                });
+            }
+            return Ok(new
+            {
+                status = true,
+                message = "Tính giá vé thành công",
+                data = result
+            });
+        }
+        [HttpPost("hold")]
+        public async Task<IActionResult> GiuGhe([FromBody] GiuGheRequest request)
+        {
+            string? userId = null;
+            if (User?.Identity?.IsAuthenticated == true)
+                userId = User.FindFirst("sub")?.Value
+                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var (success, message, data, statusCode) = await _service.GiuGheAsync(request, userId);
+            if (!success) return StatusCode(statusCode, new { status = false, message });
+            return StatusCode(statusCode, new { status = true, message, data });
         }
 
-        [Authorize(Roles = "Employee,Admin,Customer")]
+        [HttpPost("release")]
+        public async Task<IActionResult> BoGiuGhe([FromBody] GiuGheRequest request)
+        {
+            string? userId = null;
+            if (User?.Identity?.IsAuthenticated == true)
+                userId = User.FindFirst("sub")?.Value
+                      ?? User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            var (success, message) = await _service.BoGiuGheAsync(request, userId);
+            if (!success) return NotFound(new { status = false, message });
+            return Ok(new { status = true, message });
+        }
+
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateVeRequest request)
         {
@@ -47,9 +89,10 @@ namespace CineTicket.Controllers
             var created = await _service.CreateAsync(model);
             var mapped = _mapper.Map<VeDTO>(created);
 
-            return CreatedAtAction(nameof(GetById), new { id = mapped.MaVe }, new { status = true, message = "Tạo vé thành công", data = mapped });
+            // KHỚP với action GetByIdAsync ở trên
+            return CreatedAtAction(nameof(_service.GetByIdAsync), new { id = mapped.MaVe },
+                new { status = true, message = "Tạo vé thành công", data = mapped });
         }
-
         [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateVeRequest request)

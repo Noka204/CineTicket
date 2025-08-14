@@ -30,6 +30,8 @@ public partial class CineTicketDbContext : IdentityDbContext<ApplicationUser>
     public virtual DbSet<SuatChieu> SuatChieus { get; set; }
 
     public virtual DbSet<Ve> Ves { get; set; }
+    public DbSet<ChiTietLoaiPhim> ChiTietLoaiPhims { get; set; }
+
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
@@ -91,15 +93,24 @@ public partial class CineTicketDbContext : IdentityDbContext<ApplicationUser>
 
         modelBuilder.Entity<HoaDon>(entity =>
         {
-            entity.HasKey(e => e.MaHd).HasName("PK__HoaDon__2725A6E0DE25F710");
+            entity.HasKey(h => h.MaHd)
+                  .HasName("PK__HoaDon__2725A6E0DE25F710");
 
             entity.ToTable("HoaDon");
+            entity.Property(h => h.MaHd)
+                  .HasColumnName("MaHD")
+                  .ValueGeneratedOnAdd();
 
-            entity.Property(e => e.MaHd).HasColumnName("MaHD");
-            entity.Property(e => e.HinhThucThanhToan).HasMaxLength(50);
-            entity.Property(e => e.NgayLap).HasColumnType("datetime");
-            entity.Property(e => e.TongTien).HasColumnType("decimal(10, 2)");
+            entity.Property(h => h.HinhThucThanhToan)
+                  .HasMaxLength(50);
+
+            entity.Property(h => h.NgayLap)
+                  .HasColumnType("datetime");
+
+            entity.Property(h => h.TongTien)
+                  .HasColumnType("decimal(10, 2)");
         });
+
 
         modelBuilder.Entity<LoaiPhim>(entity =>
         {
@@ -120,10 +131,22 @@ public partial class CineTicketDbContext : IdentityDbContext<ApplicationUser>
             entity.Property(e => e.Poster).HasMaxLength(255);
             entity.Property(e => e.TenPhim).HasMaxLength(200);
 
-            entity.HasOne(d => d.MaLoaiPhimNavigation).WithMany(p => p.Phims)
-                .HasForeignKey(d => d.MaLoaiPhim)
-                .HasConstraintName("FK__Phim__MaLoaiPhim__398D8EEE");
         });
+        modelBuilder.Entity<ChiTietLoaiPhim>()
+            .ToTable("ChiTietLoaiPhim")
+            .HasKey(ct => new { ct.MaPhim, ct.MaLoaiPhim });
+
+        modelBuilder.Entity<ChiTietLoaiPhim>()
+            .HasOne(ct => ct.Phim)
+            .WithMany(p => p.ChiTietLoaiPhims)
+            .HasForeignKey(ct => ct.MaPhim);
+
+        modelBuilder.Entity<ChiTietLoaiPhim>()
+            .HasOne(ct => ct.LoaiPhim)
+            .WithMany(l => l.ChiTietLoaiPhims)
+            .HasForeignKey(ct => ct.MaLoaiPhim);
+
+
 
         modelBuilder.Entity<PhongChieu>(entity =>
         {

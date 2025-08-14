@@ -47,8 +47,13 @@ namespace CineTicket.Repositories.Implementations
         {
             var phong = await _context.PhongChieus.FindAsync(id);
             if (phong == null) return false;
+
+            var ghes = _context.Ghes.Where(g => g.MaPhong == id);
+            _context.Ghes.RemoveRange(ghes);
+
             _context.PhongChieus.Remove(phong);
             return await _context.SaveChangesAsync() > 0;
         }
+
     }
 }
