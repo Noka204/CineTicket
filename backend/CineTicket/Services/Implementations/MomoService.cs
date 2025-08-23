@@ -11,6 +11,7 @@ using RestSharp;
 using System.Globalization;
 using CineTicket.Repositories.Interfaces;
 using CineTicket.Services.Interfaces;
+using MailKit;
 
 namespace CineTicket.Services
 {
@@ -19,18 +20,20 @@ namespace CineTicket.Services
         private readonly IOptions<MomoOptionModel> _options;
         private readonly CineTicketDbContext _context;
         private readonly ILogger<MomoService> _logger;
+        private readonly MailService _mailService;
 
         public MomoService(
             IOptions<MomoOptionModel> options,
             CineTicketDbContext context,
             ILogger<MomoService> logger,
             IVeService veService,
-            IHoaDonRepository hoaDonRepository)
+            IHoaDonRepository hoaDonRepository,
+            MailService mailService) 
         {
             _options = options;
             _context = context;
-            _logger  = logger;
-
+            _logger = logger;
+            _mailService = mailService; 
         }
 
         public async Task<MomoCreatePaymentResponseModel> CreatePaymentAsync(OrderInfoModel model)
@@ -76,7 +79,7 @@ namespace CineTicket.Services
                 lang = "vi"
             };
 
-            var client  = new RestClient(_options.Value.MomoApiUrl);
+            var client = new RestClient(_options.Value.MomoApiUrl);
             var request = new RestRequest { Method = Method.Post };
             request.AddHeader("Content-Type", "application/json; charset=UTF-8");
             request.AddStringBody(JsonConvert.SerializeObject(body), DataFormat.Json);
@@ -87,8 +90,8 @@ namespace CineTicket.Services
                 {
                     ["momo_url"] = _options.Value.MomoApiUrl,
                     ["requestId"] = requestId,
-                    ["orderId"]   = model.OrderId,
-                    ["amount"]    = model.Amount
+                    ["orderId"] = model.OrderId,
+                    ["amount"] = model.Amount
                 });
 
                 _logger.LogInformation("MOMO CREATE -> sending request: {Body}", JsonConvert.SerializeObject(body));
@@ -134,7 +137,7 @@ namespace CineTicket.Services
         }
         public async Task<bool> ConfirmByQueryAsync(MomoNotifyRequestModel model)
         {
-            // 1) /query xác nhận
+            // 1) /query xác nhận với MoMo
             var raw = $"accessKey={_options.Value.AccessKey}"
                     + $"&orderId={model.orderId}"
                     + $"&partnerCode={_options.Value.PartnerCode}"
@@ -157,27 +160,28 @@ namespace CineTicket.Services
             req.AddStringBody(JsonConvert.SerializeObject(body), DataFormat.Json);
 
             var res = await client.ExecuteAsync(req);
-            if (string.IsNullOrEmpty(res.Content)) return false;
+            if (string.IsNullOrEmpty(res.Content))
+            {
+                _logger.LogWarning("MoMo /query empty response | orderId={OrderId}", model.orderId);
+                return false;
+            }
 
             dynamic o = JsonConvert.DeserializeObject(res.Content)!;
-            if ((int)o.resultCode != 0) return false;
-
-            // 2) Lấy MaHd
-            string? internalOrderId = null;
-            try
+            if ((int)o.resultCode != 0)
             {
-                if (!string.IsNullOrEmpty(model.extraData))
-                {
-                    var json = Encoding.UTF8.GetString(Convert.FromBase64String(model.extraData));
-                    internalOrderId = JsonConvert.DeserializeObject<dynamic>(json)?.internalOrderId?.ToString();
-                }
+                _logger.LogWarning("MoMo /query resultCode != 0 | orderId={OrderId} raw={Raw}", model.orderId, res.Content);
+                return false;
             }
-            catch { /* ignore */ }
 
-            var rawKey = internalOrderId ?? model.orderId?.Split('-')[0];
-            if (!int.TryParse(rawKey, out var maHd)) return false;
+            // 2) Lấy maHd (ưu tiên extraData.internalOrderId, fallback phần đầu orderId)
+            int maHd;
+            if (!TryExtractMaHd(model, out maHd))
+            {
+                _logger.LogWarning("Cannot parse maHd from extraData/orderId | orderId={OrderId}", model.orderId);
+                return false;
+            }
 
-            // 3) Transaction + 1 SaveChanges
+            // 3) Transaction + cập nhật DB
             using var tx = await _context.Database.BeginTransactionAsync();
 
             var hoaDon = await _context.HoaDons
@@ -185,13 +189,18 @@ namespace CineTicket.Services
                     .ThenInclude(ct => ct.MaVeNavigation)
                 .FirstOrDefaultAsync(h => h.MaHd == maHd);
 
-            if (hoaDon == null) return false;
+            if (hoaDon == null)
+            {
+                _logger.LogWarning("Invoice not found | maHd={MaHd}", maHd);
+                return false;
+            }
 
             if (!string.Equals(hoaDon.TrangThai, "Đã thanh toán", StringComparison.OrdinalIgnoreCase))
             {
                 hoaDon.TrangThai = "Đã thanh toán";
                 hoaDon.HinhThucThanhToan = "Ví Momo";
 
+                // Đồng bộ số tiền từ MoMo (nếu cần)
                 if (decimal.TryParse((string)o.amount, NumberStyles.Any, CultureInfo.InvariantCulture, out var amt))
                     hoaDon.TongTien = amt;
 
@@ -208,13 +217,55 @@ namespace CineTicket.Services
 
                 await _context.SaveChangesAsync();
                 await tx.CommitAsync();
+
+                await _mailService.SendInvoiceEmailAsync(maHd);
             }
             else
             {
-                await tx.RollbackAsync(); // Không thay đổi gì
+                await tx.RollbackAsync(); // idempotent: đã thanh toán trước đó
+                _logger.LogInformation("Invoice already paid, skip update | maHd={MaHd}", maHd);
+
+                // gửi mail 1 lần duy nhất; nếu trước đó chưa gửi, bạn có thể quyết định gọi lại:
+                // _ = Task.Run(() => _mailService.SendInvoiceEmailAsync(maHd));
             }
 
             return true;
+        }
+
+        // Helper: parse maHd an toàn theo cấu trúc MailService (int > 0)
+        private bool TryExtractMaHd(MomoNotifyRequestModel model, out int maHd)
+        {
+            maHd = 0;
+
+            // Ưu tiên extraData
+            try
+            {
+                if (!string.IsNullOrEmpty(model.extraData))
+                {
+                    var json = Encoding.UTF8.GetString(Convert.FromBase64String(model.extraData));
+                    // Dùng Newtonsoft để đơn giản
+                    var jObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                    if (jObj != null && jObj.TryGetValue("internalOrderId", out var raw) && int.TryParse(raw, out var v) && v > 0)
+                    {
+                        maHd = v;
+                        return true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Parse extraData failed");
+            }
+
+            // Fallback: phần đầu trước dấu '-' trong orderId (vì bạn generate {maHd}-{ticks})
+            var head = (model.orderId ?? string.Empty).Split('-', 2).FirstOrDefault();
+            if (int.TryParse(head, out var v2) && v2 > 0)
+            {
+                maHd = v2;
+                return true;
+            }
+
+            return false;
         }
 
         // Verify chữ ký IPN (thứ tự field theo tài liệu IPN v2)

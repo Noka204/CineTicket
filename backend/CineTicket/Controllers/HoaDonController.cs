@@ -2,6 +2,7 @@
 using AutoMapper;
 using CineTicket.Data;
 using CineTicket.DTOs.HoaDon;
+using CineTicket.DTOs.Mail;
 using CineTicket.Models;
 using CineTicket.Repositories.Implementations;
 using CineTicket.Services.Interfaces;
@@ -45,36 +46,55 @@ public class HoaDonController : ControllerBase
 
         return Ok(new { status = true, data = _mapper.Map<HoaDonDTO>(item) });
     }
-
-    [HttpPost("send-mail")]
-    public async Task<IActionResult> SendMail(int maHd)
+    [AllowAnonymous]
+    [HttpPost("send-invoice")]
+    public async Task<IActionResult> SendInvoice([FromBody] SendInvoiceRequest body)
     {
-        await _mailService.SendInvoiceEmailAsync(maHd);
-        return Ok(new { status = true, message = "Đã gửi mail nếu không có lỗi." });
+        if (body == null || body.MaHd <= 0)
+            return BadRequest(new { status = false, message = "maHD không hợp lệ" });
+
+        try
+        {
+            await _mailService.SendInvoiceEmailAsync(body.MaHd);
+            return Ok(new { status = true, message = "Đã gửi (nếu hóa đơn tồn tại)" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { status = false, message = "Gửi email thất bại" });
+        }
     }
 
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateHoaDonDTO request)
     {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (string.IsNullOrEmpty(userId))
-            return Unauthorized(new { status = false, message = "Không xác định được người dùng" });
-
-        var created = await _hoaDonService.CreateWithDetailsAsync(request, userId);
-
-        return CreatedAtAction(nameof(GetById), new { id = created.MaHd }, new
+        try
         {
-            status = true,
-            data = new
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { status = false, message = "Không xác định được người dùng" });
+
+            var created = await _hoaDonService.CreateWithDetailsAsync(request, userId);
+
+            return CreatedAtAction(nameof(GetById), new { id = created.MaHd }, new
             {
-                created.MaHd,
-                created.NgayLap,
-                created.TongTien,
-                created.TrangThai,
-                created.HinhThucThanhToan,
-                created.ApplicationUserId
-            }
-        });
+                status = true,
+                data = new
+                {
+                    created.MaHd,
+                    created.NgayLap,
+                    created.TongTien,
+                    amount = created.TongTien, // <— thêm
+                    created.TrangThai,
+                    created.HinhThucThanhToan,
+                    created.ApplicationUserId,
+                    created.ChiTietHoaDons
+                }
+            });
+        }
+        catch(Exception ex)
+        {
+            return BadRequest(new { status = false, message = ex.Message });
+        }
     }
 
     [Authorize(Roles = "Employee,Admin")]

@@ -6,7 +6,8 @@
         public int MaGhe { get; init; }
         public string TrangThai { get; init; } = default!; 
         public string? ThoiGianHetHan { get; init; }    
-        public string Reason { get; init; } = "";    
+        public string Reason { get; init; } = "";
+        public string? HolderUserId { get; internal set; }
     }
 
 }

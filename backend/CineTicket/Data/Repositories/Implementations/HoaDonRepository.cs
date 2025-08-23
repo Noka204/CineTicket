@@ -16,14 +16,12 @@ namespace CineTicket.Repositories.Implementations
         {
             _context = context;
             _logger = logger;
-            _mailService = mailService;
         }
 
         public async Task<HoaDon> CreateAsync(HoaDon hoaDon)
         {
             await _context.HoaDons.AddAsync(hoaDon);
             await _context.SaveChangesAsync();
-            await _mailService.SendInvoiceEmailAsync(hoaDon.MaHd);
             return hoaDon;
         }
         public Task<HoaDon?> FindByClientTokenAsync(string userId, string clientToken) =>
@@ -56,8 +54,6 @@ namespace CineTicket.Repositories.Implementations
             existing.HinhThucThanhToan = hoaDon.HinhThucThanhToan;
             existing.TongTien = hoaDon.TongTien;
             existing.NgayLap = hoaDon.NgayLap; // nếu thực sự muốn cho phép sửa
-
-            // Nếu có cập nhật chi tiết, xử lý thêm ở đây (thêm/xóa/sửa ChiTietHoaDons)
 
             await _context.SaveChangesAsync();
             return true;

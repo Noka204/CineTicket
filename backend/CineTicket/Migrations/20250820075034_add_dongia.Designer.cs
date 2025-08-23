@@ -4,6 +4,7 @@ using CineTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CineTicket.Migrations
 {
     [DbContext(typeof(CineTicketDbContext))]
-    partial class CineTicketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250820075034_add_dongia")]
+    partial class add_dongia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,44 +24,6 @@ namespace CineTicket.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ChiTietHoaDon", b =>
-                {
-                    b.Property<int>("MaCthd")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("MaCTHD");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaCthd"));
-
-                    b.Property<decimal>("DonGia")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("MaBn")
-                        .HasColumnType("int")
-                        .HasColumnName("MaBN");
-
-                    b.Property<int>("MaHd")
-                        .HasColumnType("int")
-                        .HasColumnName("MaHD");
-
-                    b.Property<int?>("MaVe")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoLuong")
-                        .HasColumnType("int");
-
-                    b.HasKey("MaCthd")
-                        .HasName("PK__ChiTietH__1E4FA7715A64D0C4");
-
-                    b.HasIndex("MaBn");
-
-                    b.HasIndex("MaHd");
-
-                    b.HasIndex("MaVe");
-
-                    b.ToTable("ChiTietHoaDon", (string)null);
-                });
 
             modelBuilder.Entity("CineTicket.Models.ApplicationUser", b =>
                 {
@@ -162,6 +127,44 @@ namespace CineTicket.Migrations
                         .HasName("PK__BapNuoc__272475AD32F5D274");
 
                     b.ToTable("BapNuoc", (string)null);
+                });
+
+            modelBuilder.Entity("CineTicket.Models.ChiTietHoaDon", b =>
+                {
+                    b.Property<int>("MaCthd")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("MaCTHD");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaCthd"));
+
+                    b.Property<decimal?>("DonGia")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("MaBn")
+                        .HasColumnType("int")
+                        .HasColumnName("MaBN");
+
+                    b.Property<int?>("MaHd")
+                        .HasColumnType("int")
+                        .HasColumnName("MaHD");
+
+                    b.Property<int?>("MaVe")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SoLuong")
+                        .HasColumnType("int");
+
+                    b.HasKey("MaCthd")
+                        .HasName("PK__ChiTietH__1E4FA7715A64D0C4");
+
+                    b.HasIndex("MaBn");
+
+                    b.HasIndex("MaHd");
+
+                    b.HasIndex("MaVe");
+
+                    b.ToTable("ChiTietHoaDon", (string)null);
                 });
 
             modelBuilder.Entity("CineTicket.Models.ChiTietLoaiPhim", b =>
@@ -562,7 +565,7 @@ namespace CineTicket.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ChiTietHoaDon", b =>
+            modelBuilder.Entity("CineTicket.Models.ChiTietHoaDon", b =>
                 {
                     b.HasOne("CineTicket.Models.BapNuoc", "MaBnNavigation")
                         .WithMany("ChiTietHoaDons")
@@ -572,8 +575,6 @@ namespace CineTicket.Migrations
                     b.HasOne("CineTicket.Models.HoaDon", "MaHdNavigation")
                         .WithMany("ChiTietHoaDons")
                         .HasForeignKey("MaHd")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK__ChiTietHoa__MaHD__4CA06362");
 
                     b.HasOne("CineTicket.Models.Ve", "MaVeNavigation")

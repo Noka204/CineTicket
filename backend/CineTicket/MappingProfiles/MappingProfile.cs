@@ -57,17 +57,14 @@ namespace CineTicket.MappingProfiles
             CreateMap<CreateVeRequest, Ve>();
             CreateMap<UpdateVeRequest, Ve>();
 
-            //Ghe
-            CreateMap<Ghe, GheDTO>()
-                .ForMember(dest => dest.TenPhong, opt => opt.MapFrom(src => src.MaPhongNavigation.TenPhong));
-                 CreateMap<Ghe, GheDTO>()
-                .ForMember(dest => dest.IsDisabled, opt => opt.MapFrom(src =>
-                   src.Ves.Any(v => v.TrangThai == "Đã đặt" || v.TrangThai == "Đã mua")
-            ));
-
 
             CreateMap<CreateGheRequest, Ghe>();
             CreateMap<UpdateGheRequest, Ghe>();
+            CreateMap<Ghe, GheDTO>()
+                .ForMember(dest => dest.TenPhong,
+                    opt => opt.MapFrom(src => src.MaPhongNavigation != null ? src.MaPhongNavigation.TenPhong : string.Empty))
+                .ForMember(dest => dest.IsDisabled,
+                    opt => opt.MapFrom(src => src.Ves.Any(v => v.TrangThai == "TamGiu" || v.TrangThai == "DaDat")));
 
             // LoaiPhim
             CreateMap<LoaiPhim, LoaiPhimDTO>();
@@ -86,19 +83,12 @@ namespace CineTicket.MappingProfiles
             CreateMap<BapNuocCreateDTO, BapNuoc>();
             CreateMap<BapNuocUpdateDTO, BapNuoc>();
 
-            // HoaDon
-            // HoaDon
+            CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
+            CreateMap<ChiTietHoaDon, ChiTietHoaDonDTO>();
             CreateMap<CreateHoaDonDTO, HoaDon>()
-                .ForMember(d => d.ChiTietHoaDons,
-                           o => o.MapFrom(s => s.ChiTietHoaDons));
-
-
-            CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
-
-            CreateMap<CreateChiTietHoaDonDTO, ChiTietHoaDon>();
+                .ForMember(d => d.ChiTietHoaDons, o => o.MapFrom(s => s.ChiTietHoaDons));
             CreateMap<UpdateHoaDonDTO, HoaDon>();
             CreateMap<HoaDon, HoaDonDTO>();
-            CreateMap<ChiTietHoaDon, ChiTietHoaDonDTO>();
         }
     }
 }

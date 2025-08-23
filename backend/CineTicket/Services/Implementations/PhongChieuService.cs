@@ -12,10 +12,11 @@ namespace CineTicket.Services.Implementations
         private readonly IGheRepository _gheRepo;
         private readonly IMapper _mapper;
 
-        public PhongChieuService(IPhongChieuRepository phongRepo, IMapper mapper)
+        public PhongChieuService(IPhongChieuRepository phongRepo, IMapper mapper,IGheRepository gheRepo)
         {
             _phongRepo = phongRepo;
             _mapper = mapper;
+            _gheRepo = gheRepo;
         }
 
         public Task<IEnumerable<PhongChieu>> GetAllAsync()
@@ -34,13 +35,10 @@ namespace CineTicket.Services.Implementations
         }
         public async Task<PhongChieuDTO> CreateWithSeatsAsync(CreatePhongChieuRequest request)
         {
-            // Map request thành entity
             var phong = _mapper.Map<PhongChieu>(request);
 
-            // Tạo phòng
             var created = await _phongRepo.CreateAsync(phong);
 
-            // Tạo ghế tự động
             int tongSoGhe = (int)phong.SoGhe;
             int gheMoiHang = 10;
             int soHang = (int)Math.Ceiling(tongSoGhe / (double)gheMoiHang);
@@ -63,7 +61,6 @@ namespace CineTicket.Services.Implementations
                 }
             }
 
-            // Lưu từng ghế
             foreach (var ghe in danhSachGhe)
             {
                 await _gheRepo.CreateAsync(ghe);

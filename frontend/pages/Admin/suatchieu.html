@@ -6,24 +6,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f8f9fa;
-      padding: 30px;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; padding: 30px; }
     h2 { color: #343a40; }
     table { background-color: white; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
     th { background-color: #212529; color: white; }
     .form-inline input, .form-inline select { min-width: 150px; }
     .form-inline label { margin-right: 5px; }
-    .pagination-btns {
-      margin-top: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
-    }
-    .form-section {
-      background-color: white; padding: 15px; border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); margin-bottom: 20px;
-    }
+    .pagination-btns { margin-top: 15px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .form-section { background-color: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,.05); margin-bottom: 20px; }
     #pageInputBottom { width: 80px; }
+    .mono { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; }
   </style>
 </head>
 <body>
@@ -32,21 +24,30 @@
     <a href="../Admin/index.html" class="btn btn-outline-secondary">🔙 Quay lại</a>
   </div>
 
+  <!-- Form thêm suất chiếu -->
   <div class="form-section">
-    <div class="form-inline mb-2">
+    <div class="form-inline mb-2 d-flex gap-2 flex-wrap align-items-center">
+      <label for="maPhim">Phim:</label>
       <select id="maPhim" class="form-select">
         <option value="">-- Chọn phim --</option>
       </select>
+
+      <label for="maPhong">Phòng:</label>
       <select id="maPhong" class="form-select">
         <option value="">-- Chọn phòng --</option>
       </select>
+
+      <label for="batDau">Bắt đầu:</label>
       <input type="datetime-local" id="batDau" class="form-control" />
+
+      <label for="ketThuc">Kết thúc:</label>
       <input type="datetime-local" id="ketThuc" class="form-control" />
-      <input type="date" id="ngayChieu" class="form-control" />
+
       <button onclick="addSuatChieu()" class="btn btn-primary">➕ Thêm</button>
     </div>
 
-    <div class="form-inline">
+
+    <div class="form-inline d-flex gap-2 flex-wrap align-items-center">
       <label>Hiển thị:</label>
       <select id="pageSize" class="form-select w-auto" onchange="goToPage(1)">
         <option value="5">5 dòng</option>
@@ -68,6 +69,7 @@
         <th>Bắt đầu</th>
         <th>Kết thúc</th>
         <th>Ngày chiếu</th>
+        <th>Giờ chiếu</th>
         <th>Thao tác</th>
       </tr>
     </thead>
@@ -92,6 +94,34 @@
     let phimOptions = [];
     let phongOptions = [];
 
+    // ===== Utils format
+    function toDate(d){ try { return new Date(d); } catch { return null; } }
+    function pad2(n){ return String(n).padStart(2,'0'); }
+    function fmtDateTimeLabel(d){
+      // dd/MM/yyyy HH:mm
+      if (!d) return '';
+      const dt = toDate(d); if (!dt || isNaN(dt)) return '';
+      return `${pad2(dt.getDate())}/${pad2(dt.getMonth()+1)}/${dt.getFullYear()} ${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
+    }
+    function fmtDateOnlyLabel(d){
+      // dd/MM/yyyy (ngày chiếu từ "bắt đầu")
+      if (!d) return '';
+      const dt = toDate(d); if (!dt || isNaN(dt)) return '';
+      return `${pad2(dt.getDate())}/${pad2(dt.getMonth()+1)}/${dt.getFullYear()}`;
+    }
+    function fmtTimeOnlyLabel(d){
+      // HH:mm (giờ chiếu từ "bắt đầu")
+      if (!d) return '';
+      const dt = toDate(d); if (!dt || isNaN(dt)) return '';
+      return `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
+    }
+    function toISODateOnly(d){
+      // yyyy-MM-dd – dùng gửi về API cho "ngày chiếu"
+      const dt = toDate(d); if (!dt || isNaN(dt)) return '';
+      return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
+    }
+
+    // ===== Load options
     async function loadPhimOptions() {
       const res = await fetch("https://localhost:7058/api/Phim/get-all");
       const json = await res.json();
@@ -122,6 +152,7 @@
       });
     }
 
+    // ===== Fetch all
     async function fetchData() {
       const res = await fetch(`${API_BASE}/get-all`);
       const json = await res.json();
@@ -129,6 +160,7 @@
       goToPage(currentPage);
     }
 
+    // ===== Render table page
     function goToPage(page) {
       const search = document.getElementById("searchText").value.toLowerCase();
       const pageSize = parseInt(document.getElementById("pageSize").value);
@@ -136,7 +168,7 @@
       tbody.innerHTML = "";
 
       const filtered = currentData.filter(p => (p.maPhim + "").toLowerCase().includes(search));
-      totalPages = Math.ceil(filtered.length / pageSize);
+      totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
       if (page < 1) page = 1;
       if (page > totalPages) page = totalPages;
       currentPage = page;
@@ -154,8 +186,13 @@
 
         const phongSelect = phongOptions.map(phong => `
           <option value="${phong.maPhong}" ${p.maPhong === phong.maPhong ? "selected" : ""}>
-            ${phong.tenPhong}
+            ${phong.tenPhong || `Phòng ${phong.maPhong}`}
           </option>`).join("");
+
+        const batDauLabel = fmtDateTimeLabel(p.thoiGianBatDau);
+        const ketThucLabel = fmtDateTimeLabel(p.thoiGianKetThuc);
+        const ngayChieuLabel = fmtDateOnlyLabel(p.thoiGianBatDau); // từ BẮT ĐẦU
+        const gioChieuLabel  = fmtTimeOnlyLabel(p.thoiGianBatDau); // từ BẮT ĐẦU
 
         tbody.innerHTML += `
           <tr>
@@ -166,12 +203,20 @@
             <td>
               <select id="phong-${p.maSuat}" class="form-select">${phongSelect}</select>
             </td>
-            <td><input id="batDau-${p.maSuat}" type="datetime-local" value="${p.thoiGianBatDau?.slice(0, 16)}" class="form-control" /></td>
-            <td><input id="ketThuc-${p.maSuat}" type="datetime-local" value="${p.thoiGianKetThuc?.slice(0, 16)}" class="form-control" /></td>
-            <td><input id="ngay-${p.maSuat}" type="date" value="${p.ngayChieu}" class="form-control" /></td>
+
+            <!-- Các cột dưới là LABEL, không nhập tay -->
+            <td class="mono">${batDauLabel}</td>
+            <td class="mono">${ketThucLabel}</td>
+            <td class="mono">${ngayChieuLabel}</td>
+            <td class="mono">${gioChieuLabel}</td>
+
             <td>
-              <button class="btn btn-success btn-sm" onclick="updateSuat(${p.maSuat})">💾</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteSuat(${p.maSuat})">❌</button>
+              <button class="btn btn-success btn-sm" onclick="updateSuat(${p.maSuat})" title="Lưu thay đổi">
+                💾
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="deleteSuat(${p.maSuat})" title="Xóa">
+                ❌
+              </button>
             </td>
           </tr>`;
       });
@@ -184,13 +229,27 @@
       if (!isNaN(page)) goToPage(page);
     }
 
+    // ===== Add (Ngày/Giờ chiếu tự lấy từ "bắt đầu")
     async function addSuatChieu() {
+      const maPhim  = parseInt(document.getElementById("maPhim").value);
+      const maPhong = parseInt(document.getElementById("maPhong").value);
+      const batDau  = document.getElementById("batDau").value;
+      const ketThuc = document.getElementById("ketThuc").value;
+
+      if (!maPhim || !maPhong || !batDau || !ketThuc) {
+        alert("Vui lòng chọn phim, phòng và nhập đủ thời gian bắt đầu/kết thúc.");
+        return;
+      }
+
+      const ngayChieuISO = toISODateOnly(batDau); // yyyy-MM-dd từ thời gian BẮT ĐẦU
+
       const body = {
-        maPhim: parseInt(document.getElementById("maPhim").value),
-        maPhong: parseInt(document.getElementById("maPhong").value),
-        thoiGianBatDau: document.getElementById("batDau").value,
-        thoiGianKetThuc: document.getElementById("ketThuc").value,
-        ngayChieu: document.getElementById("ngayChieu").value
+        maPhim: maPhim,
+        maPhong: maPhong,
+        thoiGianBatDau: batDau,
+        thoiGianKetThuc: ketThuc,
+        ngayChieu: ngayChieuISO,
+        gioChieu: fmtTimeOnlyLabel(batDau)
       };
 
       const res = await fetch(`${API_BASE}/create`, {
@@ -204,20 +263,39 @@
 
       if (res.ok) {
         alert("✅ Đã thêm suất chiếu");
+        // clear inputs
+        document.getElementById("batDau").value = "";
+        document.getElementById("ketThuc").value = "";
         fetchData();
       } else {
-        alert("❌ Thêm thất bại");
+        const msg = await safeMsg(res);
+        alert("❌ Thêm thất bại" + (msg ? `: ${msg}` : ""));
       }
     }
 
+    // ===== Update (Ngày chiếu luôn tính từ 'thoiGianBatDau' hiện có của suất)
     async function updateSuat(id) {
+      const found = currentData.find(x => x.maSuat === id);
+      if (!found) { alert("Không tìm thấy suất."); return; }
+
+      const maPhim  = parseInt(document.getElementById(`phim-${id}`).value);
+      const maPhong = parseInt(document.getElementById(`phong-${id}`).value);
+
+      // Giữ nguyên mốc thời gian hiện có (vì hiện là hiển thị label), 
+      // và NGÀY CHIẾU sẽ tính từ 'thoiGianBatDau' này:
+      const batDau  = found.thoiGianBatDau;
+      const ketThuc = found.thoiGianKetThuc;
+      const ngayChieuISO = toISODateOnly(batDau);
+
       const body = {
         maSuat: id,
-        maPhim: parseInt(document.getElementById(`phim-${id}`).value),
-        maPhong: parseInt(document.getElementById(`phong-${id}`).value),
-        thoiGianBatDau: document.getElementById(`batDau-${id}`).value,
-        thoiGianKetThuc: document.getElementById(`ketThuc-${id}`).value,
-        ngayChieu: document.getElementById(`ngay-${id}`).value
+        maPhim,
+        maPhong,
+        thoiGianBatDau: batDau,
+        thoiGianKetThuc: ketThuc,
+        ngayChieu: ngayChieuISO
+        // Nếu API có field 'gioChieu', có thể gửi thêm:
+        // gioChieu: fmtTimeOnlyLabel(batDau)
       };
 
       const res = await fetch(`${API_BASE}/update/${id}`, {
@@ -233,7 +311,8 @@
         alert("✅ Đã cập nhật");
         fetchData();
       } else {
-        alert("❌ Cập nhật thất bại");
+        const msg = await safeMsg(res);
+        alert("❌ Cập nhật thất bại" + (msg ? `: ${msg}` : ""));
       }
     }
 
@@ -249,11 +328,16 @@
         alert("✅ Đã xoá");
         fetchData();
       } else {
-        alert("❌ Xóa thất bại");
+        const msg = await safeMsg(res);
+        alert("❌ Xóa thất bại" + (msg ? `: ${msg}` : ""));
       }
     }
 
-    // Gọi khi trang khởi động
+    async function safeMsg(res){
+      try { const t = await res.text(); return t && JSON.parse(t)?.message; } catch { return ""; }
+    }
+
+    // Khởi động
     loadPhimOptions();
     loadPhongOptions();
     fetchData();

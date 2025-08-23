@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Doanh thu 30 ngày</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --card:#f9fafb;
+      --muted:#6b7280;
+      --text:#111827;
+      --border:#e5e7eb;
+      --good:#16a34a;
+      --bad:#dc2626;
+      --accent:#2563eb;
+      --radius:14px;
+      --radius-sm:12px;
+    }
+    *{box-sizing:border-box}
+    html{font-size:16px}
+    body{
+      margin:0;
+      font-family:system-ui, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:clamp(20px,3vw,36px); /* tăng lề 4 bên */
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .wrap{width:100%;max-width:none;margin:0}
+
+    h1{margin:0 0 8px;font-size:clamp(1.1rem,2.5vw,1.6rem);line-height:1.25}
+    h3{margin:0 0 8px;font-size:clamp(1rem,2.2vw,1.2rem)}
+    .muted{color:var(--muted)}
+
+    .back-btn{
+      display:inline-block;
+      margin-bottom:16px;
+      padding:8px 14px;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:8px;
+      color:var(--text);
+      text-decoration:none;
+      font-size:.95rem;
+    }
+    .back-btn:hover{background:#f3f4f6}
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:clamp(12px,1.6vw,16px);
+      min-width:0;
+    }
+
+    .grid{display:grid;gap:14px;grid-template-columns:1fr}
+    @media(min-width:880px){.grid{grid-template-columns:2fr 1fr}}
+
+    .toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .row{display:flex;gap:8px;flex-wrap:wrap}
+    .toolbar .row:last-child{margin-left:auto}
+
+    button,select{
+      background:var(--card);
+      color:var(--text);
+      border:1px solid var(--border);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer;
+      font-size:.95rem;
+    }
+    .header-bar{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        background:#f9fafb;     /* nền sáng */
+        border:1px solid var(--border);
+        border-radius:8px;
+        padding:12px 16px;
+        margin-bottom:20px;
+        }
+
+        .header-bar h2{
+        margin:0;
+        font-size:1.2rem;
+        color:var(--text);
+        display:flex;
+        align-items:center;
+        gap:8px;
+        }
+
+        .back-btn{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        padding:6px 12px;
+        font-size:.9rem;
+        background:#fff;
+        border:1px solid var(--border);
+        border-radius:6px;
+        color:var(--accent);
+        text-decoration:none;
+        transition:background .2s;
+        }
+        .back-btn:hover{
+        background:#f3f4f6;
+        }
+
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    @media(min-width:620px){.stats{grid-template-columns:repeat(4,minmax(0,1fr))}}
+    .stat{background:#fff;border:1px solid var(--border);border-radius:var(--radius-sm);padding:clamp(12px,1.4vw,14px)}
+    .stat .label{font-size:12px;color:var(--muted)}
+    .stat .value{font-weight:600;font-size:clamp(1rem,2.4vw,1.25rem);margin-top:4px}
+
+    .row-stack{display:flex;gap:14px;flex-wrap:wrap;margin-top:14px}
+    .row-stack>.card{flex:1 1 320px}
+
+    .chart-wrap{position:relative;width:100%;height:clamp(260px,36vh,460px)}
+    .chart-wrap.sm{height:clamp(180px,28vh,340px)}
+    .chart-wrap canvas{width:100% !important;height:100% !important;display:block}
+
+    .table-wrap{width:100%;overflow:auto;-webkit-overflow-scrolling:touch;background:#fff;border:1px solid var(--border);border-radius:var(--radius)}
+    .table{width:100%;border-collapse:collapse;min-width:520px}
+    .table th,.table td{border-bottom:1px dashed var(--border);padding:10px 8px;text-align:right;white-space:nowrap;color:var(--text);background:#fff}
+    .table th:first-child,.table td:first-child{text-align:left;white-space:normal}
+    .pill{padding:2px 8px;border-radius:999px;font-size:12px;border:1px solid var(--border);background:#f3f4f6;color:#374151}
+    .ok{color:var(--good)}.ko{color:var(--bad)}
+
+    .loading{opacity:.75;animation:pulse 1.2s ease-in-out infinite}
+    @keyframes pulse{0%{opacity:.5}50%{opacity:.9}100%{opacity:.5}}
+    .footer{opacity:.9;font-size:12px;margin-top:10px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header-bar">
+    <h2><i class="fas fa-ticket-alt"></i> Danh sách Vé</h2>
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Quay lại
+    </a>
+    </div>
+    <div class="grid">
+      <div class="card">
+        <div class="toolbar" style="justify-content:space-between;margin-bottom:10px">
+          <div class="row" style="align-items:center">
+            <button id="btnReload">↻ Tải lại</button>
+            <select id="chartType">
+              <option value="line" selected>Đường</option>
+              <option value="bar">Cột</option>
+              <option value="area">Vùng</option>
+            </select>
+          </div>
+          <div class="row muted" id="rangeInfo">—</div>
+        </div>
+        <!-- Chart doanh thu -->
+        <div class="chart-wrap"><canvas id="revChart"></canvas></div>
+      </div>
+
+      <div class="card">
+        <div class="stats">
+          <div class="stat"><div class="label">Tổng 30 ngày</div><div class="value" id="total30" class="loading">—</div></div>
+          <div class="stat"><div class="label">Trung bình/ngày</div><div class="value" id="avgDay">—</div></div>
+          <div class="stat"><div class="label">Ngày cao nhất</div><div class="value" id="bestDay">—</div></div>
+          <div class="stat"><div class="label">Số ngày 0đ</div><div class="value" id="zeroDays">—</div></div>
+        </div>
+        <div style="margin-top:12px" class="muted" id="subline">—</div>
+      </div>
+    </div>
+
+    <div class="row-stack">
+      <div class="card" style="min-width:340px">
+        <h3 style="margin-top:0">Chi tiết theo ngày</h3>
+        <div class="table-wrap">
+          <table class="table" id="revTable">
+            <thead>
+              <tr><th>Ngày</th><th>Doanh thu</th><th>Ghi chú</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="footer">* Ghi chú: "Cao nhất" và "0đ" giúp rà soát hoạt động bán vé, khuyến mãi, hoặc sự cố cổng thanh toán.</div>
+      </div>
+
+      <div class="card" style="flex:1">
+        <h3 style="margin-top:0">Bản đồ nhiệt tuần</h3>
+        <div class="chart-wrap sm"><canvas id="heatChart"></canvas></div>
+        <p class="muted" style="margin-top:10px">Nhìn xu hướng thứ/ngày trong tuần để tối ưu suất chiếu & marketing.</p>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const API = 'https://localhost:7058/api/dashboard/doanh-thu-30-ngay';
+
+  const fmtVND = n => new Intl.NumberFormat('vi-VN',{style:'currency',currency:'VND',maximumFractionDigits:0}).format(n||0);
+  const fmtDate = s => new Date(s+'T00:00:00');
+  const dayName = d => ['CN','T2','T3','T4','T5','T6','T7'][d.getDay()];
+  const el = sel => document.querySelector(sel);
+
+  let chart, heat;
+
+  // ===== Token helpers =====
+  const TOKEN_KEYS = ['access_token','token','jwt','authToken'];
+  function getStoredToken(){
+    for(const k of TOKEN_KEYS){
+      const v = localStorage.getItem(k) || sessionStorage.getItem(k);
+      if (v) return v.replace(/^Bearer\s+/i,'');
+    }
+    return null;
+  }
+  function isJwtExpired(t){
+    try{
+      const payload = JSON.parse(atob(t.split('.')[1] || ''));
+      if (!payload?.exp) return false;
+      return Date.now() >= payload.exp * 1000;
+    }catch{ return false; }
+  }
+  function buildAuthInit(){
+    const token = getStoredToken();
+    const base = {
+      method: 'GET',
+      headers: { 'Accept': 'application/json' },
+      mode: 'cors',
+      cache: 'no-store'
+    };
+    if (token && !isJwtExpired(token)) {
+      base.headers['Authorization'] = `Bearer ${token}`;
+    } else {
+      base.credentials = 'include';
+    }
+    return base;
+  }
+
+  async function fetchData(){
+    const init = buildAuthInit();
+    const res = await fetch(API, init);
+    if(!res.ok){
+      if (res.status === 401 || res.status === 403){
+        const usingCookie = !!init.credentials;
+        let msg = (res.status===401?'401 Unauthorized':'403 Forbidden') + ' — ';
+        msg += usingCookie
+          ? 'Cookie cần CORS cho phép credentials và SameSite/Domain đúng.'
+          : 'Kiểm tra JWT (hết hạn/chưa đúng key lưu).';
+        throw new Error(msg);
+      }
+      throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+    }
+    const json = await res.json();
+    return json.data || [];
+  }
+
+  function computeStats(rows){
+    const days = rows.map(r=>({date:fmtDate(r.ngay), value:Number(r.tongTien||0)}));
+    const total = days.reduce((s,x)=>s+x.value,0);
+    const avg = days.length? total/days.length : 0;
+    let best = {date:null,value:-Infinity, idx:-1};
+    days.forEach((d,i)=>{ if(d.value>best.value){best={date:d.date,value:d.value, idx:i}} });
+    const zeros = days.filter(d=>d.value===0).length;
+    const byWeekday = Array.from({length:7},()=>0);
+    days.forEach(d=>{ byWeekday[d.date.getDay()] += d.value; });
+    return {days,total,avg,best,zeros,byWeekday};
+  }
+
+  function setStats(st){
+    el('#total30').textContent = fmtVND(st.total);
+    el('#avgDay').textContent = fmtVND(st.avg);
+    el('#bestDay').innerHTML = `${st.best.date? st.best.date.toLocaleDateString('vi-VN'): '—'}<br><span class="muted">${fmtVND(st.best.value)}</span>`;
+    el('#zeroDays').textContent = st.zeros;
+    const d0 = st.days[0]?.date, d1 = st.days.at(-1)?.date;
+    el('#rangeInfo').textContent = d0 && d1 ? `${d0.toLocaleDateString('vi-VN')} → ${d1.toLocaleDateString('vi-VN')}` : '—';
+    const last7 = st.days.slice(-7).reduce((s,x)=>s+x.value,0)/Math.max(1,Math.min(7,st.days.length));
+    el('#subline').innerHTML = `BQ 7 ngày gần nhất: <b>${fmtVND(last7)}</b>. ${last7>=st.avg? 'Xu hướng tích cực ↑' : 'Xu hướng giảm ↓'}`;
+  }
+
+  function makeGradient(ctx, area){
+    const grad = ctx.createLinearGradient(0, area.bottom, 0, area.top);
+    grad.addColorStop(0, 'rgba(96,165,250,0)');
+    grad.addColorStop(.6, 'rgba(96,165,250,.25)');
+    grad.addColorStop(1, 'rgba(96,165,250,.5)');
+    return grad;
+  }
+
+  function renderChart(st, type='line'){
+    const ctx = document.getElementById('revChart').getContext('2d');
+    const labels = st.days.map(d=> d.date.toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit'}));
+    const data = st.days.map(d=> d.value);
+    if(chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: (type==='area'?'line':type),
+      data: { 
+        labels, 
+        datasets: [{
+          label: 'Doanh thu', data,
+          fill: type==='area',
+          borderColor: 'rgba(96,165,250,1)',
+          backgroundColor: type==='area' ? (c)=> makeGradient(c.chart.ctx, c.chart.chartArea) : 'rgba(96,165,250,0.8)',
+          borderWidth: (type==='line' || type==='area') ? 3 : 2,
+          tension: (type==='line' || type==='area') ? .4 : 0,
+          pointRadius: (type==='line' || type==='area') ? 4 : 2,
+          pointHoverRadius: 6,
+          pointBackgroundColor: 'rgba(96,165,250,1)',
+          pointBorderColor: '#ffffff',
+          pointBorderWidth: 2,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { left: 8, right: 8, top: 8, bottom: 6 } },
+        plugins: {
+          legend: {display:false},
+          tooltip: {
+            backgroundColor: 'rgba(15,23,42,0.9)',
+            titleColor: '#e5e7eb',
+            bodyColor: '#e5e7eb',
+            borderColor: 'rgba(96,165,250,0.3)',
+            borderWidth: 1,
+            cornerRadius: 8,
+            callbacks: {
+              title: items => `Ngày ${items[0].label}`,
+              label: ctx => ` ${fmtVND(ctx.parsed.y)}`
+            }
+          }
+        },
+        scales: {
+          x: { grid: {color:'rgba(148,163,184,.08)'}, ticks:{color:'#94a3b8', maxRotation:40, autoSkip:true} },
+          y: { grid: {color:'rgba(148,163,184,.08)'}, ticks:{ color:'#94a3b8',
+              callback:v=> (v/1_000_000>=1? (v/1_000_000).toFixed(1)+'tr' : (v/1_000))+'k' } }
+        },
+        onClick(_, elements){
+          if(!elements?.length) return;
+          const idx = elements[0].index;
+          const tr = document.querySelectorAll('#revTable tbody tr')[idx];
+          if(tr){ tr.style.outline='2px solid rgba(96,165,250,.7)'; tr.scrollIntoView({behavior:'smooth', block:'center'});
+            setTimeout(()=>tr.style.outline='none',1500); }
+        },
+      }
+    });
+  }
+
+  function renderTable(st){
+    const tbody = el('#revTable tbody');
+    tbody.innerHTML = '';
+    const bestIdx = st.best.idx;
+    st.days.forEach((d,i)=>{
+      const tr = document.createElement('tr');
+      const flag = d.value===0 ? '<span class="pill ko">0đ</span>' : (i===bestIdx? '<span class="pill ok">Cao nhất</span>': '');
+      tr.innerHTML = `<td>${dayName(d.date)}, ${d.date.toLocaleDateString('vi-VN')}</td><td>${fmtVND(d.value)}</td><td>${flag}</td>`;
+      tbody.appendChild(tr);
+    });
+  }
+
+  function renderHeat(st){
+    const ctx = document.getElementById('heatChart').getContext('2d');
+    if(heat) heat.destroy();
+    const max = Math.max(...st.byWeekday);
+    const vals = st.byWeekday.map(v=> max? v/max: 0);
+    heat = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['CN','T2','T3','T4','T5','T6','T7'],
+        datasets: [{ label: 'Tổng theo thứ', data: st.byWeekday,
+          backgroundColor: vals.map(a=> `rgba(96,165,250,${0.25 + 0.55*a})`), borderWidth: 0 }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        layout: { padding: { left: 8, right: 8, top: 6, bottom: 6 } },
+        plugins: {
+          legend: {display:false},
+          tooltip:{ 
+            backgroundColor: 'rgba(15,23,42,0.9)', titleColor:'#e5e7eb', bodyColor:'#e5e7eb',
+            callbacks:{label: c=> ` ${fmtVND(c.parsed.y)}`} 
+          } 
+        },
+        scales: { 
+          x:{ grid:{display:false}, ticks:{color:'#94a3b8'} },
+          y:{ grid:{color:'rgba(148,163,184,.08)'}, ticks:{color:'#94a3b8',
+              callback:v=> (v/1_000_000>=1? (v/1_000_000).toFixed(1)+'tr' : (v/1_000))+'k' } } 
+        }
+      }
+    });
+  }
+
+  async function load(){
+    el('#btnReload').classList.add('loading');
+    try{
+      const raw = await fetchData();
+      const rows = raw.map(x=> ({ngay: x.ngay, tongTien: Number(x.tongTien)})).sort((a,b)=> a.ngay.localeCompare(b.ngay));
+      const st = computeStats(rows);
+      setStats(st);
+      renderChart(st, el('#chartType').value);
+      renderTable(st);
+      renderHeat(st);
+    }catch(err){
+      console.error('Load error:', err);
+      alert('Không tải được dữ liệu doanh thu.\n' + err.message);
+      el('#total30').textContent = '—';
+      el('#avgDay').textContent = '—';  
+      el('#bestDay').innerHTML = '—';
+      el('#zeroDays').textContent = '—';
+      el('#rangeInfo').textContent = '—';
+      el('#subline').textContent = 'Không có dữ liệu';
+    }finally{
+      el('#btnReload').classList.remove('loading');
+    }
+  }
+
+  el('#btnReload').addEventListener('click', load);
+  el('#chartType').addEventListener('change', ()=>{
+    const tbody = el('#revTable tbody');
+    if(!tbody.children.length) return;
+    const rows = Array.from(tbody.children).map(tr=>{
+      const [dateTd, moneyTd] = tr.children;
+      const [d,m,y] = dateTd.textContent.split(', ')[1].split('/');
+      return {ngay: `${y}-${m.padStart(2,'0')}-${d.padStart(2,'0')}`, tongTien: Number(moneyTd.textContent.replace(/[^\d]/g,''))};
+    });
+    const st = computeStats(rows);
+    renderChart(st, el('#chartType').value);
+  });
+
+  load();
+})();
+</script>
+
+</body>
+</html>

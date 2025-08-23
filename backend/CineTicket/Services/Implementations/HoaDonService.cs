@@ -3,9 +3,9 @@ using CineTicket.Data;
 using CineTicket.DTOs.HoaDon;
 using CineTicket.Models;
 using CineTicket.Repositories.Interfaces;
-using CineTicket.Services;
 using CineTicket.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CineTicket.Services.Implementations
 {
@@ -14,115 +14,24 @@ namespace CineTicket.Services.Implementations
         private readonly IHoaDonRepository _repo;
         private readonly IMapper _mapper;
         private readonly CineTicketDbContext _db;
+        private readonly IVeService _veService;
+        private readonly ILogger<HoaDonService> _logger;
 
-        public HoaDonService(IHoaDonRepository repo, IMapper mapper,CineTicketDbContext db)
+        public HoaDonService(
+            IHoaDonRepository repo,
+            IMapper mapper,
+            CineTicketDbContext db,
+            IVeService veService,
+            ILogger<HoaDonService> logger)
         {
             _repo = repo;
             _mapper = mapper;
             _db = db;
+            _veService = veService;
+            _logger = logger;
         }
 
         public Task<HoaDon?> GetByIdAsync(int maHd) => _repo.GetByIdAsync(maHd);
-
-        public async Task<HoaDon> CreateWithDetailsAsync(CreateHoaDonDTO dto, string userId)
-        {
-            // 0) Idempotency: trả lại hóa đơn cũ nếu đã tạo với cùng ClientToken
-            if (!string.IsNullOrWhiteSpace(dto.ClientToken))
-            {
-                var existed = await _repo.FindByClientTokenAsync(userId, dto.ClientToken);
-                if (existed != null) return existed;
-            }
-
-            using var tx = await _db.Database.BeginTransactionAsync();
-
-            // 1) Gom list chi tiết vé từ SeatIds hoặc từ dto.ChiTietHoaDons
-            var wantVeIds = new List<int>();   // danh sách MaVe (nếu FE gửi MaVe)
-            var wantGheIds = dto.SeatIds?.Distinct().ToList() ?? new();
-
-            if (dto.ChiTietHoaDons != null && dto.ChiTietHoaDons.Count > 0)
-            {
-                // Ưu tiên MaVe nếu có
-                wantVeIds.AddRange(dto.ChiTietHoaDons.Where(x => x.MaVe.HasValue)
-                                                     .Select(x => x.MaVe!.Value));
-                // Có thể FE gửi MaGhe qua SeatIds: giữ nguyên wantGheIds
-            }
-
-            // 2) Lấy vé đang TamGiu theo MaVe hoặc theo (MaSuat + MaGhe)
-            var ves = new List<Ve>();
-
-            if (wantVeIds.Count > 0)
-            {
-                ves = await _db.Ves.Where(v => wantVeIds.Contains(v.MaVe)).ToListAsync();
-            }
-            else if (wantGheIds.Count > 0)
-            {
-                ves = await _db.Ves.Where(v => v.MaSuat == dto.MaSuat && wantGheIds.Contains(v.MaGhe ?? 0))
-                                   .ToListAsync();
-            }
-
-            // Filter: chỉ nhận vé đang TamGiu còn hạn (tuỳ chính sách thêm check v.NguoiGiuId == userId)
-            var now = DateTime.Now;
-            ves = ves.Where(v => v.TrangThai == "TamGiu" && v.ThoiGianTamGiu.HasValue && v.ThoiGianTamGiu > now).ToList();
-
-            if (ves.Count == 0 && dto.BapNuocId == null)
-                throw new InvalidOperationException("Không có vé đang giữ hợp lệ để tạo hóa đơn.");
-
-            // 3) Nếu có bắp nước
-            BapNuoc? bn = null;
-            var soLuongBn = 0;
-            if (dto.BapNuocId.HasValue)
-            {
-                bn = await _db.BapNuocs.FirstOrDefaultAsync(x => x.MaBn == dto.BapNuocId.Value)
-                     ?? throw new InvalidOperationException("Bắp nước không hợp lệ.");
-                soLuongBn = Math.Max(dto.SoLuongBapNuoc, 1);
-            }
-
-            // 4) Tính tiền (đơn giá lấy từ DB)
-            decimal tienGhe = ves.Sum(v => v.GiaVe ?? 0);
-            decimal tienBap = (bn?.Gia ?? 0) * soLuongBn;
-            decimal tongTien = tienGhe + tienBap;
-
-            // 5) Tạo Hóa đơn + Chi tiết
-            var hd = new HoaDon
-            {
-                ApplicationUserId = userId,
-                NgayLap = DateTime.Now,
-                TrangThai = "Chưa thanh toán",
-                HinhThucThanhToan = string.IsNullOrWhiteSpace(dto.HinhThucThanhToan) ? "Momo" : dto.HinhThucThanhToan,
-                TongTien = tongTien,
-                ClientToken = dto.ClientToken,
-                MaSuat = dto.MaSuat,                    // gợi ý thêm cột này trên HoaDon
-                ChiTietHoaDons = new List<ChiTietHoaDon>()
-            };
-
-            foreach (var v in ves)
-            {
-                hd.ChiTietHoaDons.Add(new ChiTietHoaDon
-                {
-                    MaVe = v.MaVe,
-                    SoLuong = 1,
-                    DonGia = v.GiaVe,                   // chốt đơn giá tại thời điểm tạo HĐ
-                    MaVeNavigation = null               // đảm bảo không attach dư
-                });
-            }
-
-            if (bn != null)
-            {
-                hd.ChiTietHoaDons.Add(new ChiTietHoaDon
-                {
-                    MaBn = bn.MaBn,
-                    SoLuong = soLuongBn,
-                    DonGia = bn.Gia
-                });
-            }
-
-            // 6) Lưu (một lần)
-            _db.HoaDons.Add(hd);
-            await _db.SaveChangesAsync();
-            await tx.CommitAsync();
-
-            return hd;
-        }
 
         public async Task<IEnumerable<HoaDon>> GetAllAsync() => await _repo.GetAllAsync();
 
@@ -133,6 +42,149 @@ namespace CineTicket.Services.Implementations
         }
 
         public async Task<bool> DeleteAsync(int id) => await _repo.DeleteAsync(id);
-    }
 
+        /// <summary>
+        /// Helper: SaveChangesAsync có log
+        /// </summary>
+        private async Task<int> SaveChangesWithLogAsync(string contextInfo)
+        {
+            try
+            {
+                var rows = await _db.SaveChangesAsync();
+                _logger.LogInformation("✅ SaveChanges OK ({Context}) — Rows affected: {Rows}", contextInfo, rows);
+                return rows;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "❌ SaveChanges FAIL ({Context})", contextInfo);
+                if (ex.InnerException != null)
+                {
+                    _logger.LogError("👉 InnerException: {Inner}", ex.InnerException.Message);
+                }
+                throw;
+            }
+        }
+
+        public async Task<HoaDon> CreateWithDetailsAsync(CreateHoaDonDTO dto, string userId)
+        {
+            var now = DateTime.Now;
+            var graceCutoff = now.AddSeconds(-5);
+
+            // ---- Gom tất cả MaVe từ SeatIds hoặc ChiTietHoaDons ----
+            // 1) Ưu tiên MaVe từ chi tiết (nếu có)
+            var veIdsFromDto = (dto.ChiTietHoaDons?
+                                    .Where(x => x.MaVe.HasValue)
+                                    .Select(x => x.MaVe!.Value)
+                                    .Distinct()
+                                    .ToList()) ?? new();
+
+            // 2) Fallback theo MaGhe từ SeatIds (FE đang gửi MaGhe ở đây)
+            var seatIdsFromDto = (dto.SeatIds?.Distinct().ToList()) ?? new();
+
+            IQueryable<Ve> q = _db.Ves.AsQueryable().Where(v => v.MaSuat == dto.MaSuat);
+
+            if (veIdsFromDto.Any())
+            {
+                q = q.Where(v => veIdsFromDto.Contains(v.MaVe));
+            }
+            else if (seatIdsFromDto.Any())
+            {
+                q = q.Where(v => v.MaGhe.HasValue && seatIdsFromDto.Contains(v.MaGhe.Value));
+            }
+
+            var vesRaw = await q.ToListAsync();
+
+
+            var holdWindow = TimeSpan.FromMinutes(5);
+            var validVes = vesRaw.Where(v =>
+                v.TrangThai == "TamGiu" &&
+                v.ThoiGianTamGiu.HasValue &&
+                (v.ThoiGianTamGiu.Value + holdWindow) > now &&
+                v.NguoiGiuId == userId
+            ).ToList();
+
+
+            // ---- Gom bắp nước ----
+            var bapNuocList = dto.ChiTietHoaDons?
+                .Where(x => x.MaBn.HasValue && x.SoLuong > 0)
+                .ToList() ?? new();
+
+            if (validVes.Count == 0 && bapNuocList.Count == 0)
+                throw new InvalidOperationException("Không có vé/bắp hợp lệ để tạo hóa đơn.");
+
+            // ---- Tạo hóa đơn ----
+            var hd = new HoaDon
+            {
+                ApplicationUserId = userId,
+                NgayLap = now,
+                TrangThai = "Chưa thanh toán",
+                HinhThucThanhToan = string.IsNullOrWhiteSpace(dto.HinhThucThanhToan) ? "Momo" : dto.HinhThucThanhToan,
+                TongTien = 0m,
+                MaSuat = dto.MaSuat
+            };
+
+            _db.HoaDons.Add(hd);
+            await SaveChangesWithLogAsync("Insert HoaDon");
+
+            // ---- Chi tiết hóa đơn + tính tiền ----
+            var details = new List<ChiTietHoaDon>();
+            decimal tongTien = 0m;
+
+            // Vé
+            foreach (var v in validVes)
+            {
+                var giaVeInfo = await _veService.TinhGiaVeAsync(v.MaGhe ?? 0, v.MaSuat ?? 0);
+                if (giaVeInfo == null)
+                    throw new InvalidOperationException($"Không tính được giá vé cho ghế {v.MaGhe}.");
+
+                var donGia = giaVeInfo.GiaCuoiCung;
+
+                details.Add(new ChiTietHoaDon
+                {
+                    MaHd = hd.MaHd,
+                    MaVe = v.MaVe,
+                    SoLuong = 1,
+                    DonGia = donGia
+                });
+
+                tongTien += donGia;
+
+                // cập nhật trạng thái vé
+                v.TrangThai = "DaDat";
+            }
+
+            // Bắp nước
+            foreach (var li in bapNuocList)
+            {
+                var bn = await _db.BapNuocs
+                    .FirstOrDefaultAsync(x => x.MaBn == li.MaBn!.Value)
+                    ?? throw new InvalidOperationException("Bắp nước không hợp lệ.");
+
+                var donGia = bn.Gia ?? 0m;
+
+                details.Add(new ChiTietHoaDon
+                {
+                    MaHd = hd.MaHd,
+                    MaBn = bn.MaBn,
+                    SoLuong = li.SoLuong,
+                    DonGia = donGia
+                });
+
+                tongTien += donGia * li.SoLuong;
+            }
+
+            if (details.Any())
+            {
+                _db.ChiTietHoaDons.AddRange(details);
+                await SaveChangesWithLogAsync("Insert ChiTietHoaDon");
+            }
+
+            // ---- Update tổng tiền ----
+            hd.TongTien = tongTien;
+            _db.HoaDons.Update(hd);
+            await SaveChangesWithLogAsync("Update TongTien HoaDon");
+
+            return hd;
+        }
+    }
 }

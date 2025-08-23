@@ -58,6 +58,7 @@ namespace CineTicket.Repositories.Implementations
             return ghe;
         }
 
+
         public async Task<bool> UpdateAsync(Ghe ghe)
         {
             _context.Ghes.Update(ghe);

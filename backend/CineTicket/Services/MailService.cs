@@ -1,10 +1,11 @@
-﻿using MailKit.Net.Smtp;
+﻿using System.Diagnostics;
+using CineTicket.Data;
+using CineTicket.Models;
+using MailKit;                            // <-- thêm
+using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
 using MimeKit;
-using CineTicket.Data;
-using CineTicket.Models;
-using System.Net;
 
 public class MailService
 {
@@ -21,29 +22,25 @@ public class MailService
 
     public async Task SendInvoiceEmailAsync(int maHd)
     {
+        var sw = Stopwatch.StartNew();
+        _logger.LogInformation("📧 Begin SendInvoiceEmailAsync | maHd={MaHd}", maHd);
+
         try
         {
-            Console.WriteLine($"🔍 [MailService] Bắt đầu gửi hóa đơn #{maHd}");
-
             var hoaDon = await _context.HoaDons
-                .Include(h => h.ChiTietHoaDons)
-                    .ThenInclude(ct => ct.MaVeNavigation)
-                        .ThenInclude(ve => ve.MaGheNavigation)
-                .Include(h => h.ChiTietHoaDons)
-                    .ThenInclude(ct => ct.MaVeNavigation)
-                        .ThenInclude(ve => ve.MaSuatNavigation)
-                            .ThenInclude(s => s.MaPhimNavigation)
-                .Include(h => h.ChiTietHoaDons)
-                    .ThenInclude(ct => ct.MaBnNavigation)
+                .Include(h => h.ChiTietHoaDons).ThenInclude(ct => ct.MaVeNavigation).ThenInclude(ve => ve.MaGheNavigation)
+                .Include(h => h.ChiTietHoaDons).ThenInclude(ct => ct.MaVeNavigation).ThenInclude(ve => ve.MaSuatNavigation).ThenInclude(s => s.MaPhimNavigation)
+                .Include(h => h.ChiTietHoaDons).ThenInclude(ct => ct.MaBnNavigation)
                 .Include(h => h.ApplicationUser)
                 .FirstOrDefaultAsync(h => h.MaHd == maHd);
 
             if (hoaDon == null || hoaDon.ApplicationUser == null)
             {
-                _logger.LogWarning($"❌ Không tìm thấy hóa đơn hoặc người dùng cho mã #{maHd}");
+                _logger.LogWarning("📧 Skip: NotFound invoice or user | maHd={MaHd}", maHd);
                 return;
             }
 
+            // ---- Load config
             string fromEmail = _config["EmailSettings:SenderEmail"];
             string senderName = _config["EmailSettings:SenderName"];
             string smtpHost = _config["EmailSettings:Smtp:Host"];
@@ -53,142 +50,169 @@ public class MailService
             bool useSsl = bool.Parse(_config["EmailSettings:Smtp:UseSsl"] ?? "true");
             int smtpPort = int.TryParse(smtpPortRaw, out var parsedPort) ? parsedPort : 587;
 
-            string email = hoaDon.ApplicationUser.Email ?? "";
-            string userName = hoaDon.ApplicationUser.FullName ?? hoaDon.ApplicationUser.UserName ?? "khách hàng";
+            bool enableProtoLog = bool.TryParse(_config["EmailSettings:Smtp:EnableProtocolLog"], out var v) && v;
+            var protoPath = _config["EmailSettings:Smtp:ProtocolLogPath"] ?? "Logs/smtp-protocol.log";
 
-            Console.WriteLine($"📤 Gửi tới: {email}, Người nhận: {userName}");
+            var toEmail = hoaDon.ApplicationUser.Email ?? "";
+            var toName = hoaDon.ApplicationUser.FullName ?? hoaDon.ApplicationUser.UserName ?? "khách hàng";
 
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(senderName, fromEmail));
-            message.To.Add(MailboxAddress.Parse(email)); // ✅ Không gửi tới chính mình nữa
-            message.Subject = $"[CineTicket] Cảm ơn quý khách đặt đặt vé tại CineTicket";
-            message.Body = new BodyBuilder
+            _logger.LogInformation("📧 SMTP cfg host={Host} port={Port} ssl={Ssl} user={User} protoLog={Proto} path={Path}",
+                smtpHost, smtpPort, useSsl, smtpUser, enableProtoLog, protoPath);
+
+            // ---- Compose
+            var msg = new MimeMessage();
+            msg.From.Add(new MailboxAddress(senderName, fromEmail));
+            msg.To.Add(MailboxAddress.Parse(toEmail));
+            msg.Subject = "[CineTicket] Cảm ơn quý khách đã đặt vé";
+            msg.Body = new BodyBuilder { HtmlBody = BuildHtmlBody(hoaDon, toName) }.ToMessageBody();
+
+            // ---- SMTP (có thể log protocol ra file)
+            using var client = enableProtoLog
+                ? new SmtpClient(new ProtocolLogger(protoPath))
+                : new SmtpClient();
+
+            // (Optional) log lỗi chứng chỉ nếu có
+            client.ServerCertificateValidationCallback = (s, c, h, e) =>
             {
-                HtmlBody = BuildHtmlBody(hoaDon, userName)
-            }.ToMessageBody();
+                _logger.LogDebug("📧 Cert: {Errors}", e);
+                return true; // hoặc để mặc định nếu bạn không muốn bỏ qua
+            };
 
-            using var smtp = new SmtpClient();
-            await smtp.ConnectAsync(smtpHost, smtpPort, useSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto);
-            await smtp.AuthenticateAsync(smtpUser, smtpPass);
-            await smtp.SendAsync(message);
+            _logger.LogInformation("📧 Connecting…");
+            await client.ConnectAsync(smtpHost, smtpPort, useSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto);
+            _logger.LogInformation("📧 Connected. Capabilities AUTH={Auth}", string.Join(",", client.AuthenticationMechanisms));
 
-            await smtp.DisconnectAsync(true);
+            _logger.LogInformation("📧 Authenticating as {User}…", smtpUser);
+            await client.AuthenticateAsync(smtpUser, smtpPass);
+            _logger.LogInformation("📧 Auth OK.");
+
+            _logger.LogInformation("📧 Sending to {To} | subject='{Subject}'", toEmail, msg.Subject);
+            await client.SendAsync(msg);
+            _logger.LogInformation("📧 Send OK (maHd={MaHd}).", maHd);
+
+            await client.DisconnectAsync(true);
+            _logger.LogInformation("📧 Disconnected. Elapsed={Elapsed}ms", sw.ElapsedMilliseconds);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "❌ Lỗi khi gửi email hóa đơn");
-            Console.WriteLine("❌ Exception: " + ex.Message);
-            if (ex.InnerException != null)
-            {
-                Console.WriteLine("⛔ Inner: " + ex.InnerException.Message);
-            }
+            _logger.LogError(ex, "❌ SendInvoiceEmailAsync FAILED | maHd={MaHd}", maHd);
             throw;
         }
+        finally
+        {
+            sw.Stop();
+        }
     }
+
     public async Task SendOtpEmailAsync(string toEmail, string otp)
     {
-        var emailSettings = _config.GetSection("EmailSettings");
-        var smtpSettings = emailSettings.GetSection("Smtp");
+        var sw = Stopwatch.StartNew();
+        _logger.LogInformation("📧 Begin SendOtpEmail | to={To}", toEmail);
 
-        var fromEmail = emailSettings["SenderEmail"];
-        var fromName = emailSettings["SenderName"];
-        var smtpHost = smtpSettings["Host"];
-        var smtpPort = int.Parse(smtpSettings["SmtpPort"]);
-        var useSsl = bool.Parse(smtpSettings["UseSsl"]);
-        var smtpUser = smtpSettings["User"];
-        var smtpPass = smtpSettings["Pass"];
-
-        var message = new MimeMessage();
-        message.From.Add(new MailboxAddress(fromName, fromEmail));
-        message.To.Add(MailboxAddress.Parse(toEmail));
-        message.Subject = "Mã OTP đặt lại mật khẩu";
-
-        message.Body = new TextPart("html")
+        try
         {
-            Text = $"<p>Xin chào,</p><p>Mã OTP của bạn là: <b>{otp}</b></p><p>OTP có hiệu lực trong 5 phút.</p>"
-        };
+            var emailSettings = _config.GetSection("EmailSettings");
+            var smtpSettings = emailSettings.GetSection("Smtp");
 
-        using var client = new SmtpClient();
-        await client.ConnectAsync(smtpHost, smtpPort, useSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto);
-        await client.AuthenticateAsync(smtpUser, smtpPass);
-        await client.SendAsync(message);
-        await client.DisconnectAsync(true);
+            var fromEmail = emailSettings["SenderEmail"];
+            var fromName = emailSettings["SenderName"];
+            var smtpHost = smtpSettings["Host"];
+            var smtpPort = int.Parse(smtpSettings["SmtpPort"]);
+            var useSsl = bool.Parse(smtpSettings["UseSsl"]);
+            var smtpUser = smtpSettings["User"];
+            var smtpPass = smtpSettings["Pass"];
+
+            var message = new MimeMessage();
+            message.From.Add(new MailboxAddress(fromName, fromEmail));
+            message.To.Add(MailboxAddress.Parse(toEmail));
+            message.Subject = "Mã OTP đặt lại mật khẩu";
+            message.Body = new TextPart("html")
+            {
+                Text = $"<p>Xin chào,</p><p>Mã OTP của bạn là: <b>{otp}</b></p><p>OTP có hiệu lực trong 5 phút.</p>"
+            };
+
+            using var client = new SmtpClient();
+            _logger.LogInformation("📧 Connect {Host}:{Port} ssl={Ssl}", smtpHost, smtpPort, useSsl);
+            await client.ConnectAsync(smtpHost, smtpPort, useSsl ? SecureSocketOptions.StartTls : SecureSocketOptions.Auto);
+
+            _logger.LogInformation("📧 Auth as {User}", smtpUser);
+            await client.AuthenticateAsync(smtpUser, smtpPass);
+
+            await client.SendAsync(message);
+            _logger.LogInformation("📧 OTP sent OK to {To}", toEmail);
+
+            await client.DisconnectAsync(true);
+            _logger.LogInformation("📧 Done. Elapsed={Ms}ms", sw.ElapsedMilliseconds);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "❌ SendOtpEmail FAILED | to={To}", toEmail);
+            throw;
+        }
+        finally
+        {
+            sw.Stop();
+        }
     }
-
-    private string BuildHtmlBody(HoaDon hoaDon, string userName)
+    private static string BuildHtmlBody(HoaDon hd, string toName)
     {
-        string tongTienStr = hoaDon.TongTien?.ToString("N0") ?? "0";
-        string ngayLapStr = hoaDon.NgayLap?.ToString("dd/MM/yyyy HH:mm") ?? "N/A";
+        string cur(decimal? v) => (v ?? 0m).ToString("N0");
+        string dt(DateTime? d) => d?.ToString("dd/MM/yyyy HH:mm") ?? "N/A";
+        string tm(string? t) => TimeSpan.TryParse(t, out var ts) ? ts.ToString(@"hh\:mm") : "N/A";
 
-        // Tạo HTML cho chi tiết vé
-        string veHtml = "";
-        var veList = hoaDon.ChiTietHoaDons
-            .Where(ct => ct.MaVeNavigation != null)
-            .Select(ct => ct.MaVeNavigation)
-            .ToList();
-
-        if (veList.Any())
+        // Vé
+        var veParts = new List<string>();
+        foreach (var ct in hd.ChiTietHoaDons.Where(x => x.MaVeNavigation != null))
         {
-            veHtml += "<h4>🎟️ Danh sách vé:</h4><ul style='padding-left:20px'>";
-            foreach (var ve in veList)
-            {
-                string soGhe = ve.MaGheNavigation?.SoGhe ?? "N/A";
-                string tenPhim = ve.MaSuatNavigation?.MaPhimNavigation?.TenPhim ?? "N/A";
-                string ngayChieu = ve.MaSuatNavigation?.NgayChieu?.ToString("dd/MM/yyyy") ?? "N/A";
-                string gioChieu = TimeSpan.TryParse(ve.MaSuatNavigation?.GioChieu, out var parsedGio)
-                    ? parsedGio.ToString(@"hh\:mm")
-                    : "N/A";
+            var ve = ct.MaVeNavigation!;
+            var soGhe = ve.MaGheNavigation?.SoGhe ?? "N/A";
+            var suat = ve.MaSuatNavigation;
+            var phim = suat?.MaPhimNavigation?.TenPhim ?? "N/A";
+            var ngay = suat?.NgayChieu?.ToString("dd/MM/yyyy") ?? "N/A";
+            var gio = tm(suat?.GioChieu);
+            var donGia = cur(ct.DonGia);
 
-                string giaVe = ve.GiaVe?.ToString("N0") ?? "0";
-
-                veHtml += $"<li><strong>Phim:</strong> {tenPhim} | <strong>Ghế:</strong> {soGhe} | <strong>Suất:</strong> {ngayChieu} {gioChieu} | <strong>Giá vé:</strong> {giaVe}đ</li>";
-            }
-            veHtml += "</ul>";
+            veParts.Add($"<li>Phim: <b>{phim}</b> — Ghế: <b>{soGhe}</b> — Suất: {ngay} {gio} — Giá: <b>{donGia}đ</b></li>");
         }
-        string bapNuocHtml = "";
-        var bapNuocList = hoaDon.ChiTietHoaDons
-            .Where(ct => ct.MaBnNavigation != null)
-            .Select(ct => ct.MaBnNavigation)
-            .GroupBy(bn => new { bn.TenBn, bn.Gia })
-            .Select(g => new
-            {
-                Ten = g.Key.TenBn,
-                Gia = g.Key.Gia,
-                SoLuong = g.Count()
-            })
-            .ToList();
-        if (bapNuocList.Any())
+        var veHtml = veParts.Count > 0
+            ? $"<h4>🎟️ Vé</h4><ul style='padding-left:20px'>{string.Join("", veParts)}</ul>"
+            : "";
+
+        // Bắp nước
+        var bnParts = new List<string>();
+        foreach (var g in hd.ChiTietHoaDons
+                            .Where(x => x.MaBnNavigation != null)
+                            .GroupBy(x => new { x.MaBnNavigation!.TenBn, x.MaBnNavigation!.Gia }))
         {
-            bapNuocHtml += "<h4>🥤 Danh sách bắp nước:</h4><ul style='padding-left:20px'>";
-            foreach (var item in bapNuocList)
-            {
-                string gia = item.Gia?.ToString("N0") ?? "0";
-                bapNuocHtml += $"<li><strong>{item.Ten}</strong> - Số lượng: {item.SoLuong} | Giá mỗi cái: {gia}đ</li>";
-            }
-            bapNuocHtml += "</ul>";
+            var ten = g.Key.TenBn ?? "Bắp/Nước";
+            var gia = cur(g.Key.Gia);
+            var sl = g.Sum(x => x.SoLuong);
+            bnParts.Add($"<li>{ten} — SL: <b>{sl}</b> — Giá: <b>{gia}đ</b></li>");
         }
+        var bnHtml = bnParts.Count > 0
+            ? $"<h4>🥤 Bắp nước</h4><ul style='padding-left:20px'>{string.Join("", bnParts)}</ul>"
+            : "";
+
         return $@"
-        <html>
-        <body style='font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px;'>
-            <div style='max-width: 600px; margin: auto; background: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);'>
-                <h2 style='color: #333;'>🎟 Cảm ơn bạn {userName} đã đặt vé tại CineTicket!</h2>
-                <p style='font-size: 16px; color: #555;'>Thông tin đơn hàng:</p>
-                <ul style='list-style: none; padding: 0; font-size: 15px; color: #444;'>
-                    <li><strong>🧾 Mã hoá đơn:</strong> {hoaDon.MaHd}</li>
-                    <li><strong>📅 Ngày lập:</strong> {ngayLapStr}</li>
-                    <li><strong>💳 Hình thức thanh toán:</strong> {hoaDon.HinhThucThanhToan}</li>
-                    <li><strong>💰 Tổng tiền:</strong> {tongTienStr}đ</li>
-                </ul>
-                <hr style='margin: 20px 0;'>
-
-                {veHtml}
-                {bapNuocHtml}
-
-                <hr style='margin: 20px 0;'>
-                <p style='font-size: 14px; color: #777;'>CineTicket chúc bạn có trải nghiệm tuyệt vời tại rạp! 🎬</p>
-                <p style='font-size: 13px; color: #aaa;'>Email này được gửi tự động, vui lòng không trả lời lại.</p>
-            </div>
-        </body>
-        </html>";
+<html>
+  <body style='font-family:Arial, sans-serif; background:#f7f7f7; padding:24px'>
+    <div style='max-width:640px; margin:auto; background:#fff; border-radius:10px; padding:24px; box-shadow:0 4px 18px rgba(0,0,0,.06)'>
+      <h2 style='margin-top:0'>Cảm ơn {toName} đã đặt vé tại CineTicket!</h2>
+      <p>Thông tin hóa đơn của bạn:</p>
+      <ul style='list-style:none; padding-left:0'>
+        <li>🧾 Mã hóa đơn: <b>#{hd.MaHd}</b></li>
+        <li>📅 Ngày lập: {dt(hd.NgayLap)}</li>
+        <li>💳 Thanh toán: {hd.HinhThucThanhToan ?? "N/A"}</li>
+        <li>💰 Tổng tiền: <b>{cur(hd.TongTien)}đ</b></li>
+      </ul>
+      <hr/>
+      {veHtml}
+      {bnHtml}
+      <hr/>
+      <p style='color:#666; font-size:13px'>Chúc bạn xem phim vui vẻ! 🎬</p>
+      <p style='color:#aaa; font-size:12px'>Email này được gửi tự động. Vui lòng không trả lời.</p>
+    </div>
+  </body>
+</html>";
     }
 }

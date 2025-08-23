@@ -19,13 +19,12 @@
     <a href="../Admin/index.html" class="btn btn-outline-secondary">🔙 Quay lại</a>
   </div>
 
-  <div class="form-inline">
+  <!-- KHỐI THÊM MỚI: ẨN hoàn toàn để chỉ hiển thị -->
+  <div class="form-inline d-none">
     <input type="text" id="soGhe" placeholder="Số ghế" class="form-control" />
     <input type="text" id="loaiGhe" placeholder="Loại ghế" class="form-control" />
-    <select id="maPhong" class="form-select">
-      <option value="">-- Chọn phòng --</option>
-    </select>
-    <button onclick="addGhe()" class="btn btn-primary">➕ Thêm</button>
+    <select id="maPhong" class="form-select"><option value="">-- Chọn phòng --</option></select>
+    <button class="btn btn-primary">➕ Thêm</button>
   </div>
 
   <div class="form-inline">
@@ -52,7 +51,6 @@
         <th>Số ghế</th>
         <th>Loại ghế</th>
         <th>Phòng</th>
-        <th>Thao tác</th>
       </tr>
     </thead>
     <tbody id="gheTableBody"></tbody>
@@ -71,7 +69,6 @@
   <script>
     const API_BASE = "https://localhost:7058/api/Ghe";
     const PHONG_API = "https://localhost:7058/api/phongchieu/get-all";
-    const token = localStorage.getItem("token");
 
     let currentPage = 1;
     let totalPages = 1;
@@ -83,16 +80,7 @@
       const json = await res.json();
       phongOptions = json.data || [];
 
-      const select = document.getElementById("maPhong");
-      select.innerHTML = '<option value="">-- Chọn phòng --</option>';
-      phongOptions.forEach(phong => {
-        const opt = document.createElement("option");
-        opt.value = phong.maPhong;
-        opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
-        select.appendChild(opt);
-      });
-
-      // Cũng thêm vào dropdown tìm kiếm phòng
+      // Dropdown tìm kiếm phòng
       const searchSelect = document.getElementById("searchPhong");
       searchSelect.innerHTML = '<option value="">-- Tất cả phòng --</option>';
       phongOptions.forEach(phong => {
@@ -101,6 +89,13 @@
         opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
         searchSelect.appendChild(opt);
       });
+
+      // Nếu URL có ?maPhong=... thì auto chọn bộ lọc
+      const qs = new URLSearchParams(location.search);
+      const maPhongQS = qs.get("maPhong");
+      if (maPhongQS) {
+        searchSelect.value = maPhongQS;
+      }
     }
 
     async function fetchData() {
@@ -118,11 +113,11 @@
       tbody.innerHTML = "";
 
       const filtered = currentData.filter(p =>
-        p.soGhe?.toLowerCase().includes(search) &&
+        (p.soGhe || '').toLowerCase().includes(search) &&
         (selectedMaPhong === "" || p.maPhong == parseInt(selectedMaPhong))
       );
 
-      totalPages = Math.ceil(filtered.length / pageSize);
+      totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
       if (page < 1) page = 1;
       if (page > totalPages) page = totalPages;
       currentPage = page;
@@ -131,25 +126,13 @@
       const paginated = filtered.slice(start, start + pageSize);
 
       paginated.forEach(p => {
-        const phongSelect = (phongOptions || []).map(phong =>
-          `<option value="${phong.maPhong}" ${p.maPhong === phong.maPhong ? 'selected' : ''}>
-            ${phong.tenPhong || `Phòng ${phong.maPhong}`}
-          </option>`).join("");
-
+        const phongText = (phongOptions.find(x => x.maPhong === p.maPhong)?.tenPhong) || `Phòng ${p.maPhong}`;
         tbody.innerHTML += `
           <tr>
             <td>${p.maGhe}</td>
-            <td><input id="so-${p.maGhe}" value="${p.soGhe || ''}" /></td>
-            <td><input id="loai-${p.maGhe}" value="${p.loaiGhe || ''}" /></td>
-            <td>
-              <select id="phong-${p.maGhe}" class="form-select">
-                ${phongSelect}
-              </select>
-            </td>
-            <td>
-              <button class="btn btn-success btn-sm" onclick="updateGhe(${p.maGhe})">💾 Sửa</button>
-              <button class="btn btn-danger btn-sm" onclick="deleteGhe(${p.maGhe})">❌ Xóa</button>
-            </td>
+            <td>${p.soGhe || ''}</td>
+            <td>${p.loaiGhe || ''}</td>
+            <td>${phongText}</td>
           </tr>`;
       });
 
@@ -164,74 +147,11 @@
       if (!isNaN(page)) goToPage(page);
     }
 
-    async function addGhe() {
-      const body = {
-        soGhe: document.getElementById("soGhe").value,
-        loaiGhe: document.getElementById("loaiGhe").value,
-        maPhong: parseInt(document.getElementById("maPhong").value)
-      };
-
-      const res = await fetch(`${API_BASE}/create`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (res.ok) {
-        alert("✅ Đã thêm ghế");
-        fetchData();
-      } else {
-        alert("❌ Thêm thất bại");
-      }
-    }
-
-    async function updateGhe(id) {
-      const body = {
-        maGhe: id,
-        soGhe: document.getElementById(`so-${id}`).value,
-        loaiGhe: document.getElementById(`loai-${id}`).value,
-        maPhong: parseInt(document.getElementById(`phong-${id}`).value)
-      };
-
-      const res = await fetch(`${API_BASE}/update/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify(body)
-      });
-
-      if (res.ok) {
-        alert("✅ Đã cập nhật");
-        fetchData();
-      } else {
-        alert("❌ Cập nhật thất bại");
-      }
-    }
-
-    async function deleteGhe(id) {
-      if (!confirm("Bạn có chắc muốn xóa?")) return;
-
-      const res = await fetch(`${API_BASE}/delete/${id}`, {
-        method: "DELETE",
-        headers: { "Authorization": `Bearer ${token}` }
-      });
-
-      if (res.ok) {
-        alert("✅ Đã xoá");
-        fetchData();
-      } else {
-        alert("❌ Xóa thất bại");
-      }
-    }
-
     // Khởi động
-    loadPhongOptions();
-    fetchData();
+    (async function init(){
+      await loadPhongOptions();
+      await fetchData();
+    })();
   </script>
 </body>
 </html>

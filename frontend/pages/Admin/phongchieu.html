@@ -81,6 +81,7 @@
         <th>ID</th>
         <th>Tên Phòng</th>
         <th>Số ghế</th>
+        <th>Chi tiết</th>
         <th>Thao tác</th>
       </tr>
     </thead>
@@ -105,10 +106,21 @@
     let currentData = [];
 
     async function fetchData() {
-      const res = await fetch(`${API_BASE}/get-all`);
-      const json = await res.json();
-      currentData = json.data || [];
-      goToPage(currentPage);
+      try {
+        const res = await fetch(`${API_BASE}/get-all`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+        if (!res.ok) {
+          alert("❌ Không tải được dữ liệu phòng chiếu");
+          return;
+        }
+        const json = await res.json();
+        currentData = json.data || [];
+        goToPage(currentPage);
+      } catch (err) {
+        console.error(err);
+        alert("❌ Lỗi khi gọi API");
+      }
     }
 
     function goToPage(page) {
@@ -121,7 +133,7 @@
         p.tenPhong?.toLowerCase().includes(search)
       );
 
-      totalPages = Math.ceil(filtered.length / pageSize);
+      totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
       if (page < 1) page = 1;
       if (page > totalPages) page = totalPages;
       currentPage = page;
@@ -133,11 +145,18 @@
         tbody.innerHTML += `
           <tr>
             <td>${p.maPhong}</td>
-            <td><input id="ten-${p.maPhong}" value="${p.tenPhong || ''}" /></td>
-            <td><input id="ghe-${p.maPhong}" type="number" value="${p.soGhe || 0}" /></td>
+            <td><input id="ten-${p.maPhong}" class="form-control" value="${p.tenPhong || ''}" /></td>
+            <td><input id="ghe-${p.maPhong}" class="form-control" type="number" value="${p.soGhe || 0}" /></td>
+            <td>
+              <a class="btn btn-info btn-sm" 
+                href="../Admin/ghe.html?maPhong=${p.maPhong}" 
+                title="Xem chi tiết ghế">
+                🪑 Chi tiết ghế
+              </a>
+            </td>
             <td>
               <button class="btn btn-success btn-sm" onclick="updatePhong(${p.maPhong})">💾 Sửa</button>
-              <button class="btn btn-danger btn-sm" onclick="deletePhong(${p.maPhong})">❌ Xóa</button>
+              <button class="btn btn-danger btn-sm"  onclick="deletePhong(${p.maPhong})">❌ Xóa</button>
             </td>
           </tr>`;
       });
@@ -160,10 +179,19 @@
     }
 
     async function addPhongChieu() {
-      const body = {
-        tenPhong: document.getElementById("tenPhong").value,
-        soGhe: parseInt(document.getElementById("soGhe").value)
-      };
+      const tenPhong = document.getElementById("tenPhong").value.trim();
+      const soGheVal = parseInt(document.getElementById("soGhe").value);
+
+      if (!tenPhong) {
+        alert("❌ Vui lòng nhập tên phòng");
+        return;
+      }
+      if (isNaN(soGheVal) || soGheVal <= 0) {
+        alert("❌ Vui lòng nhập số ghế hợp lệ (>0)");
+        return;
+      }
+
+      const body = { tenPhong, soGhe: soGheVal };
 
       const res = await fetch(`${API_BASE}/create`, {
         method: "POST",
@@ -183,11 +211,19 @@
     }
 
     async function updatePhong(id) {
-      const body = {
-        maPhong: id,
-        tenPhong: document.getElementById(`ten-${id}`).value,
-        soGhe: parseInt(document.getElementById(`ghe-${id}`).value)
-      };
+      const tenPhong = document.getElementById(`ten-${id}`).value.trim();
+      const soGheVal = parseInt(document.getElementById(`ghe-${id}`).value);
+
+      if (!tenPhong) {
+        alert("❌ Tên phòng không được để trống");
+        return;
+      }
+      if (isNaN(soGheVal) || soGheVal <= 0) {
+        alert("❌ Vui lòng nhập số ghế hợp lệ (>0)");
+        return;
+      }
+
+      const body = { maPhong: id, tenPhong, soGhe: soGheVal };
 
       const res = await fetch(`${API_BASE}/update/${id}`, {
         method: "PUT",
@@ -225,5 +261,4 @@
     fetchData();
   </script>
 </body>
-
 </html>

@@ -1,3 +1,8 @@
+:root{
+  /* 👇 chỉnh 1 chỗ để phóng to/thu nhỏ toàn bộ UI */
+  --scale: 1.25;
+}
+
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
@@ -6,31 +11,37 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding-top: 80px; /* ✅ FIX: tránh bị che bởi header */
+  padding-top: calc(var(--scale) * 80px); /* ✅ giữ khoảng cách header theo tỷ lệ */
 }
 
 .movie-detail-container {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 30px;
+  max-width: calc(var(--scale) * 1200px);
+  margin: calc(var(--scale) * 40px) auto;
+  padding: calc(var(--scale) * 30px);
   display: flex;
   flex-wrap: wrap;
-  gap: 40px;
+  gap: calc(var(--scale) * 40px);
   background-color: #1a1a2e;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.4);
+  border-radius: calc(var(--scale) * 10px);
+  box-shadow: 0 0 calc(var(--scale) * 15px) rgba(0,0,0,0.4);
 }
 
 .movie-poster {
-  width: 300px;
-  height: 450px;
+  width: calc(var(--scale) * 300px);
+  height: calc(var(--scale) * 450px); /* ✅ vẫn 2:3 như cũ */
   background-size: cover;
   background-position: center;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255,255,255,0.1);
+  border-radius: calc(var(--scale) * 10px);
+  box-shadow: 0 0 calc(var(--scale) * 10px) rgba(255,255,255,0.1);
   flex-shrink: 0;
 }
 
+.movie-poster-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--scale) * 10px);
+}
 
 .movie-info {
   flex: 1;
@@ -41,14 +52,14 @@ body {
 
 .movie-info h1 {
   margin-top: 0;
-  margin-bottom: 20px;
-  font-size: 32px;
+  margin-bottom: calc(var(--scale) * 20px);
+  font-size: calc(var(--scale) * 32px);
   color: #ffcc00;
 }
 
 .movie-info p {
-  margin: 10px 0;
-  font-size: 18px;
+  margin: calc(var(--scale) * 10px) 0;
+  font-size: calc(var(--scale) * 18px);
 }
 
 .movie-info strong {
@@ -57,72 +68,57 @@ body {
 
 .btn-booking {
   display: inline-block;
-  margin-top: 20px;
-  padding: 12px 24px;
+  margin-top: calc(var(--scale) * 20px);
+  padding: calc(var(--scale) * 12px) calc(var(--scale) * 24px);
   background-color: #ff0055;
   color: white;
-  border-radius: 6px;
-  font-size: 18px;
+  border-radius: calc(var(--scale) * 6px);
+  font-size: calc(var(--scale) * 18px);
   font-weight: bold;
   text-decoration: none;
   transition: background 0.3s ease;
-  width: fit-content; /* ✅ kích thước theo nội dung */
-  align-self: flex-start; /* ✅ căn trái thay vì tự kéo dãn theo flex */
+  width: fit-content; /* ✅ theo nội dung */
+  align-self: flex-start; /* ✅ căn trái */
 }
-.movie-poster-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
+.btn-booking:hover { background-color: #e6004c; }
 
 .btn-trailer {
-  padding: 10px 20px;
+  padding: calc(var(--scale) * 10px) calc(var(--scale) * 20px);
   background-color: #00bfff;
   color: white;
   font-weight: bold;
   border: none;
-  border-radius: 6px;
+  border-radius: calc(var(--scale) * 6px);
   cursor: pointer;
-  font-size: 16px;
+  font-size: calc(var(--scale) * 16px);
   transition: background 0.3s ease;
 }
-
-.btn-trailer:hover {
-  background-color: #009acd;
-}
+.btn-trailer:hover { background-color: #009acd; }
 
 .trailer-container {
-  margin-top: 20px;
+  margin-top: calc(var(--scale) * 20px);
   width: 100%;
 }
 
 iframe {
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-.btn-booking:hover {
-  background-color: #e6004c;
+  border-radius: calc(var(--scale) * 10px);
+  box-shadow: 0 0 calc(var(--scale) * 10px) rgba(0,0,0,0.5);
 }
 
+/* ============ Mobile ============ */
 @media (max-width: 768px) {
+  .movie-poster-wrapper { position: relative; }
+  .movie-poster { overflow: hidden; }
 
-  .movie-poster-wrapper {
-    position: relative;
-  }
   .movie-poster-wrapper .btn-trailer {
     position: absolute;
     left: 50%;
-    bottom: 14px;
+    bottom: calc(var(--scale) * 14px);
     transform: translateX(-50%);
-    padding: 9px 22px;
-    font-size: 15px;
-    line-height: 1; 
+    padding: calc(var(--scale) * 9px) calc(var(--scale) * 22px);
+    font-size: calc(var(--scale) * 15px);
+    line-height: 1;
     z-index: 1;
     box-shadow: 0 3px 6px rgba(0,0,0,.45);
   }
-  .movie-poster {
-    overflow: hidden;
-  }
 }
-

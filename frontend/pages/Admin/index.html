@@ -33,10 +33,6 @@
                         <i class="fas fa-users"></i>
                         Quản lý Tài Khoản
                     </a>
-                    <a href="loaiphim.html" class="dropdown-item-custom">
-                        <i class="fas fa-film"></i>
-                        Quản lý Loại Phim
-                    </a>
                     <a href="phim.html" class="dropdown-item-custom">
                         <i class="fas fa-video"></i>
                         Quản lý Phim
@@ -45,13 +41,9 @@
                         <i class="fas fa-building"></i>
                         Quản lý Phòng Chiếu
                     </a>
-                    <a href="ghe.html" class="dropdown-item-custom">
-                        <i class="fas fa-chair"></i>
-                        Quản lý Ghế
-                    </a>
                     <a href="bapnuoc.html" class="dropdown-item-custom">
                         <i class="fas fa-glass-martini-alt"></i>
-                        Quản lý Bắp Nước
+                        Đồ Ăn – Thức Uống
                     </a>
                     <a href="suatchieu.html" class="dropdown-item-custom">
                         <i class="fas fa-clock"></i>
@@ -60,6 +52,10 @@
                     <a href="ve.html" class="dropdown-item-custom">
                         <i class="fas fa-ticket-alt"></i>
                         Quản lý Vé
+                    </a>
+                    <a href="doanhthu.html" class="dropdown-item-custom">
+                        <i class="fas fa-ticket-alt"></i>
+                        Doanh thu
                     </a>
                 </div>
             </div>
@@ -100,12 +96,6 @@
                 <p class="card-description">Chỉnh sửa quyền và xóa các tài khoản người dùng</p>
             </div>
 
-            <div class="admin-card" onclick="navigateTo('loaiphim.html')">
-                <i class="fas fa-film card-icon"></i>
-                <h3 class="card-title">Quản lý Loại Phim</h3>
-                <p class="card-description">Thêm, sửa, xóa các thể loại phim</p>
-            </div>
-
             <div class="admin-card" onclick="navigateTo('phim.html')">
                 <i class="fas fa-video card-icon"></i>
                 <h3 class="card-title">Quản lý Phim</h3>
@@ -118,15 +108,10 @@
                 <p class="card-description">Thiết lập và quản lý các phòng chiếu, sức chứa và thiết bị</p>
             </div>
 
-            <div class="admin-card" onclick="navigateTo('ghe.html')">
-                <i class="fas fa-chair card-icon"></i>
-                <h3 class="card-title">Quản lý Ghế</h3>
-                <p class="card-description">Sắp xếp và quản lý sơ đồ ghế ngồi cho từng phòng chiếu</p>
-            </div>
 
             <div class="admin-card" onclick="navigateTo('bapnuoc.html')">
                 <i class="fas fa-glass-martini-alt card-icon"></i>
-                <h3 class="card-title">Quản lý Bắp Nước</h3>
+                <h3 class="card-title">Quản lý Đồ Ăn – Thức Uống</h3>
                 <p class="card-description">Quản lý menu đồ ăn, thức uống và giá cả tại rạp</p>
             </div>
 
@@ -142,128 +127,136 @@
                 <p class="card-description">Theo dõi và quản lý việc bán vé, đặt chỗ của khách hàng</p>
             </div>
 
-            <div class="admin-card" onclick="showComingSoon()">
-                <i class="fas fa-chart-bar card-icon"></i>
-                <h3 class="card-title">Báo Cáo & Thống Kê</h3>
-                <p class="card-description">Xem báo cáo doanh thu, thống kê khách hàng và hiệu suất rạp</p>
+            <div class="admin-card" onclick="navigateTo('doanhthu.html')" role="button" tabindex="0">
+              <i class="fas fa-chart-bar card-icon"></i>
+              <h3 class="card-title">Doanh thu</h3>
+              <p class="card-description">Doanh thu trong thời gian 30 ngày của rạp</p>
             </div>
+
+
         </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        function toggleDropdown() {
-            const dropdown = document.getElementById('dropdownMenu');
-            dropdown.classList.toggle('show');
-        }
+  function $(sel, root=document){ return root.querySelector(sel); }
+  function $all(sel, root=document){ return Array.from(root.querySelectorAll(sel)); }
 
-        function navigateTo(url) {
-            // Add loading effect
-            const card = event.currentTarget;
-            const originalContent = card.innerHTML;
-            card.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div class="loading-spinner"></div>
-                    <p style="margin-top: 10px;">Đang chuyển hướng...</p>
-                </div>
-            `;
-            
-            setTimeout(() => {
-                window.location.href = url;
-            }, 800);
-        }
+  (function setupAdminDropdown(){
+    const btn = $('.dropdown-btn');
+    const menu = $('#dropdownMenu');
+    if (!btn || !menu) return;
 
-        function showComingSoon() {
-            alert('Tính năng này sẽ được cập nhật trong phiên bản tiếp theo!');
-        }
+    btn.setAttribute('aria-haspopup', 'true');
+    btn.setAttribute('aria-expanded', 'false');
 
-        // Close dropdown when clicking outside
-        document.addEventListener('click', function(event) {
-            const dropdown = document.getElementById('dropdownMenu');
-            const button = document.querySelector('.dropdown-btn');
-            
-            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
-                dropdown.classList.remove('show');
-            }
-        });
+    const openClass = 'show';
 
-        // Add smooth entrance animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.admin-card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
+    function openMenu(){
+      menu.classList.add(openClass);
+      btn.setAttribute('aria-expanded', 'true');
+      const firstItem = menu.querySelector('a.dropdown-item-custom');
+      if (firstItem) firstItem.tabIndex = 0;
+    }
+    function closeMenu(){
+      menu.classList.remove(openClass);
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function toggleMenu(){
+      menu.classList.contains(openClass) ? closeMenu() : openMenu();
+    }
 
-            // Animate stats
-            const statNumbers = document.querySelectorAll('.stat-number');
-            statNumbers.forEach(stat => {
-                const finalNumber = stat.textContent;
-                stat.textContent = '0';
-                
-                setTimeout(() => {
-                    animateNumber(stat, finalNumber, 2000);
-                }, 500);
-            });
-        });
+    btn.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      toggleMenu();
+    });
 
-        function animateNumber(element, target, duration) {
-            const start = 0;
-            const end = parseInt(target.replace(/,/g, ''));
-            const increment = end / (duration / 16);
-            let current = start;
-            
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= end) {
-                    element.textContent = target;
-                    clearInterval(timer);
-                } else {
-                    element.textContent = Math.floor(current).toLocaleString();
-                }
-            }, 16);
-        }
+    menu.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const a = e.target.closest('a[href]');
+      if (a) closeMenu();
+    });
 
-        // Add particles effect
-        function createParticle() {
-            const particle = document.createElement('div');
-            particle.style.position = 'fixed';
-            particle.style.width = '4px';
-            particle.style.height = '4px';
-            particle.style.background = 'rgba(255, 255, 255, 0.5)';
-            particle.style.borderRadius = '50%';
-            particle.style.pointerEvents = 'none';
-            particle.style.zIndex = '-1';
-            particle.style.left = Math.random() * window.innerWidth + 'px';
-            particle.style.top = window.innerHeight + 'px';
-            
-            document.body.appendChild(particle);
-            
-            let position = window.innerHeight;
-            const speed = Math.random() * 2 + 1;
-            
-            const animate = () => {
-                position -= speed;
-                particle.style.top = position + 'px';
-                
-                if (position < -10) {
-                    document.body.removeChild(particle);
-                } else {
-                    requestAnimationFrame(animate);
-                }
-            };
-            
-            animate();
-        }
+    document.addEventListener('click', ()=>{
+      if (menu.classList.contains(openClass)) closeMenu();
+    });
 
-        // Create particles periodically
-        setInterval(createParticle, 300);
-    </script>
+    btn.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleMenu();
+      } else if (e.key === 'Escape') {
+        closeMenu();
+      }
+    });
+    menu.addEventListener('keydown', (e)=>{
+      if (e.key === 'Escape') {
+        closeMenu();
+        btn.focus();
+      }
+    });
+  })();
+
+  function navigateTo(url, cardEl){
+    if (!url) return;
+    const card = cardEl || this;
+    const originalHTML = card.innerHTML;
+    card.innerHTML = `
+      <div style="text-align:center;padding:20px">
+        <div class="loading-spinner"></div>
+        <p style="margin-top:10px;">Đang chuyển hướng...</p>
+      </div>
+    `;
+    setTimeout(()=>{ window.location.href = url; }, 800);
+    setTimeout(()=>{ card.innerHTML = originalHTML; }, 4000);
+  }
+
+  (function bindCards(){
+    const cards = $all('.admin-card');
+    cards.forEach((card)=>{
+      if (card.getAttribute('onclick')) return;
+      const urlMap = {
+        'Quản lý Tài Khoản': 'quanlytaikhoan.html',
+        'Quản lý Loại Phim': 'loaiphim.html',
+        'Quản lý Phim': 'phim.html',
+        'Quản lý Phòng Chiếu': 'phongchieu.html',
+        'Quản lý Ghế': 'ghe.html',
+        'Quản lý Bắp Nước': 'bapnuoc.html',
+        'Quản lý Suất Chiếu': 'suatchieu.html',
+        'Quản lý Vé': 've.html',
+        'Doanh thu': 'doanhthu.html'  
+      };
+      const title = card.querySelector('.card-title')?.textContent?.trim();
+      const url = urlMap[title];
+      if (url) card.addEventListener('click', ()=>navigateTo(url, card));
+      else card.addEventListener('click', ()=>alert('Tính năng này sẽ được cập nhật trong phiên bản tiếp theo!'));
+    });
+  })();
+  document.addEventListener('DOMContentLoaded', function(){
+    const cards = $all('.admin-card');
+    cards.forEach((card, idx)=>{
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      setTimeout(()=>{
+        card.style.transition = 'all .6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, idx * 100);
+    });
+  });
+
+  function animateNumber(element, target, duration){
+    const end = parseInt((target+'').replace(/,/g,''), 10) || 0;
+    const frames = Math.max(1, Math.floor(duration/16));
+    let cur = 0;
+    const step = end / frames;
+    const t = setInterval(()=>{
+      cur += step;
+      if (cur >= end){ element.textContent = end.toLocaleString(); clearInterval(t); }
+      else { element.textContent = Math.floor(cur).toLocaleString(); }
+    }, 16);
+  }
+</script>
+
 </body>
 </html>

@@ -80,7 +80,5 @@ namespace CineTicket.Controllers
             }
             return Ok();
         }
-
-
     }
 }

@@ -15,32 +15,31 @@ namespace CineTicket.Controllers
         {
             _service = service;
         }
-        [Authorize(Roles = "Employee,Admin")]
-        [HttpGet("doanh-thu-ngay")]
-        public async Task<IActionResult> GetDoanhThuNgay([FromQuery] int year, [FromQuery] int month)
+
+        // NEW: doanh thu 30 ngày gần nhất
+        [HttpGet("doanh-thu-30-ngay")]
+        public async Task<IActionResult> GetDoanhThu30NgayGanNhat([FromQuery] bool onlyPaid = true)
         {
-            if (!ModelState.IsValid || year < 1 || month < 1 || month > 12)
-            {
-                return BadRequest(new { status = false, message = "Invalid year or month." });
-            }
-            var data = await _service.GetDoanhThuTheoNgayTrongThang(year, month);
-            if (data == null)
-            {
-                return Ok(new { status = true, data = new List<object>() });
-            }
-            int daysInMonth = DateTime.DaysInMonth(year, month);
-            var doanhThuDict = data.ToDictionary(d => d.Ngay.Date, d => d.TongTien);
-            var result = Enumerable.Range(1, daysInMonth)
-                .Select(day =>
+            var data = await _service.GetDoanhThu30NgayGanNhatAsync(onlyPaid);
+
+            var today = DateTime.Today;
+            var start = today.AddDays(-29);
+
+            // Map về dict để fill ngày trống
+            var dict = data.ToDictionary(d => d.Ngay.Date, d => d.TongTien);
+
+            var result = Enumerable.Range(0, 30)
+                .Select(offset =>
                 {
-                    var date = new DateTime(year, month, day);
-                    doanhThuDict.TryGetValue(date, out decimal tongTien);
+                    var date = start.AddDays(offset);
+                    dict.TryGetValue(date, out var sum);
                     return new
                     {
                         Ngay = date.ToString("yyyy-MM-dd"),
-                        TongTien = tongTien
+                        TongTien = sum
                     };
                 });
+
             return Ok(new { status = true, data = result });
         }
     }

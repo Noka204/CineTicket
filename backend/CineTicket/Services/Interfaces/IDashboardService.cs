@@ -1,7 +1,9 @@
-﻿namespace CineTicket.Services.Interfaces
+﻿using CineTicket.DTOs.HoaDon.CineTicket.DTOs.Dashboard;
+
+namespace CineTicket.Services.Interfaces
 {
     public interface IDashboardService
     {
-        Task<List<(DateTime Ngay, decimal TongTien)>> GetDoanhThuTheoNgayTrongThang(int year, int month);
+        Task<List<DailyRevenueDTO>> GetDoanhThu30NgayGanNhatAsync(bool chiTinhDaThanhToan = true);
     }
 }
