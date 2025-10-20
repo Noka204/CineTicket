@@ -54,6 +54,13 @@ namespace CineTicket.Repositories.Implementations
             _context.PhongChieus.Remove(phong);
             return await _context.SaveChangesAsync() > 0;
         }
-
+        public Task<List<PhongChieu>> GetByRapAsync(int maRap)
+            => _context.PhongChieus
+                .AsNoTracking()
+                .Include(p => p.Raps)
+                .Where(p => p.MaRap == maRap)
+                .OrderBy(p => p.TenPhong)
+                .ToListAsync();
     }
 }
+

@@ -13,6 +13,7 @@ public partial class BapNuoc
     public decimal? Gia { get; set; }
 
     public string? MoTa { get; set; }
+    public string? HinhAnhUrl { get; set; }
 
     public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
 }

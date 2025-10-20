@@ -9,5 +9,7 @@ namespace CineTicket.Repositories.Interfaces
         Task<PhongChieu> CreateAsync(PhongChieu phongChieu);
         Task<bool> UpdateAsync(PhongChieu phongChieu);
         Task<bool> DeleteAsync(int id);
+        Task<List<PhongChieu>> GetByRapAsync(int maRap);
+
     }
 }

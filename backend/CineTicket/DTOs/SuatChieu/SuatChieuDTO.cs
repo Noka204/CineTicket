@@ -12,6 +12,8 @@
         public DateTime? ThoiGianBatDau { get; set; }
         public DateTime? ThoiGianKetThuc { get; set; }
         public DateOnly? NgayChieu { get; set; }
+        public int? MaRap { get; set; }
+        public string? TenRap { get; set; } // từ MaPhongNavigation -> Raps
         public string? GioChieu { get; set; } // ✅ Thêm để hiển thị "14:30"
     }
 }

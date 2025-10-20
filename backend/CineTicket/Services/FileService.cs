@@ -1,4 +1,6 @@
-﻿namespace CineTicket.Services
+﻿using Microsoft.AspNetCore.Hosting;
+
+namespace CineTicket.Services
 {
     public class FileService
     {
@@ -14,10 +16,14 @@
             if (file == null || file.Length == 0)
                 throw new Exception("File is empty");
 
-            string rootPath = Path.Combine(_env.WebRootPath, "Images", folderName);
+            var webroot = _env.WebRootPath;
+            if (string.IsNullOrWhiteSpace(webroot))
+                throw new InvalidOperationException("WebRootPath is not configured. Ensure UseStaticFiles() is enabled.");
+
+            string rootPath = Path.Combine(webroot, "Images", folderName);
             Directory.CreateDirectory(rootPath);
 
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(file.FileName);
             string fullPath = Path.Combine(rootPath, fileName);
 
             using (var stream = new FileStream(fullPath, FileMode.Create))
@@ -25,7 +31,7 @@
                 await file.CopyToAsync(stream);
             }
 
-            // Trả về đường dẫn tương đối (để lưu vào DB và hiển thị)
+            // đường dẫn tương đối để lưu DB/hiển thị frontend
             return $"/Images/{folderName}/{fileName}";
         }
     }

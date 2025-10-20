@@ -17,33 +17,65 @@ namespace CineTicket.Repositories.Implementations
         public async Task<IEnumerable<SuatChieu>> GetAllAsync()
         {
             return await _context.SuatChieus
+                .AsNoTracking()
                 .Include(s => s.MaPhimNavigation)
-                .Include(s => s.MaPhongNavigation)
+                .Include(s => s.MaPhongNavigation)!.ThenInclude(p => p!.Raps)
                 .Include(s => s.Ves)
+                .OrderBy(s => s.ThoiGianBatDau)
                 .ToListAsync();
         }
 
         public async Task<SuatChieu?> GetByIdAsync(int id)
         {
             return await _context.SuatChieus
+                .AsNoTracking()
                 .Include(s => s.MaPhimNavigation)
-                .Include(s => s.MaPhongNavigation)
+                .Include(s => s.MaPhongNavigation)!.ThenInclude(p => p!.Raps)
                 .Include(s => s.Ves)
                 .FirstOrDefaultAsync(s => s.MaSuat == id);
         }
 
-        public async Task<List<SuatChieu>> GetByPhimIdAsync(int maPhim)
+        public async Task<List<SuatChieu>> GetByPhimAsync(
+            int maPhim,
+            int? maRap = null,
+            int? maPhong = null,
+            DateOnly? ngay = null)
         {
-            var currentTime = DateTime.Now;
+            var now = DateTime.Now;
 
-            return await _context.SuatChieus
-                .Where(s => s.MaPhim == maPhim && s.ThoiGianBatDau > currentTime)
+            var query = _context.SuatChieus
+                .AsNoTracking()
                 .Include(s => s.MaPhimNavigation)
-                .Include(s => s.MaPhongNavigation)
+                .Include(s => s.MaPhongNavigation)!.ThenInclude(p => p!.Raps)
                 .Include(s => s.Ves)
+                .Where(s => s.MaPhim == maPhim && s.ThoiGianBatDau > now)
+                .AsQueryable();
+
+            if (maPhong.HasValue)
+            {
+                query = query.Where(s => s.MaPhong == maPhong.Value);
+            }
+
+            if (maRap.HasValue)
+            {
+                // lọc qua navigation Rap của phòng
+                query = query.Where(s => s.MaPhongNavigation != null
+                                         && s.MaPhongNavigation.Raps != null
+                                         && s.MaPhongNavigation.Raps.MaRap == maRap.Value);
+            }
+
+            if (ngay.HasValue)
+            {
+                // chuyển DateOnly -> khoảng DateTime của ngày đó (00:00:00 -> 23:59:59.9999999)
+                var start = ngay.Value.ToDateTime(TimeOnly.MinValue);
+                var end = ngay.Value.ToDateTime(TimeOnly.MaxValue);
+                query = query.Where(s => s.ThoiGianBatDau >= start && s.ThoiGianBatDau <= end);
+            }
+
+            return await query
+                .OrderBy(s => s.ThoiGianBatDau)
                 .ToListAsync();
         }
-
 
         public async Task<SuatChieu> CreateAsync(SuatChieu suatChieu)
         {

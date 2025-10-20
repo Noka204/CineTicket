@@ -18,7 +18,14 @@ namespace CineTicket.Services.Implementations
             _mapper = mapper;
             _gheRepo = gheRepo;
         }
-
+        private static PhongChieuDTO ToDto(PhongChieu p) => new()
+        {
+            MaPhong = p.MaPhong,
+            TenPhong = p.TenPhong,
+            SoGhe = p.SoGhe,
+            MaRap = p.MaRap,
+            TenRap = p.Raps?.TenRap
+        };
         public Task<IEnumerable<PhongChieu>> GetAllAsync()
         {
             return _phongRepo.GetAllAsync();
@@ -77,5 +84,7 @@ namespace CineTicket.Services.Implementations
         {
             return _phongRepo.DeleteAsync(id);
         }
+        public async Task<List<PhongChieuDTO>> GetByRapAsync(int maRap)
+            => (await _phongRepo.GetByRapAsync(maRap)).Select(ToDto).ToList();
     }
 }

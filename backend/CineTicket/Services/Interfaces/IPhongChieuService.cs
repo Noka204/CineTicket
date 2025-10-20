@@ -11,5 +11,6 @@ namespace CineTicket.Services.Interfaces
         Task<bool> UpdateAsync(PhongChieu phongChieu);
         Task<bool> DeleteAsync(int id);
         Task<PhongChieuDTO> CreateWithSeatsAsync(CreatePhongChieuRequest request);
+        Task<List<PhongChieuDTO>> GetByRapAsync(int maRap);
     }
 }

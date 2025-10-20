@@ -42,15 +42,15 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy suất chiếu thành công", data = mapped });
         }
 
-        [HttpGet("get-by-phim/{maPhim}")]
-        public async Task<IActionResult> GetByPhimId(int maPhim)
+        [HttpGet("get-by-phim/{maPhim:int}")]
+        public async Task<IActionResult> GetByPhimId(
+            int maPhim,
+            [FromQuery] int? maRap,
+            [FromQuery] int? maPhong,
+            [FromQuery] DateOnly? ngay) // parse từ "YYYY-MM-DD"
         {
-            var suatChieus = await _service.GetByPhimIdAsync(maPhim);
-            if (suatChieus == null || !suatChieus.Any())
-                return NotFound(new { status = false, message = "Không tìm thấy suất chiếu cho phim này", data = (object?)null });
-
-            var mapped = _mapper.Map<IEnumerable<SuatChieuDTO>>(suatChieus);
-            return Ok(new { status = true, message = "Lấy danh sách suất chiếu theo phim thành công", data = mapped });
+            var data = await _service.GetByPhimAsync(maPhim, maRap, maPhong, ngay);
+            return Ok(new { status = true, message = "OK", data });
         }
 
 

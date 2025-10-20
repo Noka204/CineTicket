@@ -42,7 +42,12 @@ namespace CineTicket.Controllers
             var mapped = _mapper.Map<PhongChieuDTO>(phong);
             return Ok(new { status = true, message = "Lấy phòng chiếu thành công", data = mapped });
         }
-
+        [HttpGet("by-rap/{maRap:int}")]
+        public async Task<IActionResult> GetByRap(int maRap)
+        {
+            var data = await _phongService.GetByRapAsync(maRap);
+            return Ok(new { status = true, message = "OK", data });
+        }
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreatePhongChieuRequest request)

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using CineTicket.Models;
-using CineTicket.Services.Interfaces;
-using AutoMapper;
+﻿using AutoMapper;
 using CineTicket.DTOs;
+using CineTicket.Models;
 using CineTicket.Services;
+using CineTicket.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CineTicket.Controllers.Api
@@ -111,8 +111,6 @@ namespace CineTicket.Controllers.Api
                 new { status = true, message = "Tạo phim thành công", data = mapped });
         }
 
-
-
         [Authorize(Roles = "Employee,Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdatePhimRequest request)
@@ -123,10 +121,8 @@ namespace CineTicket.Controllers.Api
             var model = _mapper.Map<Phim>(request);
             var success = await _phimService.UpdateAsync(model);
 
-            if (success)
-                return NoContent();
-            else
-                return NotFound(new { status = false, message = "Không tìm thấy phim để cập nhật", data = (object?)null });
+            if (success) return NoContent();
+            return NotFound(new { status = false, message = "Không tìm thấy phim để cập nhật", data = (object?)null });
         }
 
         [Authorize(Roles = "Admin")]
@@ -134,10 +130,8 @@ namespace CineTicket.Controllers.Api
         public async Task<IActionResult> Delete(int id)
         {
             var success = await _phimService.DeleteAsync(id);
-            if (success)
-                return NoContent();
-            else
-                return NotFound(new { status = false, message = "Không tìm thấy phim để xoá", data = (object?)null });
+            if (success) return NoContent();
+            return NotFound(new { status = false, message = "Không tìm thấy phim để xoá", data = (object?)null });
         }
     }
 }

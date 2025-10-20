@@ -10,7 +10,8 @@ public partial class PhongChieu
     public string? TenPhong { get; set; }
 
     public int? SoGhe { get; set; }
-
+    public int MaRap { get; set; }
+    public virtual Rap? Raps { get; set; }
     public virtual ICollection<Ghe> Ghes { get; set; } = new List<Ghe>();
 
     public virtual ICollection<SuatChieu> SuatChieus { get; set; } = new List<SuatChieu>();

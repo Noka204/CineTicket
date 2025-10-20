@@ -11,6 +11,7 @@ public partial class ChiTietHoaDon
     public int MaHd { get; set; }       // luôn phải có hóa đơn
     public int? MaVe { get; set; }
     public int? MaBn { get; set; }
+    public int? MaRap { get; set; }
 
     [Required]
     [Range(1, int.MaxValue)]
@@ -22,4 +23,5 @@ public partial class ChiTietHoaDon
     public virtual BapNuoc? MaBnNavigation { get; set; }
     public virtual HoaDon MaHdNavigation { get; set; } = null!;
     public virtual Ve? MaVeNavigation { get; set; }
+    public virtual Rap? MaRapNavigation { get; set; }
 }
