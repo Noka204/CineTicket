@@ -26,13 +26,10 @@ namespace CineTicket.Services.Implementations
             return phimList.AsEnumerable();
         }
 
-        public async Task<Phim?> GetByIdAsync(int id)
-        {
-            return await _context.Phims
-                .Include(p => p.ChiTietLoaiPhims)
-                    .ThenInclude(ct => ct.LoaiPhim)
-                .FirstOrDefaultAsync(p => p.MaPhim == id);
-        }
+        public IQueryable<Phim> Query() => _phimRepo.Query();
+
+        public Task<Phim?> GetByIdAsync(int id, bool includeShowtimes = false, CancellationToken ct = default)
+            => _phimRepo.GetByIdAsync(id, includeShowtimes, ct);
 
 
         public async Task UpdateIsHotStatusAsync(int phimId)
@@ -62,10 +59,6 @@ namespace CineTicket.Services.Implementations
         public Task<bool> UpdateAsync(Phim phim) => _phimRepo.UpdateAsync(phim);
 
         public Task<bool> DeleteAsync(int id) => _phimRepo.DeleteAsync(id);
-        public IQueryable<Phim> Query()
-        {
-            return _phimRepo.Query();
-        }
 
     }
 }

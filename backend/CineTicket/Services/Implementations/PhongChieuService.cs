@@ -24,7 +24,7 @@ namespace CineTicket.Services.Implementations
             TenPhong = p.TenPhong,
             SoGhe = p.SoGhe,
             MaRap = p.MaRap,
-            TenRap = p.Raps?.TenRap
+            TenRap = p.Rap?.TenRap
         };
         public Task<IEnumerable<PhongChieu>> GetAllAsync()
         {

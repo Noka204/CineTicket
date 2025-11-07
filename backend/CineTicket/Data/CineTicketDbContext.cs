@@ -31,6 +31,8 @@ public partial class CineTicketDbContext : IdentityDbContext<ApplicationUser>
 
     public virtual DbSet<Ve> Ves { get; set; }
     public virtual DbSet<Rap> Raps { get; set; }
+    public virtual DbSet<KhuyenMai> KhuyenMais { get; set; }
+    public virtual DbSet<KhuyenMaiCode> KhuyenMaiCodes { get; set; }
     public DbSet<ChiTietLoaiPhim> ChiTietLoaiPhims { get; set; }
 
 

@@ -6,5 +6,6 @@
         public string? TenBn { get; set; }
         public decimal? Gia { get; set; }
         public string? MoTa { get; set; }
+        public string? HinhAnhUrl { get; set; }
     }
 }

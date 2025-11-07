@@ -6,18 +6,24 @@ using CineTicket.Models;
 using CineTicket.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CineTicket.Repositories
+namespace CineTicket.Repositories.Implementations
 {
     public class RapRepository : IRapRepository
     {
         private readonly CineTicketDbContext _context;
         public RapRepository(CineTicketDbContext db) => _context = db;
 
+        // ========== CRUD cơ bản ==========
         public Task<List<Rap>> GetAllAsync()
-            => _context.Raps.AsNoTracking().OrderBy(x => x.MaRap).ToListAsync();
+            => _context.Raps
+                .AsNoTracking()
+                .OrderBy(x => x.MaRap)
+                .ToListAsync();
 
         public Task<Rap?> GetByIdAsync(int id)
-            => _context.Raps.AsNoTracking().FirstOrDefaultAsync(x => x.MaRap == id);
+            => _context.Raps
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.MaRap == id);
 
         public async Task<Rap> AddAsync(Rap entity)
         {
@@ -40,6 +46,7 @@ namespace CineTicket.Repositories
         {
             var found = await _context.Raps.FindAsync(id);
             if (found is null) return false;
+
             _context.Raps.Remove(found);
             await _context.SaveChangesAsync();
             return true;
@@ -48,34 +55,44 @@ namespace CineTicket.Repositories
         public Task<bool> ExistsAsync(int id)
             => _context.Raps.AnyAsync(x => x.MaRap == id);
 
-        // ====== THÊM MỚI ======
+        // ========== Tiện ích (Cities & ByCity) ==========
+
+        // Trả danh sách thành phố đã chuẩn hóa:
+        // - bỏ null/blank, trim,
+        // - gộp trùng không phân biệt hoa/thường (LOWER) và khoảng trắng,
+        // - giữ lại 1 "bản gốc" có format đẹp nhất theo Min (ổn cho UI).
         public async Task<List<string>> GetCitiesAsync()
         {
             return await _context.Raps
                 .AsNoTracking()
-                .Where(r => r.HoatDong == true)                     // hoặc: .Where(r => r.HoatDong ?? false)
-                .Where(r => !string.IsNullOrWhiteSpace(r.ThanhPho)) // tránh null/blank
-                .Select(r => r.ThanhPho!.Trim())
-                .Distinct()
+                .Where(r => r.HoatDong == true)
+                .Where(r => !string.IsNullOrWhiteSpace(r.ThanhPho))
+                .Select(r => new
+                {
+                    Raw = r.ThanhPho!,                         // ví dụ: "Hồ Chí Minh"
+                    Norm = r.ThanhPho!.Trim().ToLower()        // ví dụ: "hồ chí minh"
+                })
+                .GroupBy(x => x.Norm)
+                .Select(g => g.Min(x => x.Raw)!)               // lấy 1 định dạng readable
                 .OrderBy(c => c)
                 .ToListAsync();
         }
 
-
+        // Lấy rạp theo thành phố, so khớp city theo cách:
+        // Trim + ToLower() để không phân biệt hoa/thường & khoảng trắng
         public async Task<List<Rap>> GetByCityAsync(string thanhPho)
         {
-            if (string.IsNullOrWhiteSpace(thanhPho)) return new List<Rap>();
+            if (string.IsNullOrWhiteSpace(thanhPho))
+                return new List<Rap>();
 
-            var city = thanhPho.Trim();
+            var norm = thanhPho.Trim().ToLower();
 
             return await _context.Raps
                 .AsNoTracking()
-                .Where(r => r.HoatDong == true                      // ✅ ép nullable -> bool
-                            && r.ThanhPho != null
-                            && r.ThanhPho == city)                  // so khớp đúng chính tả
+                .Where(r => r.HoatDong == true && r.ThanhPho != null)
+                .Where(r => r.ThanhPho!.Trim().ToLower() == norm)
                 .OrderBy(r => r.TenRap)
                 .ToListAsync();
         }
-
     }
 }

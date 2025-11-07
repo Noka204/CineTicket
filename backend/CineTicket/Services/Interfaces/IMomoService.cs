@@ -3,7 +3,7 @@ using CineTicket.Models.Order;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
-namespace CineTicket.Services
+namespace CineTicket.Services.Interfaces
 {
     public interface IMomoService
     {

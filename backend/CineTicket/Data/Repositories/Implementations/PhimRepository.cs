@@ -24,14 +24,17 @@ namespace CineTicket.Repositories.Implementations
                 .ToListAsync();
         }
 
-        // Lấy phim theo ID kèm thông tin loại phim
-        public async Task<Phim?> GetByIdAsync(int id)
+        public async Task<Phim?> GetByIdAsync(int id, bool includeShowtimes = false, CancellationToken ct = default)
         {
-            return await _context.Phims
+            var q = _context.Phims
                 .Include(p => p.ChiTietLoaiPhims)
-                    .ThenInclude(ct => ct.LoaiPhim)
-                .Include(p => p.SuatChieus)
-                .FirstOrDefaultAsync(p => p.MaPhim == id);
+                    .ThenInclude(ctp => ctp.LoaiPhim)
+                .AsQueryable();
+
+            if (includeShowtimes)
+                q = q.Include(p => p.SuatChieus);
+
+            return await q.FirstOrDefaultAsync(p => p.MaPhim == id, ct);
         }
 
         // Thêm phim mới

@@ -42,6 +42,12 @@ namespace CineTicket.Migrations
                         .HasColumnType("int")
                         .HasColumnName("MaHD");
 
+                    b.Property<int?>("MaRap")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("MaRapNavigationMaRap")
+                        .HasColumnType("int");
+
                     b.Property<int?>("MaVe")
                         .HasColumnType("int");
 
@@ -54,6 +60,8 @@ namespace CineTicket.Migrations
                     b.HasIndex("MaBn");
 
                     b.HasIndex("MaHd");
+
+                    b.HasIndex("MaRapNavigationMaRap");
 
                     b.HasIndex("MaVe");
 
@@ -149,6 +157,9 @@ namespace CineTicket.Migrations
                     b.Property<decimal?>("Gia")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<string>("HinhAnhUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("MoTa")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -242,6 +253,9 @@ namespace CineTicket.Migrations
                     b.Property<decimal?>("TongTien")
                         .HasColumnType("decimal(10, 2)");
 
+                    b.Property<decimal>("TongTienKhuyenMai")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("TrangThai")
                         .HasColumnType("nvarchar(max)");
 
@@ -251,6 +265,98 @@ namespace CineTicket.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.ToTable("HoaDon", (string)null);
+                });
+
+            modelBuilder.Entity("CineTicket.Models.HoaDonKhuyenMai", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodeDaDung")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("GiamThucTe")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("HoaDonMaHd")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KhuyenMaiId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MaHd")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HoaDonMaHd");
+
+                    b.HasIndex("KhuyenMaiId");
+
+                    b.ToTable("HoaDonKhuyenMai");
+                });
+
+            modelBuilder.Entity("CineTicket.Models.KhuyenMai", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("BatDau")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("KetThuc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LoaiGiam")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MucGiam")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Ten")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KhuyenMai");
+                });
+
+            modelBuilder.Entity("CineTicket.Models.KhuyenMaiCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssignedToUserId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("KhuyenMaiId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("RedeemedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KhuyenMaiId");
+
+                    b.ToTable("KhuyenMaiCode");
                 });
 
             modelBuilder.Entity("CineTicket.Models.LoaiPhim", b =>
@@ -335,6 +441,12 @@ namespace CineTicket.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaPhong"));
 
+                    b.Property<int>("MaRap")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RapMaRap")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SoGhe")
                         .HasColumnType("int");
 
@@ -344,6 +456,8 @@ namespace CineTicket.Migrations
 
                     b.HasKey("MaPhong")
                         .HasName("PK__PhongChi__20BD5E5BD2124FD6");
+
+                    b.HasIndex("RapMaRap");
 
                     b.ToTable("PhongChieu", (string)null);
                 });
@@ -365,8 +479,14 @@ namespace CineTicket.Migrations
                     b.Property<int?>("MaPhong")
                         .HasColumnType("int");
 
+                    b.Property<int?>("MaRap")
+                        .HasColumnType("int");
+
                     b.Property<DateOnly?>("NgayChieu")
                         .HasColumnType("date");
+
+                    b.Property<int?>("RapMaRap")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("ThoiGianBatDau")
                         .HasColumnType("datetime");
@@ -380,6 +500,8 @@ namespace CineTicket.Migrations
                     b.HasIndex("MaPhim");
 
                     b.HasIndex("MaPhong");
+
+                    b.HasIndex("RapMaRap");
 
                     b.ToTable("SuatChieu", (string)null);
                 });
@@ -562,6 +684,31 @@ namespace CineTicket.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Rap", b =>
+                {
+                    b.Property<int>("MaRap")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaRap"));
+
+                    b.Property<string>("DiaChi")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("HoatDong")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("TenRap")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThanhPho")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("MaRap");
+
+                    b.ToTable("Rap", "dbo");
+                });
+
             modelBuilder.Entity("ChiTietHoaDon", b =>
                 {
                     b.HasOne("CineTicket.Models.BapNuoc", "MaBnNavigation")
@@ -576,6 +723,10 @@ namespace CineTicket.Migrations
                         .IsRequired()
                         .HasConstraintName("FK__ChiTietHoa__MaHD__4CA06362");
 
+                    b.HasOne("Rap", "MaRapNavigation")
+                        .WithMany("ChiTietHoaDons")
+                        .HasForeignKey("MaRapNavigationMaRap");
+
                     b.HasOne("CineTicket.Models.Ve", "MaVeNavigation")
                         .WithMany("ChiTietHoaDons")
                         .HasForeignKey("MaVe")
@@ -584,6 +735,8 @@ namespace CineTicket.Migrations
                     b.Navigation("MaBnNavigation");
 
                     b.Navigation("MaHdNavigation");
+
+                    b.Navigation("MaRapNavigation");
 
                     b.Navigation("MaVeNavigation");
                 });
@@ -632,6 +785,45 @@ namespace CineTicket.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
+            modelBuilder.Entity("CineTicket.Models.HoaDonKhuyenMai", b =>
+                {
+                    b.HasOne("CineTicket.Models.HoaDon", "HoaDon")
+                        .WithMany("HoaDonKhuyenMais")
+                        .HasForeignKey("HoaDonMaHd")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CineTicket.Models.KhuyenMai", "KhuyenMai")
+                        .WithMany("Redemptions")
+                        .HasForeignKey("KhuyenMaiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HoaDon");
+
+                    b.Navigation("KhuyenMai");
+                });
+
+            modelBuilder.Entity("CineTicket.Models.KhuyenMaiCode", b =>
+                {
+                    b.HasOne("CineTicket.Models.KhuyenMai", "KhuyenMai")
+                        .WithMany("Codes")
+                        .HasForeignKey("KhuyenMaiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KhuyenMai");
+                });
+
+            modelBuilder.Entity("CineTicket.Models.PhongChieu", b =>
+                {
+                    b.HasOne("Rap", "Rap")
+                        .WithMany("PhongChieus")
+                        .HasForeignKey("RapMaRap");
+
+                    b.Navigation("Rap");
+                });
+
             modelBuilder.Entity("CineTicket.Models.SuatChieu", b =>
                 {
                     b.HasOne("CineTicket.Models.Phim", "MaPhimNavigation")
@@ -644,9 +836,15 @@ namespace CineTicket.Migrations
                         .HasForeignKey("MaPhong")
                         .HasConstraintName("FK__SuatChieu__MaPho__3F466844");
 
+                    b.HasOne("Rap", "Rap")
+                        .WithMany()
+                        .HasForeignKey("RapMaRap");
+
                     b.Navigation("MaPhimNavigation");
 
                     b.Navigation("MaPhongNavigation");
+
+                    b.Navigation("Rap");
                 });
 
             modelBuilder.Entity("CineTicket.Models.Ve", b =>
@@ -741,6 +939,15 @@ namespace CineTicket.Migrations
             modelBuilder.Entity("CineTicket.Models.HoaDon", b =>
                 {
                     b.Navigation("ChiTietHoaDons");
+
+                    b.Navigation("HoaDonKhuyenMais");
+                });
+
+            modelBuilder.Entity("CineTicket.Models.KhuyenMai", b =>
+                {
+                    b.Navigation("Codes");
+
+                    b.Navigation("Redemptions");
                 });
 
             modelBuilder.Entity("CineTicket.Models.LoaiPhim", b =>
@@ -770,6 +977,13 @@ namespace CineTicket.Migrations
             modelBuilder.Entity("CineTicket.Models.Ve", b =>
                 {
                     b.Navigation("ChiTietHoaDons");
+                });
+
+            modelBuilder.Entity("Rap", b =>
+                {
+                    b.Navigation("ChiTietHoaDons");
+
+                    b.Navigation("PhongChieus");
                 });
 #pragma warning restore 612, 618
         }

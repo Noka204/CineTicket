@@ -20,7 +20,6 @@ namespace CineTicket.Services.Implementations
             _veRepo = veRepository;
             _context = context;
             _hub = hub;
-
         }
 
         public Task<IEnumerable<Ve>> GetAllAsync() => _veRepo.GetAllAsync();
@@ -28,7 +27,10 @@ namespace CineTicket.Services.Implementations
         public Task<Ve> CreateAsync(Ve ve) => _veRepo.CreateAsync(ve);
         public Task<bool> UpdateAsync(Ve ve) => _veRepo.UpdateAsync(ve);
         public Task<bool> DeleteAsync(int id) => _veRepo.DeleteAsync(id);
-        public async Task<(bool success, string message, GiuGheResponse? data, int statusCode)>GiuGheAsync(GiuGheRequest request, string? userId)
+        public Task<Ve?> GetByGheAndSuatAsync(int maGhe, int maSuat) => _veRepo.GetByGheAndSuatAsync(maGhe, maSuat);
+
+        public async Task<(bool success, string message, GiuGheResponse? data, int statusCode)>
+            GiuGheAsync(GiuGheRequest request, string? userId)
         {
             var now = DateTime.Now;
 
@@ -37,6 +39,11 @@ namespace CineTicket.Services.Implementations
 
             var ghe = await _context.Ghes.FirstOrDefaultAsync(g => g.MaGhe == request.MaGhe && g.MaPhong == suat.MaPhong);
             if (ghe == null) return (false, "Ghế không đúng phòng.", null, 404);
+
+            int soGheInt = 0;
+            // nếu cột SoGhe là string → parse
+            try { _ = int.TryParse(ghe.SoGhe?.ToString(), out soGheInt); } catch { soGheInt = 0; }
+
             var ve = await _veRepo.GetByGheAndSuatAsync(request.MaGhe, request.MaSuat);
             if (ve != null)
             {
@@ -45,7 +52,7 @@ namespace CineTicket.Services.Implementations
 
                 ve.TrangThai = "TamGiu";
                 ve.ThoiGianTamGiu = now.AddMinutes(3);
-                ve.NguoiGiuId = userId; 
+                ve.NguoiGiuId = userId;
                 await _veRepo.UpdateAsync(ve);
 
                 var payload = new SeatUpdatePayload
@@ -55,19 +62,19 @@ namespace CineTicket.Services.Implementations
                     TrangThai = "TamGiu",
                     ThoiGianHetHan = ve.ThoiGianTamGiu?.ToString("HH:mm:ss"),
                     Reason = "hold",
-                    HolderUserId = ve.NguoiGiuId
+                    HolderUserId = ve.NguoiGiuId           // vẫn phát HolderUserId cho FE
                 };
-
-                await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat))
-                                    .SendAsync("SeatUpdated", payload);
+                await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat)).SendAsync("SeatUpdated", payload);
 
                 return (true, "Đã giữ lại ghế.", new GiuGheResponse
                 {
                     MaVe = ve.MaVe,
                     MaGhe = ve.MaGhe ?? 0,
+                    SoGhe = soGheInt,
                     MaSuat = ve.MaSuat ?? 0,
                     TrangThai = ve.TrangThai,
-                    ThoiGianHetHan = payload.ThoiGianHetHan
+                    ThoiGianHetHan = payload.ThoiGianHetHan,
+                    NguoiGiuId = ve.NguoiGiuId
                 }, 200);
             }
 
@@ -77,7 +84,7 @@ namespace CineTicket.Services.Implementations
                 MaSuat = request.MaSuat,
                 TrangThai = "TamGiu",
                 ThoiGianTamGiu = now.AddMinutes(3),
-                NguoiGiuId = userId 
+                NguoiGiuId = userId
             };
             await _veRepo.CreateAsync(newVe);
 
@@ -87,18 +94,20 @@ namespace CineTicket.Services.Implementations
                 MaGhe = request.MaGhe,
                 TrangThai = "TamGiu",
                 ThoiGianHetHan = newVe.ThoiGianTamGiu?.ToString("HH:mm:ss"),
-                Reason = "hold"
+                Reason = "hold",
+                HolderUserId = newVe.NguoiGiuId
             };
-            await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat))
-                                .SendAsync("SeatUpdated", payloadNew);
+            await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat)).SendAsync("SeatUpdated", payloadNew);
 
             return (true, "Đã giữ ghế mới thành công.", new GiuGheResponse
             {
                 MaVe = newVe.MaVe,
                 MaGhe = newVe.MaGhe ?? 0,
+                SoGhe = soGheInt,
                 MaSuat = newVe.MaSuat ?? 0,
                 TrangThai = newVe.TrangThai,
-                ThoiGianHetHan = payloadNew.ThoiGianHetHan
+                ThoiGianHetHan = payloadNew.ThoiGianHetHan,
+                NguoiGiuId = newVe.NguoiGiuId
             }, 201);
         }
 
@@ -121,12 +130,12 @@ namespace CineTicket.Services.Implementations
                     TrangThai = "Trong",
                     Reason = "release"
                 };
-                await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat))
-                                    .SendAsync("SeatUpdated", payload);
+                await _hub.Clients.Group(SeatHub.GroupName(request.MaSuat)).SendAsync("SeatUpdated", payload);
             }
 
             return (true, "Đã trả ghế");
         }
+
         public async Task<TinhGiaVeResult> TinhGiaVeAsync(int maGhe, int maSuat)
         {
             var suat = await _context.SuatChieus
@@ -208,9 +217,46 @@ namespace CineTicket.Services.Implementations
                 TrangThai = trangThai
             };
         }
-        public Task<Ve?> GetByGheAndSuatAsync(int maGhe, int maSuat)
+
+        public async Task<IReadOnlyList<HeldSeatDto>> GetHeldByUserAsync(int maSuat, string userId)
         {
-            return _veRepo.GetByGheAndSuatAsync(maGhe, maSuat);
+            var now = DateTime.Now;
+
+            var query = from v in _context.Ves.AsNoTracking()
+                        where v.MaSuat == maSuat
+                              && v.TrangThai == "TamGiu"
+                              && v.ThoiGianTamGiu != null
+                              && v.ThoiGianTamGiu > now
+                              && v.NguoiGiuId == userId
+                        join g in _context.Ghes.AsNoTracking()
+                            on v.MaGhe equals g.MaGhe
+                        select new
+                        {
+                            v.MaVe,
+                            v.MaGhe,
+                            v.MaSuat,
+                            v.ThoiGianTamGiu,
+                            g.SoGhe
+                        };
+
+            var raw = await query.ToListAsync();
+            var result = new List<HeldSeatDto>(raw.Count);
+            foreach (var x in raw)
+            {
+                int soGheInt = 0;
+                try { _ = int.TryParse(x.SoGhe?.ToString(), out soGheInt); } catch { soGheInt = 0; }
+
+                result.Add(new HeldSeatDto
+                {
+                    MaVe = x.MaVe,
+                    MaGhe = x.MaGhe ?? 0,
+                    SoGhe = soGheInt,
+                    MaSuat = x.MaSuat ?? 0,
+                    ThoiGianHetHan = x.ThoiGianTamGiu,
+                    TrangThai = "TamGiu"
+                });
+            }
+            return result;
         }
     }
 }

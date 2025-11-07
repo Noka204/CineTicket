@@ -11,7 +11,7 @@ namespace CineTicket.Services.Interfaces
         Task<Ghe> CreateAsync(Ghe ghe);
         Task<bool> UpdateAsync(Ghe ghe);
         Task<bool> DeleteAsync(int id);
-        Task GetByPhongAsync(int maPhong);
+        Task<IEnumerable<Ghe>> GetByPhongAsync(int maPhong);
         //get trạng thái ghế theo phòng và suất chiếu
         Task<IEnumerable<object>> GetTrangThaiGheAsync(int maPhong, int maSuat);
     }

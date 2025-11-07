@@ -1,8 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
 using CineTicket.Data;
-using CineTicket.Models.Momo;
-using CineTicket.Models.Order;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
@@ -12,8 +10,10 @@ using System.Globalization;
 using CineTicket.Repositories.Interfaces;
 using CineTicket.Services.Interfaces;
 using MailKit;
+using CineTicket.Models.Momo;
+using CineTicket.Models.Order;
 
-namespace CineTicket.Services
+namespace CineTicket.Services.Implementations
 {
     public class MomoService : IMomoService
     {
@@ -42,7 +42,7 @@ namespace CineTicket.Services
                 throw new ArgumentException("orderId is required");
 
             var requestId = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
-            var momoOrderId = $"{model.OrderId}-{requestId}"; // <-- unique cho MoMo
+            var momoOrderId = $"{model.OrderId}-{requestId}"; 
             var amountStr = model.Amount.ToString(CultureInfo.InvariantCulture);
 
             var extraObj = new { internalOrderId = model.OrderId };
@@ -67,15 +67,15 @@ namespace CineTicket.Services
             {
                 partnerCode = _options.Value.PartnerCode,
                 accessKey = _options.Value.AccessKey,
-                requestId = requestId,
+                requestId,
                 amount = amountStr,                         // <-- string Invariant
                 orderId = momoOrderId,                       // <-- unique
                 orderInfo = model.OrderInfo,
                 redirectUrl = _options.Value.ReturnUrl,
                 ipnUrl = _options.Value.NotifyUrl,
-                extraData = extraData,
+                extraData,
                 requestType = _options.Value.RequestType,
-                signature = signature,
+                signature,
                 lang = "vi"
             };
 
@@ -118,7 +118,6 @@ namespace CineTicket.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "MOMO CREATE exception for orderId={OrderId}", model.OrderId);
-                // ném lại để controller bắt và trả lỗi chung
                 throw;
             }
         }
@@ -137,7 +136,6 @@ namespace CineTicket.Services
         }
         public async Task<bool> ConfirmByQueryAsync(MomoNotifyRequestModel model)
         {
-            // 1) /query xác nhận với MoMo
             var raw = $"accessKey={_options.Value.AccessKey}"
                     + $"&orderId={model.orderId}"
                     + $"&partnerCode={_options.Value.PartnerCode}"
@@ -148,9 +146,9 @@ namespace CineTicket.Services
             {
                 partnerCode = _options.Value.PartnerCode,
                 accessKey = _options.Value.AccessKey,
-                requestId = model.requestId,
-                orderId = model.orderId,
-                signature = signature,
+                model.requestId,
+                model.orderId,
+                signature,
                 lang = "vi"
             };
 
@@ -173,7 +171,6 @@ namespace CineTicket.Services
                 return false;
             }
 
-            // 2) Lấy maHd (ưu tiên extraData.internalOrderId, fallback phần đầu orderId)
             int maHd;
             if (!TryExtractMaHd(model, out maHd))
             {
@@ -181,7 +178,6 @@ namespace CineTicket.Services
                 return false;
             }
 
-            // 3) Transaction + cập nhật DB
             using var tx = await _context.Database.BeginTransactionAsync();
 
             var hoaDon = await _context.HoaDons
@@ -200,7 +196,6 @@ namespace CineTicket.Services
                 hoaDon.TrangThai = "Đã thanh toán";
                 hoaDon.HinhThucThanhToan = "Ví Momo";
 
-                // Đồng bộ số tiền từ MoMo (nếu cần)
                 if (decimal.TryParse((string)o.amount, NumberStyles.Any, CultureInfo.InvariantCulture, out var amt))
                     hoaDon.TongTien = amt;
 
@@ -222,28 +217,21 @@ namespace CineTicket.Services
             }
             else
             {
-                await tx.RollbackAsync(); // idempotent: đã thanh toán trước đó
+                await tx.RollbackAsync();
                 _logger.LogInformation("Invoice already paid, skip update | maHd={MaHd}", maHd);
-
-                // gửi mail 1 lần duy nhất; nếu trước đó chưa gửi, bạn có thể quyết định gọi lại:
-                // _ = Task.Run(() => _mailService.SendInvoiceEmailAsync(maHd));
             }
 
             return true;
         }
-
-        // Helper: parse maHd an toàn theo cấu trúc MailService (int > 0)
         private bool TryExtractMaHd(MomoNotifyRequestModel model, out int maHd)
         {
             maHd = 0;
 
-            // Ưu tiên extraData
             try
             {
                 if (!string.IsNullOrEmpty(model.extraData))
                 {
                     var json = Encoding.UTF8.GetString(Convert.FromBase64String(model.extraData));
-                    // Dùng Newtonsoft để đơn giản
                     var jObj = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
                     if (jObj != null && jObj.TryGetValue("internalOrderId", out var raw) && int.TryParse(raw, out var v) && v > 0)
                     {
@@ -257,7 +245,6 @@ namespace CineTicket.Services
                 _logger.LogWarning(ex, "Parse extraData failed");
             }
 
-            // Fallback: phần đầu trước dấu '-' trong orderId (vì bạn generate {maHd}-{ticks})
             var head = (model.orderId ?? string.Empty).Split('-', 2).FirstOrDefault();
             if (int.TryParse(head, out var v2) && v2 > 0)
             {
@@ -268,17 +255,14 @@ namespace CineTicket.Services
             return false;
         }
 
-        // Verify chữ ký IPN (thứ tự field theo tài liệu IPN v2)
         public bool VerifySignature(MomoNotifyRequestModel body)
         {
-            // Dùng accessKey từ cấu hình (MoMo không bắt buộc gửi accessKey trong IPN)
             string accessKeyCfg = _options.Value.AccessKey ?? string.Empty;
 
             string S(string? s) => s ?? string.Empty;
             string Ns(long v) => v.ToString(CultureInfo.InvariantCulture);
             string Ni(int v) => v.ToString(CultureInfo.InvariantCulture);
 
-            // Thứ tự đúng theo IPN v2
             var rawData =
                 "accessKey=" + accessKeyCfg +
                 "&amount=" + Ns(body.amount) +
@@ -296,7 +280,6 @@ namespace CineTicket.Services
 
             var mySig = ComputeHmacSha256(rawData, _options.Value.SecretKey);
 
-            // logging để so sánh khi cần
             _logger.LogInformation("IPN verify raw: {raw}", rawData);
             _logger.LogInformation("IPN mySig: {my} | momoSig: {mo}", mySig, body.signature);
 

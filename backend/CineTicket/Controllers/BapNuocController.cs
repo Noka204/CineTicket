@@ -21,13 +21,33 @@ namespace CineTicket.Controllers
             _mapper = mapper;
             _fileService = fileService;
         }
-
         [HttpGet("get-all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(
+                [FromQuery] string? lang = null,
+                CancellationToken ct = default)
         {
-            var list = await _service.GetAllAsync();
-            // Trả thẳng entity hoặc map DTO nếu có
-            return Ok(new { status = true, message = "Lấy danh sách thành công", data = list });
+            var target = NormalizeLang(lang);
+            var list = await _service.GetAllAsync(target, ct);
+
+            return Ok(new
+            {
+                status = true,
+                message = "Lấy danh sách thành công",
+                data = list
+            });
+        }
+
+        private static string NormalizeLang(string? lang)
+        {
+            lang = (lang ?? "vi").Trim().ToLowerInvariant();
+            return lang switch
+            {
+                "vi-vn" => "vi",
+                "en-us" => "en",
+                "fr-fr" => "fr",
+                "" => "vi",
+                _ => lang
+            };
         }
 
         [HttpGet("get/{id}")]

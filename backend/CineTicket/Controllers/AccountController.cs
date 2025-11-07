@@ -165,4 +165,161 @@ public class AccountController : ControllerBase
         var roles = await _userService.GetAllRolesAsync();
         return Ok(new { status = true, data = roles });
     }
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMe([FromQuery] string? userName = null, [FromQuery] string? userId = null)
+    {
+        // 1) Lấy user từ token (ưu tiên Id)
+        var tokenUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub")
+                          ?? User.FindFirstValue("uid");
+
+        var tokenUserName = User.FindFirstValue(ClaimTypes.Name) ?? User.Identity?.Name;
+
+        ApplicationUser? user = null;
+
+        if (!string.IsNullOrWhiteSpace(tokenUserId))
+            user = await _userManager.FindByIdAsync(tokenUserId);
+
+        if (user == null && !string.IsNullOrWhiteSpace(tokenUserName))
+            user = await _userManager.FindByNameAsync(tokenUserName!);
+
+        if (user == null)
+            return Unauthorized(new { status = false, message = "Không lấy được người dùng từ token." });
+
+        if (!string.IsNullOrWhiteSpace(userName) &&
+            !string.Equals(user.UserName, userName, StringComparison.OrdinalIgnoreCase))
+        {
+            return StatusCode(403, new { status = false, message = "Token không thuộc về user được yêu cầu." });
+        }
+
+        if (!string.IsNullOrWhiteSpace(userId) &&
+            !string.Equals(user.Id, userId, StringComparison.Ordinal))
+        {
+            return StatusCode(403, new { status = false, message = "Token không thuộc về user được yêu cầu." });
+        }
+
+        var data = new
+        {
+            fullName = user.FullName,
+            userName = user.UserName,
+            address = user.Address,    
+            email = user.Email,
+            sdt = user.PhoneNumber 
+        };
+
+        return Ok(new { status = true, data });
+    }
+    [Authorize]
+    [HttpPut("update-me")]
+    public async Task<IActionResult> UpdateMe(
+    [FromBody] UpdateProfileRequest request,
+    [FromQuery] string? userName = null,
+    [FromQuery] string? userId = null)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(new
+            {
+                status = false,
+                message = "Dữ liệu không hợp lệ.",
+                errors = ModelState
+                    .Where(kv => kv.Value?.Errors?.Count > 0)
+                    .ToDictionary(
+                        kv => kv.Key,
+                        kv => kv.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+                    )
+            });
+        }
+
+        var tokenUserId = User.FindFirstValue(ClaimTypes.NameIdentifier)
+                          ?? User.FindFirstValue("sub")
+                          ?? User.FindFirstValue("uid");
+        var tokenUserName = User.FindFirstValue(ClaimTypes.Name) ?? User.Identity?.Name;
+
+        ApplicationUser? user = null;
+        if (!string.IsNullOrWhiteSpace(tokenUserId))
+            user = await _userManager.FindByIdAsync(tokenUserId);
+        if (user == null && !string.IsNullOrWhiteSpace(tokenUserName))
+            user = await _userManager.FindByNameAsync(tokenUserName!);
+
+        if (user == null)
+            return Unauthorized(new { status = false, message = "Không lấy được người dùng từ token." });
+
+        if (!string.IsNullOrWhiteSpace(userName) &&
+            !string.Equals(user.UserName, userName, StringComparison.OrdinalIgnoreCase))
+            return StatusCode(403, new { status = false, message = "Token không thuộc về user được yêu cầu." });
+
+        if (!string.IsNullOrWhiteSpace(userId) &&
+            !string.Equals(user.Id, userId, StringComparison.Ordinal))
+            return StatusCode(403, new { status = false, message = "Token không thuộc về user được yêu cầu." });
+
+        var changed = false;
+
+        if (!string.IsNullOrWhiteSpace(request.FullName) && request.FullName!.Trim() != user.FullName)
+        {
+            user.FullName = request.FullName.Trim();
+            changed = true;
+        }
+
+        if (request.Address != null && request.Address != user.Address)
+        {
+            user.Address = request.Address?.Trim();
+            changed = true;
+        }
+
+        if (request.Sdt != null && request.Sdt != user.PhoneNumber)
+        {
+            user.PhoneNumber = request.Sdt?.Trim();
+            changed = true;
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.Email) && !string.Equals(request.Email, user.Email, StringComparison.OrdinalIgnoreCase))
+        {
+            var exists = await _userService.GetByEmailAsync(request.Email);
+            if (exists != null && exists.Id != user.Id)
+                return Conflict(new { status = false, message = "Email đã được sử dụng bởi tài khoản khác." });
+
+            var setEmail = await _userManager.SetEmailAsync(user, request.Email!.Trim());
+            if (!setEmail.Succeeded)
+                return BadRequest(new { status = false, message = "Không thể cập nhật email.", errors = setEmail.Errors });
+
+            changed = true;
+        }
+
+        if (!changed)
+        {
+            return Ok(new
+            {
+                status = true,
+                message = "Không có thay đổi.",
+                data = new
+                {
+                    fullName = user.FullName,
+                    userName = user.UserName,
+                    address = user.Address,
+                    email = user.Email,
+                    sdt = user.PhoneNumber
+                }
+            });
+        }
+
+        var updated = await _userService.UpdateUserInfoAsync(user);
+        if (!updated)
+            return BadRequest(new { status = false, message = "Cập nhật thất bại." });
+
+        return Ok(new
+        {
+            status = true,
+            message = "Cập nhật thành công.",
+            data = new
+            {
+                fullName = user.FullName,
+                userName = user.UserName,
+                address = user.Address,
+                email = user.Email,
+                sdt = user.PhoneNumber
+            }
+        });
+    }
 }

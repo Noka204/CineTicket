@@ -47,6 +47,7 @@ namespace CineTicket.Repositories.Implementations
             return await _context.Ghes
                 .Where(g => g.MaPhong == maPhong)
                 .Include(g => g.MaPhongNavigation)
+                .ThenInclude(g => g.Rap)
                 .Include(g => g.Ves) // ✅ Thêm dòng này để lấy trạng thái vé
                 .AsNoTracking()
                 .ToListAsync();

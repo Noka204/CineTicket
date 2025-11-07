@@ -35,7 +35,7 @@ namespace CineTicket.Controllers
             var mapped = _mapper.Map<IEnumerable<VeDTO>>(result);
             return Ok(new { status = true, message = "Lấy danh sách vé thành công", data = mapped });
         }
-
+        [Authorize]
         [HttpGet("tinh-gia-ve")]
         public async Task<IActionResult> TinhGiaVe(int maGhe, int maSuat)
         {
@@ -56,6 +56,7 @@ namespace CineTicket.Controllers
                 data = result
             });
         }
+        [Authorize]
         [HttpPost("hold")]
         public async Task<IActionResult> GiuGhe([FromBody] GiuGheRequest request)
         {
@@ -68,7 +69,26 @@ namespace CineTicket.Controllers
             if (!success) return StatusCode(statusCode, new { status = false, message });
             return StatusCode(statusCode, new { status = true, message, data });
         }
+        [Authorize]
+        [HttpGet("held-by-me")]
+        [Authorize]
+        public async Task<IActionResult> GetHeldByMe([FromQuery] int maSuat)
+        {
+            if (maSuat <= 0)
+                return BadRequest(new { status = false, message = "maSuat invalid" });
 
+            var userId =
+                User.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
+                User.FindFirst("UserId")?.Value ??
+                User.FindFirst("sub")?.Value;
+
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized(new { status = false, message = "No user id" });
+
+            var list = await _service.GetHeldByUserAsync(maSuat, userId);
+            return Ok(new { status = true, data = list }); // list: các ghế tôi đang giữ
+        }
+        [Authorize]
         [HttpPost("release")]
         public async Task<IActionResult> BoGiuGhe([FromBody] GiuGheRequest request)
         {
@@ -81,7 +101,8 @@ namespace CineTicket.Controllers
             if (!success) return NotFound(new { status = false, message });
             return Ok(new { status = true, message });
         }
-
+        
+        [Authorize]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] CreateVeRequest request)
         {

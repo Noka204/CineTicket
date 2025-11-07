@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using System.Linq;
-
 using CineTicket.DTOs;
 using CineTicket.Models;
 using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using System.Linq;
 
 namespace CineTicket.Controllers
 {
@@ -42,14 +42,38 @@ namespace CineTicket.Controllers
             return Ok(new { status = true, message = "Lấy suất chiếu thành công", data = mapped });
         }
 
+
         [HttpGet("get-by-phim/{maPhim:int}")]
-        public async Task<IActionResult> GetByPhimId(
+        [AllowAnonymous] // nếu public
+        [Produces("application/json")]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(object), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByPhim(
             int maPhim,
             [FromQuery] int? maRap,
             [FromQuery] int? maPhong,
-            [FromQuery] DateOnly? ngay) // parse từ "YYYY-MM-DD"
+            [FromQuery(Name = "ngay")] string? ngayStr // nhận string để tự parse
+        )
         {
-            var data = await _service.GetByPhimAsync(maPhim, maRap, maPhong, ngay);
+            if (maPhim <= 0)
+                return BadRequest(new { status = false, message = "maPhim không hợp lệ" });
+
+            DateOnly? ngay = null;
+            if (!string.IsNullOrWhiteSpace(ngayStr))
+            {
+                if (DateOnly.TryParseExact(ngayStr.Trim(), "yyyy-MM-dd",
+                        CultureInfo.InvariantCulture, DateTimeStyles.None, out var d))
+                {
+                    ngay = d;
+                }
+                else
+                {
+                    return BadRequest(new { status = false, message = "Tham số 'ngay' phải dạng yyyy-MM-dd" });
+                }
+            }
+
+            var data = await _service.GetByPhimIdAsync(maPhim, maRap, maPhong, ngay);
             return Ok(new { status = true, message = "OK", data });
         }
 

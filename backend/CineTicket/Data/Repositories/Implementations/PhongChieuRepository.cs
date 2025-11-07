@@ -25,6 +25,7 @@ namespace CineTicket.Repositories.Implementations
         public async Task<PhongChieu?> GetByIdAsync(int id)
         {
             return await _context.PhongChieus
+                .Include(p => p.Rap)
                 .Include(p => p.Ghes)
                 .Include(p => p.SuatChieus)
                 .FirstOrDefaultAsync(p => p.MaPhong == id);
@@ -57,7 +58,7 @@ namespace CineTicket.Repositories.Implementations
         public Task<List<PhongChieu>> GetByRapAsync(int maRap)
             => _context.PhongChieus
                 .AsNoTracking()
-                .Include(p => p.Raps)
+                .Include(p => p.Rap)
                 .Where(p => p.MaRap == maRap)
                 .OrderBy(p => p.TenPhong)
                 .ToListAsync();

@@ -16,6 +16,8 @@ public partial class SuatChieu
     public DateTime? ThoiGianKetThuc { get; set; }
 
     public DateOnly? NgayChieu { get; set; }
+    public int? MaRap { get; set; }
+    public virtual Rap? Rap { get; set; }
 
     public string? GioChieu { get; set; }
     public virtual Phim? MaPhimNavigation { get; set; }

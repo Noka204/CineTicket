@@ -8,5 +8,6 @@
         public DateTime? ThoiGianKetThuc { get; set; }
         public DateOnly? NgayChieu { get; set; }
         public string? GioChieu { get; set; }
+        public int? MaRap { get; set; }
     }
 }

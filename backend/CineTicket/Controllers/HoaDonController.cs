@@ -64,6 +64,7 @@ public class HoaDonController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateHoaDonDTO request)
     {
@@ -120,4 +121,16 @@ public class HoaDonController : ControllerBase
 
         return Ok(new { status = true, message = "Xoá hóa đơn thành công" });
     }
+    [Authorize]
+    [HttpGet("my/paid-movies")]
+    public async Task<IActionResult> MyPaidMovies([FromQuery] int skip = 0, [FromQuery] int take = 8)
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (string.IsNullOrEmpty(userId))
+            return Unauthorized(new { status = false, message = "Không xác định được người dùng" });
+
+        var (total, items) = await _hoaDonService.GetMyPaidMoviesAsync(userId, skip, take);
+        return Ok(new { status = true, data = new { total, items } });
+    }
+
 }

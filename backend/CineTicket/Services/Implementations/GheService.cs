@@ -32,9 +32,9 @@ namespace CineTicket.Services.Implementations
         {
             return await _gheRepo.GetGheTrangThaiAsync(maPhong,maSuatChieu);
         }
-        public Task GetByPhongAsync(int maPhong)
+        public async Task<IEnumerable<Ghe>> GetByPhongAsync(int maPhong)
         {
-            return _gheRepo.GetAllAsync().ContinueWith(t => t.Result.Where(g => g.MaPhong == maPhong));
+            return await _gheRepo.GetByPhongAsync(maPhong); // ✅
         }
         public Task<Ghe> CreateAsync(Ghe ghe) => _gheRepo.CreateAsync(ghe);
         public Task<bool> UpdateAsync(Ghe ghe) => _gheRepo.UpdateAsync(ghe);

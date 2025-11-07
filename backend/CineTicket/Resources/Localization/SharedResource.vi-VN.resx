@@ -1,0 +1,540 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error_Movies" xml:space="preserve">
+    <value>Không thể tải danh sách phim.</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Xin chào</value>
+  </data>
+  <data name="Hero_CTA_ViewMovies" xml:space="preserve">
+    <value>Xem Phim</value>
+  </data>
+  <data name="Hero_Subtitle" xml:space="preserve">
+    <value>Khám phá những bộ phim mới nhất</value>
+  </data>
+  <data name="Hero_Title" xml:space="preserve">
+    <value>Trải Nghiệm Điện Ảnh Đỉnh Cao</value>
+  </data>
+  <data name="Label_Cinema" xml:space="preserve">
+    <value>Rạp</value>
+  </data>
+  <data name="Label_City" xml:space="preserve">
+    <value>Thành phố</value>
+  </data>
+  <data name="Label_ShowDate" xml:space="preserve">
+    <value>Ngày chiếu (29 ngày tới)</value>
+  </data>
+  <data name="Link_ViewDetail" xml:space="preserve">
+    <value>Xem chi tiết</value>
+  </data>
+  <data name="Loading_Movies" xml:space="preserve">
+    <value>Đang tải danh sách phim…</value>
+  </data>
+  <data name="Modal_Close_Aria" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="NoData_Movies" xml:space="preserve">
+    <value>Không có dữ liệu phim.</value>
+  </data>
+  <data name="Page_Title" xml:space="preserve">
+    <value>Danh sách Phim</value>
+  </data>
+  <data name="Label_RoomShow" xml:space="preserve">
+    <value>Phòng &amp; Suất</value>
+  </data>
+  <data name="Section_Movies_Title" xml:space="preserve">
+    <value>Phim Đang Chiếu</value>
+  </data>
+  <data name="Loading_Cities" xml:space="preserve">
+    <value>Đang tải thành phố…</value>
+  </data>
+  <data name="NoData_Cities" xml:space="preserve">
+    <value>Không có danh sách thành phố.</value>
+  </data>
+  <data name="Loading_Cinemas" xml:space="preserve">
+    <value>Đang tải rạp…</value>
+  </data>
+  <data name="NoData_Cinemas" xml:space="preserve">
+    <value>Không có rạp.</value>
+  </data>
+  <data name="Info_MissingFilters" xml:space="preserve">
+    <value>Thiếu thông tin (ngày/thành phố/rạp).</value>
+  </data>
+  <data name="Loading_Showtimes" xml:space="preserve">
+    <value>Đang tải suất chiếu…</value>
+  </data>
+  <data name="NoData_Showtimes" xml:space="preserve">
+    <value>Không có suất chiếu.</value>
+  </data>
+  <data name="Error_Showtimes" xml:space="preserve">
+    <value>Lỗi tải suất chiếu.</value>
+  </data>
+  <data name="NoData_Cities_Alt" xml:space="preserve">
+    <value>Không có dữ liệu thành phố.</value>
+  </data>
+  <data name="Movie_DefaultTitle" xml:space="preserve">
+    <value>Phim</value>
+  </data>
+  <data name="Poster_Alt" xml:space="preserve">
+    <value>poster</value>
+  </data>
+  <data name="Nav_Home" xml:space="preserve">
+    <value>Trang chủ</value>
+  </data>
+  <data name="Nav_Movies" xml:space="preserve">
+    <value>Phim</value>
+  </data>
+  <data name="Nav_Theaters" xml:space="preserve">
+    <value>Rạp</value>
+  </data>
+  <data name="Nav_Contact" xml:space="preserve">
+    <value>Liên hệ</value>
+  </data>
+  <data name="Nav_Admin" xml:space="preserve">
+    <value>Admin Control</value>
+  </data>
+  <data name="Footer_Desc" xml:space="preserve">
+    <value>Hệ thống rạp chiếu phim hàng đầu Việt Nam với công nghệ tiên tiến và dịch vụ chất lượng cao.</value>
+  </data>
+  <data name="Footer_Contact_Title" xml:space="preserve">
+    <value>Liên Hệ</value>
+  </data>
+  <data name="Footer_Hours_Title" xml:space="preserve">
+    <value>Giờ Hoạt Động</value>
+  </data>
+  <data name="Footer_Address" xml:space="preserve">
+    <value>📍 HUTECH Khu E, Q.Thủ Đức, TP.HCM</value>
+  </data>
+  <data name="Footer_Hours_Week" xml:space="preserve">
+    <value>Thứ 2 - Chủ Nhật: 8:00 - 23:00</value>
+  </data>
+  <data name="Footer_Hours_Holiday" xml:space="preserve">
+    <value>Ngày lễ: 9:00 - 22:00</value>
+  </data>
+  <data name="Footer_Copyright_Tpl" xml:space="preserve">
+    <value>Tất cả quyền được bảo lưu.</value>
+  </data>
+  <data name="Button_BuyTicket" xml:space="preserve">
+    <value>Mua vé</value>
+  </data>
+  <data name="Detail_Director" xml:space="preserve">
+    <value>Đạo diễn</value>
+  </data>
+  <data name="Detail_Cast" xml:space="preserve">
+    <value>Diễn viên</value>
+  </data>
+  <data name="Detail_Language" xml:space="preserve">
+    <value>Ngôn ngữ</value>
+  </data>
+  <data name="Detail_Duration" xml:space="preserve">
+    <value>Thời lượng</value>
+  </data>
+  <data name="Detail_Duration_MinUnit" xml:space="preserve">
+    <value>phút</value>
+  </data>
+  <data name="Detail_ReleaseDate" xml:space="preserve">
+    <value>Khởi chiếu</value>
+  </data>
+  <data name="Detail_Genres" xml:space="preserve">
+    <value>Thể loại</value>
+  </data>
+  <data name="Detail_Rating" xml:space="preserve">
+    <value>Phân loại</value>
+  </data>
+  <data name="Detail_Synopsis" xml:space="preserve">
+    <value>Nội dung</value>
+  </data>
+  <data name="Detail_ViewTrailer" xml:space="preserve">
+    <value>Xem trailer</value>
+  </data>
+  <data name="Detail_BookNow" xml:space="preserve">
+    <value>Đặt vé</value>
+  </data>
+  <data name="Detail_NoTrailer" xml:space="preserve">
+    <value>Chưa có trailer</value>
+  </data>
+  <data name="Trailer_Title" xml:space="preserve">
+    <value>Trailer</value>
+  </data>
+  <data name="Trailer_Close" xml:space="preserve">
+    <value>Đóng</value>
+  </data>
+  <data name="Trailer_Loading" xml:space="preserve">
+    <value>Đang tải trailer…</value>
+  </data>
+  <data name="Nav_Language" xml:space="preserve">
+    <value>Ngôn Ngữ</value>
+  </data>
+  <data name="Seat_Page_Title" xml:space="preserve">
+    <value>Bước 2 Chọn ghế</value>
+  </data>
+  <data name="Seat_Legend_Free" xml:space="preserve">
+    <value>Trống</value>
+  </data>
+  <data name="Seat_Legend_Selected" xml:space="preserve">
+    <value>Đã chọn</value>
+  </data>
+  <data name="Seat_Legend_BookedHeld" xml:space="preserve">
+    <value>Đã đặt hoặc giữ</value>
+  </data>
+  <data name="Seat_Screen_Label" xml:space="preserve">
+    <value>Màn hình</value>
+  </data>
+  <data name="Loading_Seats" xml:space="preserve">
+    <value>Đang tải ghế…</value>
+  </data>
+  <data name="Seat_Error_NoSeats" xml:space="preserve">
+    <value>Không có ghế khả dụng</value>
+  </data>
+  <data name="Seat_Error_Server" xml:space="preserve">
+    <value>Lỗi kết nối máy chủ</value>
+  </data>
+  <data name="Sum_Subtotal_Label" xml:space="preserve">
+    <value>Tổng tạm tính</value>
+  </data>
+  <data name="Sum_Total_Label" xml:space="preserve">
+    <value>Tổng cộng</value>
+  </data>
+  <data name="Seat_Count_Label" xml:space="preserve">
+    <value>Đã chọn {n} ghế</value>
+  </data>
+  <data name="Seat_ItemBreakdown_Format" xml:space="preserve">
+    <value>Ghế {label} – {price}</value>
+  </data>
+  <data name="Btn_Back" xml:space="preserve">
+    <value>Quay lại</value>
+  </data>
+  <data name="Btn_Next_Snacks" xml:space="preserve">
+    <value>Tiếp — Bắp nước</value>
+  </data>
+  <data name="Lang_Vietnamese" xml:space="preserve">
+    <value>Tiếng Việt</value>
+  </data>
+  <data name="Lang_English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Lang_French" xml:space="preserve">
+    <value>French</value>
+  </data>
+  <data name="BN_Page_Title" xml:space="preserve">
+    <value>Bước 3: Chọn bắp nước</value>
+  </data>
+  <data name="BN_Loading_Combos" xml:space="preserve">
+    <value>Đang tải combo…</value>
+  </data>
+  <data name="Hiện chưa có combo." xml:space="preserve">
+    <value>Hiện chưa có combo.</value>
+  </data>
+  <data name="BN_Fetch_Failed" xml:space="preserve">
+    <value>Chưa chọn combo nào</value>
+  </data>
+  <data name="BN_Total_Label" xml:space="preserve">
+    <value>Tổng combo</value>
+  </data>
+  <data name="BN_Price_Label" xml:space="preserve">
+    <value>Giá</value>
+  </data>
+  <data name="BN_Alert_NoSeats" xml:space="preserve">
+    <value>Bạn chưa chọn ghế.</value>
+  </data>
+  <data name="Combo_Page_Title" xml:space="preserve">
+    <value>CineTicket • Bước 3: Chọn bắp nước</value>
+  </data>
+  <data name="BN_Heading" xml:space="preserve">
+    <value>🍿 Bước 3: Chọn bắp nước</value>
+  </data>
+  <data name="Combo_Loading" xml:space="preserve">
+    <value>Đang tải combo…</value>
+  </data>
+  <data name="BN_Empty_List" xml:space="preserve">
+    <value>Hiện chưa có combo.</value>
+  </data>
+  <data name="Qty_Decrease_Aria" xml:space="preserve">
+    <value>Giảm </value>
+  </data>
+  <data name="Qty_Increase_Aria" xml:space="preserve">
+    <value>Tăng</value>
+  </data>
+  <data name="BN_Summary_None" xml:space="preserve">
+    <value>Chưa chọn combo nào</value>
+  </data>
+  <data name="Combo_Summary_TotalLabel" xml:space="preserve">
+    <value> Tổng combo </value>
+  </data>
+  <data name="BN_Next_Checkout" xml:space="preserve">
+    <value>Tiếp — Thanh toán</value>
+  </data>
+  <data name="Msg_MustSelectSeatFirst" xml:space="preserve">
+    <value>Bạn chưa chọn ghế.</value>
+  </data>
+  <data name="Combo_Load_Failed" xml:space="preserve">
+    <value>Không tải được combo.</value>
+  </data>
+  <data name="BN_ItemLine_Format" xml:space="preserve">
+    <value>{name} × {qty}</value>
+  </data>
+  <data name="Checkout_Page_Title" xml:space="preserve">
+    <value>CineTicket • Thanh toán</value>
+  </data>
+  <data name="Checkout_Heading" xml:space="preserve">
+    <value>Thanh toán</value>
+  </data>
+  <data name="Checkout_PayNow_Button" xml:space="preserve">
+    <value> Thanh toán ngay</value>
+  </data>
+  <data name="Checkout_SelectedTickets_Heading" xml:space="preserve">
+    <value>Vé đã chọn</value>
+  </data>
+  <data name="Checkout_Combo_Heading" xml:space="preserve">
+    <value>Combo</value>
+  </data>
+  <data name="Checkout_TotalToPay_Label" xml:space="preserve">
+    <value>Tổng thanh toán</value>
+  </data>
+  <data name="Label_Room" xml:space="preserve">
+    <value>Phòng</value>
+  </data>
+  <data name="Label_Showtime" xml:space="preserve">
+    <value>Suất chiếu</value>
+  </data>
+  <data name="Auth_Login_Required" xml:space="preserve">
+    <value>Vui lòng đăng nhập trước khi đặt vé.</value>
+  </data>
+  <data name="Error_Missing_Session" xml:space="preserve">
+    <value>Thiếu mã suất (maSuat).</value>
+  </data>
+  <data name="Error_NoInvoiceId" xml:space="preserve">
+    <value>Không nhận được mã hóa đơn (maHd).</value>
+  </data>
+  <data name="Error_InvalidAmount" xml:space="preserve">
+    <value>Số tiền thanh toán không hợp lệ.</value>
+  </data>
+  <data name="Error_Booking_Generic" xml:space="preserve">
+    <value>Có lỗi khi đặt vé. Vui lòng thử lại.</value>
+  </data>
+  <data name="Loading_Processing" xml:space="preserve">
+    <value>Đang xử lý…</value>
+  </data>
+  <data name="Btn_Retry" xml:space="preserve">
+    <value>Thử lại</value>
+  </data>
+  <data name="Payment_OrderInfo_Tpl" xml:space="preserve">
+    <value>Thanh toán vé phim — HĐ {orderId}</value>
+  </data>
+  <data name="User_Default_FullName" xml:space="preserve">
+    <value>Khách hàng</value>
+  </data>
+  <data name="Error_Missing_ShowtimeInfo" xml:space="preserve">
+    <value>Thiếu thông tin suất chiếu. Vui lòng chọn lại.</value>
+  </data>
+  <data name="Nav_Profile" xml:space="preserve">
+    <value>Tài khoản</value>
+  </data>
+  <data name="Nav_BookingHistory" xml:space="preserve">
+    <value>Lịch sử đặt vé</value>
+  </data>
+  <data name="Nav_Promotions" xml:space="preserve">
+    <value>Khuyến mãi</value>
+  </data>
+  <data name="Profile_Page_Title" xml:space="preserve">
+    <value>CineTicket • Tài khoản</value>
+  </data>
+  <data name="Profile_Heading" xml:space="preserve">
+    <value>Thông tin cá nhân</value>
+  </data>
+  <data name="History_Page_Title" xml:space="preserve">
+    <value>CineTicket • Lịch sử đặt vé</value>
+  </data>
+  <data name="History_Heading" xml:space="preserve">
+    <value>Lịch sử đặt vé</value>
+  </data>
+  <data name="History_Empty" xml:space="preserve">
+    <value>Bạn chưa có giao dịch nào.</value>
+  </data>
+  <data name="History_Loading" xml:space="preserve">
+    <value>Đang tải lịch sử…</value>
+  </data>
+  <data name="History_Load_Failed" xml:space="preserve">
+    <value>Không tải được lịch sử đặt vé.</value>
+  </data>
+  <data name="History_InvoiceLine_Tpl" xml:space="preserve">
+    <value>Mã HĐ: #{id} • Ngày lập: {date}</value>
+  </data>
+  <data name="History_Showtime_Line" xml:space="preserve">
+    <value>Giờ chiếu: {time}</value>
+  </data>
+  <data name="History_TotalPaid_Label" xml:space="preserve">
+    <value>Tổng thanh toán</value>
+  </data>
+  <data name="Promo_Page_Title" xml:space="preserve">
+    <value>CineTicket • Khuyến mãi</value>
+  </data>
+  <data name="Promo_Heading" xml:space="preserve">
+    <value>Khuyến mãi</value>
+  </data>
+  <data name="Btn_Edit" xml:space="preserve">
+    <value>Sửa</value>
+  </data>
+  <data name="Btn_Save" xml:space="preserve">
+    <value>Lưu</value>
+  </data>
+  <data name="Btn_Cancel" xml:space="preserve">
+    <value>Hủy</value>
+  </data>
+  <data name="Pager_Prev" xml:space="preserve">
+    <value>Trước</value>
+  </data>
+  <data name="Pager_PageInfo_Tpl" xml:space="preserve">
+    <value>Trang {p}/{n}</value>
+  </data>
+  <data name="Label_FullName" xml:space="preserve">
+    <value>Họ và tên</value>
+  </data>
+  <data name="Label_UserName" xml:space="preserve">
+    <value>Tên đăng nhập</value>
+  </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Label_Phone" xml:space="preserve">
+    <value>Số điện thoại</value>
+  </data>
+  <data name="Label_Address" xml:space="preserve">
+    <value>Địa chỉ</value>
+  </data>
+  <data name="Label_InvoiceId" xml:space="preserve">
+    <value>Mã hóa đơn</value>
+  </data>
+  <data name="Label_PaymentMethod" xml:space="preserve">
+    <value>Hình thức thanh toán</value>
+  </data>
+  <data name="Loading_Profile" xml:space="preserve">
+    <value>Đang tải thông tin…</value>
+  </data>
+  <data name="Error_Profile_Load" xml:space="preserve">
+    <value>Không tải được thông tin người dùng.</value>
+  </data>
+  <data name="Profile_Update_Success" xml:space="preserve">
+    <value>Cập nhật thành công.</value>
+  </data>
+  <data name="Profile_Update_Failed" xml:space="preserve">
+    <value>Cập nhật thất bại.</value>
+  </data>
+</root>

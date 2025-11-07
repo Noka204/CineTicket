@@ -10,5 +10,6 @@ namespace CineTicket.Services.Interfaces
         Task<IEnumerable<HoaDon>> GetAllAsync();
         Task<bool> UpdateAsync(UpdateHoaDonDTO dto);
         Task<bool> DeleteAsync(int id);
+        Task<(int total, List<MyPaidMovieItemDto> items)> GetMyPaidMoviesAsync(string userId, int skip, int take);
     }
 }

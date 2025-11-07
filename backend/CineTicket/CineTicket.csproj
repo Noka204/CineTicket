@@ -8,7 +8,9 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="AWSSDK.Core" Version="4.0.1.3" />
     <PackageReference Include="ClosedXML" Version="0.105.0" />
+    <PackageReference Include="Google.Cloud.Translate.V3" Version="3.9.0" />
     <PackageReference Include="MailKit" Version="4.13.0" />
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
@@ -33,8 +35,14 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\Images\Banner\" />
+    <Folder Include="wwwroot\Images\BapNuoc\" />
     <Folder Include="wwwroot\Images\Poster\" />
-    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Localization\SharedResource.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

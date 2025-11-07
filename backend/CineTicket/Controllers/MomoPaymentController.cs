@@ -2,7 +2,7 @@
 using CineTicket.Data;
 using CineTicket.Models.Momo;
 using CineTicket.Models.Order;
-using CineTicket.Services;
+using CineTicket.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

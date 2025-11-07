@@ -150,7 +150,7 @@ namespace CineTicket.Services.Implementations
                 tongTien += donGia;
 
                 // cập nhật trạng thái vé
-                v.TrangThai = "DaDat";
+                v.TrangThai = "TamGiu";
             }
 
             // Bắp nước
@@ -186,5 +186,43 @@ namespace CineTicket.Services.Implementations
 
             return hd;
         }
+        public async Task<(int total, List<MyPaidMovieItemDto> items)> GetMyPaidMoviesAsync(
+    string userId, int skip, int take)
+        {
+            var baseQuery = _db.HoaDons
+                .AsNoTracking()
+                .Where(h => h.ApplicationUserId == userId
+                         && (h.TrangThai == "Đã thanh toán" || h.TrangThai == "Paid" || h.TrangThai == "Da thanh toan"));
+
+            var total = await baseQuery.CountAsync();
+
+            var query =
+                from h in baseQuery
+                join s in _db.SuatChieus.AsNoTracking() on h.MaSuat equals s.MaSuat into sj
+                from s in sj.DefaultIfEmpty()
+                orderby h.NgayLap descending
+                select new MyPaidMovieItemDto
+                {
+                    MaHd = h.MaHd,
+                    NgayLap = h.NgayLap,
+                    HinhThucThanhToan = h.HinhThucThanhToan,
+                    TongTien = h.TongTien,
+
+                    MaPhim = s != null && s.MaPhim.HasValue ? s.MaPhim.Value : 0,
+                    TenPhim = s != null && s.MaPhimNavigation != null ? s.MaPhimNavigation.TenPhim : null,
+                    Poster = s != null && s.MaPhimNavigation != null ? s.MaPhimNavigation.Poster : null,
+                    ThoiGianBatDau = s != null ? s.ThoiGianBatDau : null,
+                    GioChieu = s != null ? s.GioChieu : null
+                };
+
+            var items = await query
+                .Skip(skip < 0 ? 0 : skip)
+                .Take(take <= 0 ? 8 : (take > 50 ? 50 : take))
+                .ToListAsync();
+
+            return (total, items);
+        }
+
     }
+
 }
