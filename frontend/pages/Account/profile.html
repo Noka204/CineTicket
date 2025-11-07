@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title data-i18n="Profile_Page_Title">CineTicket • Tài khoản</title>
+
+    <link rel="stylesheet" href="../../assets/css/Phim.css" />
+
+    <style>
+      :root {
+        --header-h: 72px;
+        --border: rgba(255, 255, 255, 0.1);
+        --card: rgba(255, 255, 255, 0.06);
+        --muted: #a8b3cf;
+        --accent: #34d399;
+        --accent-2: #10b981;
+      }
+      html {
+        scroll-padding-top: var(--header-h);
+      }
+      body {
+        margin: 0;
+        background: #0f172a;
+        color: #e5e7eb;
+        font-family: Segoe UI, Tahoma, Arial, sans-serif;
+      }
+
+      /* ===== Header (đồng bộ) ===== */
+      .site-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.9);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .site-header .nav.container {
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-inline: clamp(14px, 4vw, 28px) !important;
+        height: var(--header-h);
+        min-height: var(--header-h);
+      }
+      .site-header .nav.shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 24px;
+        height: var(--header-h);
+        min-height: var(--header-h);
+        max-width: 100%;
+        width: 100%;
+        padding-inline: clamp(14px, 4vw, 28px);
+      }
+      #header-spacer {
+        height: 0 !important;
+      }
+      .site-header .nav-links {
+        overflow: visible !important;
+      }
+
+      /* ===== Layout ===== */
+      .container {
+        max-width: 1180px;
+        margin: 24px auto 48px;
+        padding: 0 18px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 280px 1fr;
+        gap: 18px;
+      }
+      @media (max-width: 960px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px 16px 14px;
+        backdrop-filter: blur(10px);
+      }
+      .card h2 {
+        margin: 6px 0 12px 0;
+        font-size: 1.25rem;
+      }
+      .muted {
+        color: var(--muted);
+      }
+
+      /* Sidebar */
+      .sidebar .avatar {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        font-weight: 800;
+      }
+      .menu {
+        margin: 12px 0 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 6px;
+      }
+      .menu a {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 12px;
+        color: #e5e7eb;
+        text-decoration: none;
+        border: 1px solid transparent;
+      }
+      .menu a:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+      }
+      .menu a.active {
+        background: rgba(52, 211, 153, 0.12);
+        border-color: rgba(52, 211, 153, 0.35);
+      }
+      .tag {
+        margin-left: auto;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        font-size: 0.85rem;
+      }
+
+      /* Sections */
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+
+      /* Info list */
+      .info-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .field {
+        border: 1px dashed rgba(255, 255, 255, 0.18);
+        border-radius: 12px;
+        padding: 10px 12px;
+        display: grid;
+        gap: 2px;
+      }
+      .field .label {
+        color: #cbd5e1;
+        font-size: 0.92rem;
+      }
+      .field .val {
+        font-weight: 700;
+      }
+
+      /* Editable */
+      .edit .val {
+        display: none;
+      }
+      .edit .editor {
+        display: block;
+      }
+      .editor {
+        display: none;
+      }
+      .editor input {
+        width: 100%;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        outline: none;
+        padding: 0 12px;
+      }
+      .editor input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px rgba(52, 211, 153, 0.2);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: #1a2336;
+        color: #fff;
+        text-decoration: none;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        background: #24304b;
+        border-color: #2e3f60;
+        transform: translateY(-1px);
+      }
+      .btn.primary {
+        border: none;
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        color: #072218;
+        font-weight: 800;
+      }
+      .btn.ghost {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+
+      .error,
+      .success {
+        padding: 12px;
+        border-radius: 12px;
+        margin-top: 8px;
+      }
+      .error {
+        border: 1px solid #8a2531;
+        background: #3b0f16;
+        color: #ffd0d5;
+      }
+      .success {
+        border: 1px solid #0f5d49;
+        background: #082e24;
+        color: #b6ffe7;
+      }
+      .loading {
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 120px;
+      }
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-bottom: 8px;
+      }
+
+      /* ===== Lịch sử giao dịch (1 cột dọc) ===== */
+      .history-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .invoice {
+        display: grid;
+        grid-template-columns: 88px 1fr;
+        gap: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 12px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      .poster {
+        width: 88px;
+        height: 120px;
+        border-radius: 10px;
+        background: #0b0b12 center/cover no-repeat;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .inv-title {
+        font-weight: 800;
+        margin: 0 0 2px 0;
+      }
+      .meta {
+        color: #cbd5e1;
+        font-size: 0.92rem;
+        line-height: 1.35;
+      }
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+      .chip {
+        font-size: 0.82rem;
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.06);
+      }
+      .chip.ok {
+        border-color: rgba(52, 211, 153, 0.35);
+        background: rgba(52, 211, 153, 0.12);
+        color: #caffea;
+      }
+      .pager {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- header -->
+    <div id="include-header"></div>
+
+    <main class="container">
+      <div class="grid">
+        <!-- ===== Sidebar ===== -->
+        <aside class="card sidebar">
+          <div style="display: flex; align-items: center; gap: 12px">
+            <div id="pfAvatar" class="avatar">U</div>
+            <div>
+              <div
+                class="muted"
+                style="font-size: 0.9rem"
+                data-i18n="Nav_Profile"
+              >
+                Tài khoản
+              </div>
+              <div id="pfName" style="font-weight: 800">Người dùng</div>
+            </div>
+          </div>
+
+          <ul class="menu" id="menu">
+            <li>
+              <a
+                href="#"
+                data-section="sec-info"
+                class="active"
+                data-i18n="Nav_Profile"
+                >Tài khoản</a
+              >
+            </li>
+            <li>
+              <a href="#" data-section="sec-history">
+                <span data-i18n="Nav_BookingHistory">Lịch sử đặt vé</span>
+                <span class="tag" id="tagHistory">0</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" data-section="sec-promo" data-i18n="Nav_Promotions"
+                >Khuyến mãi</a
+              >
+            </li>
+          </ul>
+        </aside>
+
+        <!-- ===== Content ===== -->
+        <section class="card">
+          <div class="toolbar">
+            <button id="btnEdit" class="btn" data-i18n="Btn_Edit">Sửa</button>
+            <button
+              id="btnSave"
+              class="btn primary"
+              style="display: none"
+              data-i18n="Btn_Save"
+            >
+              Lưu
+            </button>
+            <button
+              id="btnCancel"
+              class="btn ghost"
+              style="display: none"
+              data-i18n="Btn_Cancel"
+            >
+              Hủy
+            </button>
+          </div>
+
+          <!-- Info -->
+          <div id="sec-info" class="section active">
+            <h2 data-i18n="Profile_Heading">Thông tin cá nhân</h2>
+            <div id="msgBox" style="display: none"></div>
+
+            <div id="loadingInfo" class="loading" data-i18n="Loading_Profile">
+              Đang tải thông tin…
+            </div>
+
+            <div id="infoWrap" style="display: none">
+              <div class="info-list">
+                <div class="field" data-key="fullName">
+                  <div class="label" data-i18n="Label_FullName">Họ và tên</div>
+                  <div class="val" id="fullName">—</div>
+                  <div class="editor">
+                    <input
+                      id="fullName_inp"
+                      type="text"
+                      placeholder="Nhập họ tên"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="label" data-i18n="Label_UserName">
+                    Tên đăng nhập
+                  </div>
+                  <div class="val" id="userName">—</div>
+                </div>
+                <div class="field" data-key="email">
+                  <div class="label" data-i18n="Label_Email">Email</div>
+                  <div class="val" id="email">—</div>
+                  <div class="editor">
+                    <input
+                      id="email_inp"
+                      type="email"
+                      placeholder="name@example.com"
+                    />
+                  </div>
+                </div>
+                <div class="field" data-key="sdt">
+                  <div class="label" data-i18n="Label_Phone">Số điện thoại</div>
+                  <div class="val" id="sdt">—</div>
+                  <div class="editor">
+                    <input
+                      id="sdt_inp"
+                      type="tel"
+                      placeholder="Ví dụ: 0912345678"
+                    />
+                  </div>
+                </div>
+                <div class="field" data-key="address">
+                  <div class="label" data-i18n="Label_Address">Địa chỉ</div>
+                  <div class="val" id="address">—</div>
+                  <div class="editor">
+                    <input
+                      id="address_inp"
+                      type="text"
+                      placeholder="Số nhà, đường, phường/xã, quận/huyện"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- History -->
+          <div id="sec-history" class="section">
+            <h2 data-i18n="History_Heading">Lịch sử đặt vé</h2>
+            <div
+              id="historyLoading"
+              class="loading"
+              data-i18n="History_Loading"
+            >
+              Đang tải lịch sử…
+            </div>
+            <div
+              id="historyEmpty"
+              class="muted"
+              style="display: none"
+              data-i18n="History_Empty"
+            >
+              Bạn chưa có giao dịch nào.
+            </div>
+            <div
+              id="historyList"
+              class="history-list"
+              style="display: none"
+            ></div>
+
+            <div class="pager" id="historyPager" style="display: none">
+              <button class="btn" id="btnPrev" data-i18n="Pager_Prev">
+                Trước
+              </button>
+              <span class="muted" id="historyPageInfo">—</span>
+              <button class="btn" id="btnNext" data-i18n="Pager_Next">
+                Tiếp
+              </button>
+            </div>
+          </div>
+
+          <!-- Promo -->
+          <div id="sec-promo" class="section">
+            <h2 data-i18n="Promo_Heading">Khuyến mãi</h2>
+            <p class="muted">
+              Mã khuyến mãi, ưu đãi dành cho bạn sẽ hiển thị ở đây (đang phát
+              triển).
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- footer -->
+    <div id="include-footer"></div>
+
+    <!-- header auth js -->
+    <script defer src="../../assets/js/login.js"></script>
+
+    <script>
+      "use strict";
+
+      /* ===== Config & helpers ===== */
+      const BASE_URL = "https://localhost:7058";
+      const apiUrl = (p) =>
+        BASE_URL.replace(/\/+$/, "") + "/" + String(p).replace(/^\/+/, "");
+      const $ = (s, r = document) => r.querySelector(s);
+
+      const getToken = () =>
+        localStorage.getItem("token") || sessionStorage.getItem("token") || "";
+      const authHeaders = (extra = {}) => {
+        const t = getToken();
+        return {
+          Accept: "application/json",
+          ...(t ? { Authorization: "Bearer " + t } : {}),
+          ...extra,
+        };
+      };
+      async function fetchJson(url, opt = {}) {
+        const r = await fetch(url, opt);
+        let d = null;
+        try {
+          d = await r.json();
+        } catch {}
+        if (r.status === 401) {
+          const ret = encodeURIComponent(location.href);
+          location.href = `../Account/login.html?returnUrl=${ret}`;
+          return Promise.reject(new Error("Unauthorized"));
+        }
+        if (!r.ok || d?.status === false)
+          throw new Error(d?.message || d?.error || `HTTP ${r.status}`);
+        return d;
+      }
+
+      // Chuẩn hoá ảnh giống select-seats
+      function absUrl(u) {
+        if (!u) return "";
+        if (/^https?:\/\//i.test(u)) return u;
+        u = String(u).replace(/^\/?wwwroot\//i, "");
+        if (!/^\/?Images\//i.test(u)) u = "Images/" + u.replace(/^\/+/, "");
+        return `${BASE_URL.replace(/\/+$/, "")}/${u.replace(/^\/+/, "")}`;
+      }
+      const numberVN = (n) => {
+        try {
+          return Number(n).toLocaleString("vi-VN");
+        } catch {
+          return n;
+        }
+      };
+      const fmtDateTimeVN = (s) =>
+        !s
+          ? "—"
+          : (() => {
+              try {
+                return new Date(s).toLocaleString("vi-VN", { hour12: false });
+              } catch {
+                return s;
+              }
+            })();
+      const fmtDateVN = (s) =>
+        !s
+          ? ""
+          : (() => {
+              try {
+                return new Date(s).toLocaleDateString("vi-VN", {
+                  hour12: false,
+                });
+              } catch {
+                return s;
+              }
+            })();
+
+      /* ===== JWT helpers ===== */
+      function parseJwt(token) {
+        try {
+          const b = token.split(".")[1];
+          if (!b) return null;
+          let s = b.replace(/-/g, "+").replace(/_/g, "/");
+          while (s.length % 4) s += "=";
+          const j = decodeURIComponent(
+            atob(s)
+              .split("")
+              .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+              .join("")
+          );
+          return JSON.parse(j);
+        } catch {
+          return null;
+        }
+      }
+      function getClaim(o, keys) {
+        if (!o) return null;
+        for (const k of keys)
+          if (Object.prototype.hasOwnProperty.call(o, k) && o[k] != null)
+            return o[k];
+        return null;
+      }
+      function getUserIdFromToken(t) {
+        const p = parseJwt(t);
+        return getClaim(p, [
+          "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
+          "sub",
+          "UserId",
+          "unique_name",
+          "name",
+        ]);
+      }
+      function getUserNameFromToken(t) {
+        const p = parseJwt(t);
+        return (
+          getClaim(p, [
+            "preferred_username",
+            "unique_name",
+            "name",
+            "UserName",
+            "username",
+          ]) || ""
+        );
+      }
+
+      /* ===== i18n (server-driven) ===== */
+      const CULT = { vi: "vi", en: "en", fr: "fr" };
+      let curAlias = localStorage.getItem("lang") || "vi";
+      const I18N_CACHE = {};
+      async function i18nLoad(alias) {
+        const a = CULT[alias] ? alias : "vi";
+        if (I18N_CACHE[a]) return I18N_CACHE[a];
+        try {
+          const url = new URL(`${BASE_URL}/api/i18n`);
+          url.searchParams.set("lang", a);
+          url.searchParams.set("_", Date.now());
+          const res = await fetch(url, {
+            credentials: "include",
+            cache: "no-store",
+          });
+          const pack = res.ok ? await res.json() : {};
+          I18N_CACHE[a] = pack || {};
+        } catch {
+          I18N_CACHE[a] = {};
+        }
+        return I18N_CACHE[a];
+      }
+      function t(key) {
+        const pack = I18N_CACHE[curAlias] || {};
+        const v = pack[key];
+        return typeof v === "string" ? v : key;
+      }
+      function tt(key, params = {}) {
+        const raw = t(key) || key;
+        return raw.replace(/\{(\w+)\}/g, (_, k) =>
+          params[k] != null ? String(params[k]) : `{${k}}`
+        );
+      }
+      function applyI18nToDom(root = document) {
+        root.querySelectorAll("[data-i18n]").forEach((el) => {
+          el.textContent = t(el.getAttribute("data-i18n"));
+        });
+        // <title>
+        const titleEl = document.querySelector("title[data-i18n]");
+        if (titleEl) document.title = t(titleEl.getAttribute("data-i18n"));
+        document.documentElement.lang = curAlias;
+      }
+      // đổi ngôn ngữ từ header
+      document.addEventListener("click", (e) => {
+        const langLink = e.target.closest("[data-set-lang]");
+        if (!langLink) return;
+        e.preventDefault();
+        const alias = langLink.getAttribute("data-set-lang");
+        curAlias = CULT[alias] ? alias : "vi";
+        localStorage.setItem("lang", curAlias);
+        fetch(
+          `${BASE_URL}/api/ping?lang=${encodeURIComponent(
+            curAlias
+          )}&_=${Date.now()}`,
+          { credentials: "include" }
+        ).catch(() => {});
+        i18nLoad(curAlias).then(() => {
+          applyI18nToDom(document);
+          updatePageTitle(getActiveSectionId()); // giữ tiêu đề đúng theo tab
+        });
+      });
+
+      /* ===== API ===== */
+      async function getMyProfile({ userId, userName }) {
+        const u = new URL(apiUrl("/api/Account/me"));
+        if (userId) u.searchParams.set("userId", userId);
+        if (userName) u.searchParams.set("userName", userName);
+        return await fetchJson(u.toString(), {
+          headers: authHeaders(),
+          cache: "no-store",
+        });
+      }
+      async function updateMyProfile({ userId, userName, payload }) {
+        const u = new URL(apiUrl("/api/Account/update-me"));
+        if (userId) u.searchParams.set("userId", userId);
+        if (userName) u.searchParams.set("userName", userName);
+        return await fetchJson(u.toString(), {
+          method: "PUT",
+          headers: authHeaders({ "Content-Type": "application/json" }),
+          body: JSON.stringify(payload),
+          cache: "no-store",
+        });
+      }
+      // lịch sử đã thanh toán
+      async function getMyPaidMovies({ skip = 0, take = 8 }) {
+        const u = new URL(apiUrl("/api/hoadon/my/paid-movies"));
+        u.searchParams.set("skip", String(skip));
+        u.searchParams.set("take", String(take));
+        return await fetchJson(u.toString(), {
+          headers: authHeaders(),
+          cache: "no-store",
+        });
+      }
+
+      /* ===== include header/footer ===== */
+      async function includeHTML(id, file) {
+        try {
+          const html = await fetch(`${file}?t=${Date.now()}`, {
+            cache: "no-store",
+          }).then((r) => r.text());
+          const host = document.getElementById(id);
+          if (host) {
+            host.innerHTML = html;
+            applyI18nToDom(host);
+          }
+          if (
+            id === "include-header" &&
+            typeof updateAuthButtons === "function"
+          )
+            setTimeout(updateAuthButtons, 60);
+        } catch (e) {
+          console.error("includeHTML error:", e);
+        }
+      }
+
+      /* ===== UI helpers ===== */
+      function showMsg(type, text) {
+        const box = $("#msgBox");
+        if (!box) return;
+        if (!text) {
+          box.style.display = "none";
+          box.textContent = "";
+          box.className = "";
+          return;
+        }
+        box.className = type === "success" ? "success" : "error";
+        box.textContent = text;
+        box.style.display = "block";
+      }
+      function renderInfo(d) {
+        $("#fullName").textContent = d.fullName || "—";
+        $("#userName").textContent = d.userName || "—";
+        $("#email").textContent = d.email || "—";
+        $("#sdt").textContent = d.sdt || "—";
+        $("#address").textContent = d.address || "—";
+
+        $("#fullName_inp").value = d.fullName || "";
+        $("#email_inp").value = d.email || "";
+        $("#sdt_inp").value = d.sdt || "";
+        $("#address_inp").value = d.address || "";
+
+        $("#pfName").textContent =
+          d.fullName || d.userName || t("User_Default_FullName");
+        $("#pfAvatar").textContent = String(d.fullName || d.userName || "U")
+          .charAt(0)
+          .toUpperCase();
+      }
+      function toggleEdit(on) {
+        const wrap = $("#infoWrap");
+        if (!wrap) return;
+        wrap.classList.toggle("edit", !!on);
+        $("#btnEdit").style.display = on ? "inline-flex" : "none";
+        $("#btnSave").style.display = on ? "inline-flex" : "none";
+        $("#btnCancel").style.display = on ? "inline-flex" : "none";
+      }
+      function validatePayload(p) {
+        const errs = [];
+        if (p.fullName && (p.fullName.length < 2 || p.fullName.length > 100))
+          errs.push("Họ tên phải 2–100 ký tự.");
+        if (p.email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!re.test(p.email)) errs.push("Email không hợp lệ.");
+        }
+        if (p.sdt) {
+          const re = /^\d{8,15}$/;
+          if (!re.test(p.sdt)) errs.push("Số điện thoại chỉ gồm 8–15 chữ số.");
+        }
+        if (p.address && p.address.length > 255)
+          errs.push("Địa chỉ tối đa 255 ký tự.");
+        return errs;
+      }
+
+      /* ===== Lịch sử (render + phân trang) ===== */
+      let HISTORY_SKIP = 0;
+      const HISTORY_TAKE = 8;
+      let HISTORY_TOTAL = 0;
+      let HISTORY_FIRST_LOAD = false;
+
+      function renderHistoryList(items) {
+        const list = $("#historyList");
+        list.innerHTML = "";
+        items.forEach((it) => {
+          const maHd = it.maHd ?? it.MaHd;
+          const ngay = it.ngayLap ?? it.NgayLap;
+          const ten = it.tenPhim ?? it.TenPhim ?? t("Movie_DefaultTitle");
+          const posterRaw = it.poster ?? it.Poster ?? "";
+          const posterUrl = posterRaw ? absUrl(posterRaw) : "";
+          const poster = posterUrl || "../../assets/images/default-poster.jpg";
+          const gio = it.gioChieu ?? it.GioChieu ?? "";
+          const tgbd = it.thoiGianBatDau ?? it.ThoiGianBatDau ?? null;
+          const method = it.hinhThucThanhToan ?? it.HinhThucThanhToan ?? "";
+          const tongTien = it.tongTien ?? it.TongTien ?? null;
+
+          const when = tgbd
+            ? fmtDateTimeVN(tgbd)
+            : gio
+            ? tt("History_Showtime_Line", { time: gio })
+            : "";
+
+          const el = document.createElement("div");
+          el.className = "invoice";
+          el.innerHTML = `
+            <div class="poster" style="background-image:url('${poster}')"></div>
+            <div>
+              <div class="inv-title">${ten}</div>
+              <div class="meta">${tt("History_InvoiceLine_Tpl", {
+                id: maHd,
+                date: fmtDateTimeVN(ngay),
+              })}</div>
+              <div class="meta">${when}</div>
+              <div class="chips">
+                ${method ? `<span class="chip">${method}</span>` : ""}
+                ${
+                  tongTien != null
+                    ? `<span class="chip ok">${t(
+                        "History_TotalPaid_Label"
+                      )}: ${numberVN(tongTien)}đ</span>`
+                    : ""
+                }
+              </div>
+            </div>`;
+          list.appendChild(el);
+        });
+      }
+      function updatePager() {
+        const pager = $("#historyPager"),
+          info = $("#historyPageInfo");
+        const prev = $("#btnPrev"),
+          next = $("#btnNext");
+        const page = Math.floor(HISTORY_SKIP / HISTORY_TAKE) + 1;
+        const pages = Math.max(1, Math.ceil(HISTORY_TOTAL / HISTORY_TAKE));
+        info.textContent = tt("Pager_PageInfo_Tpl", { p: page, n: pages });
+        prev.disabled = HISTORY_SKIP <= 0;
+        next.disabled = HISTORY_SKIP + HISTORY_TAKE >= HISTORY_TOTAL;
+        pager.style.display = HISTORY_TOTAL > HISTORY_TAKE ? "flex" : "none";
+      }
+      async function loadHistoryFirstTime() {
+        if (HISTORY_FIRST_LOAD) return;
+        HISTORY_FIRST_LOAD = true;
+        await loadHistory();
+      }
+      async function loadHistory() {
+        $("#historyLoading").style.display = "flex";
+        $("#historyEmpty").style.display = "none";
+        $("#historyList").style.display = "none";
+        try {
+          const data = await getMyPaidMovies({
+            skip: HISTORY_SKIP,
+            take: HISTORY_TAKE,
+          });
+          const total = Number(data?.data?.total ?? 0);
+          const items = Array.isArray(data?.data?.items) ? data.data.items : [];
+          HISTORY_TOTAL = total;
+
+          const tag = $("#tagHistory");
+          if (tag) tag.textContent = String(total);
+
+          if (!items.length) {
+            $("#historyEmpty").style.display = "block";
+          } else {
+            renderHistoryList(items);
+            $("#historyList").style.display = "grid";
+          }
+          updatePager();
+        } catch (e) {
+          console.error(e);
+          const empty = $("#historyEmpty");
+          empty.textContent = t("History_Load_Failed");
+          empty.style.display = "block";
+        } finally {
+          $("#historyLoading").style.display = "none";
+        }
+      }
+
+      /* ===== Page title theo tab ===== */
+      function getActiveSectionId() {
+        const el = document.querySelector(".section.active");
+        return el ? el.id : "sec-info";
+      }
+      function updatePageTitle(activeId) {
+        let key = "Profile_Page_Title";
+        if (activeId === "sec-history") key = "History_Page_Title";
+        else if (activeId === "sec-promo") key = "Promo_Page_Title";
+        const titleEl = document.querySelector("title[data-i18n]");
+        if (titleEl) {
+          titleEl.setAttribute("data-i18n", key);
+          document.title = t(key);
+        }
+      }
+
+      /* ===== Boot ===== */
+      document.addEventListener("DOMContentLoaded", async () => {
+        // i18n trước
+        await i18nLoad(curAlias);
+        applyI18nToDom(document);
+
+        // include header/footer
+        await includeHTML("include-header", "../../part/header.html");
+        await includeHTML("include-footer", "../../part/footer.html");
+
+        // auth
+        const token = getToken();
+        if (!token) {
+          const ret = encodeURIComponent(location.href);
+          location.href = `../Account/login.html?returnUrl=${ret}`;
+          return;
+        }
+        const userId = getUserIdFromToken(token) || "";
+        const userName = getUserNameFromToken(token) || "";
+
+        // load profile
+        try {
+          const json = await getMyProfile({ userId, userName });
+          renderInfo(json?.data || {});
+          $("#loadingInfo").style.display = "none";
+          $("#infoWrap").style.display = "block";
+        } catch (err) {
+          console.error(err);
+          $("#loadingInfo").style.display = "none";
+          showMsg("error", t("Error_Profile_Load"));
+        }
+
+        // prefetch tổng số lịch sử để hiển thị badge
+        try {
+          const pref = await getMyPaidMovies({ skip: 0, take: 1 });
+          const total = Number(pref?.data?.total ?? 0);
+          const tag = $("#tagHistory");
+          if (tag) tag.textContent = String(total);
+        } catch {}
+
+        // deep-link ?tab=history
+        try {
+          const params = new URLSearchParams(location.search);
+          if (params.get("tab") === "history") {
+            document
+              .querySelectorAll(".menu a")
+              .forEach((x) => x.classList.remove("active"));
+            const link = document.querySelector(
+              '.menu a[data-section="sec-history"]'
+            );
+            if (link) link.classList.add("active");
+            document
+              .querySelectorAll(".section")
+              .forEach((x) => x.classList.remove("active"));
+            $("#sec-history").classList.add("active");
+            updatePageTitle("sec-history");
+            await loadHistoryFirstTime();
+          } else {
+            updatePageTitle("sec-info");
+          }
+        } catch {
+          updatePageTitle("sec-info");
+        }
+
+        // menu switch
+        $("#menu").addEventListener("click", async (e) => {
+          const a = e.target.closest("a[data-section]");
+          if (!a) return;
+          e.preventDefault();
+          document
+            .querySelectorAll(".menu a")
+            .forEach((x) => x.classList.toggle("active", x === a));
+          document
+            .querySelectorAll(".section")
+            .forEach((x) =>
+              x.classList.toggle("active", x.id === a.dataset.section)
+            );
+          updatePageTitle(a.dataset.section);
+          if (a.dataset.section === "sec-history") await loadHistoryFirstTime();
+        });
+
+        // edit flow
+        $("#btnEdit").addEventListener("click", () => {
+          toggleEdit(true);
+          showMsg("", "");
+        });
+        $("#btnCancel").addEventListener("click", () => {
+          $("#fullName_inp").value =
+            $("#fullName").textContent.trim() === "—"
+              ? ""
+              : $("#fullName").textContent.trim();
+          $("#email_inp").value =
+            $("#email").textContent.trim() === "—"
+              ? ""
+              : $("#email").textContent.trim();
+          $("#sdt_inp").value =
+            $("#sdt").textContent.trim() === "—"
+              ? ""
+              : $("#sdt").textContent.trim();
+          $("#address_inp").value =
+            $("#address").textContent.trim() === "—"
+              ? ""
+              : $("#address").textContent.trim();
+          toggleEdit(false);
+          showMsg("", "");
+        });
+        $("#btnSave").addEventListener("click", async () => {
+          const payload = {
+            fullName: $("#fullName_inp").value.trim() || null,
+            email: $("#email_inp").value.trim() || null,
+            sdt: $("#sdt_inp").value.trim() || null,
+            address: $("#address_inp").value.trim() || null,
+          };
+          const errs = validatePayload(payload);
+          if (errs.length) {
+            showMsg("error", errs.join(" "));
+            return;
+          }
+          try {
+            const res = await updateMyProfile({ userId, userName, payload });
+            renderInfo(res?.data || {});
+            toggleEdit(false);
+            showMsg("success", t("Profile_Update_Success"));
+          } catch (err) {
+            console.error(err);
+            showMsg("error", t("Profile_Update_Failed"));
+          }
+        });
+
+        // pager events
+        $("#btnPrev").addEventListener("click", async () => {
+          if (HISTORY_SKIP <= 0) return;
+          HISTORY_SKIP = Math.max(0, HISTORY_SKIP - HISTORY_TAKE);
+          await loadHistory();
+        });
+        $("#btnNext").addEventListener("click", async () => {
+          if (HISTORY_SKIP + HISTORY_TAKE >= HISTORY_TOTAL) return;
+          HISTORY_SKIP = HISTORY_SKIP + HISTORY_TAKE;
+          await loadHistory();
+        });
+      });
+    </script>
+  </body>
+</html>

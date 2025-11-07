@@ -1,18 +1,64 @@
-<header>
-  <nav style="display: flex; justify-content: space-between; align-items: center;">
-    <a href="../Phim/index.html" class="logo">CineTicket</a>
+<header class="site-header" role="banner">
+  <nav class="nav container" aria-label="Main">
+    <a href="../../pages/Phim/index.html" class="logo">CineTicket</a>
 
-    <ul class="nav-links" style="list-style: none; display: flex; gap: 20px; margin: 0;">
-      <li><a href="../Phim/index.html">Trang chủ</a></li>
-      <li><a href="../Phim/detail.html">Phim</a></li>
-      <li><a href="#theaters">Rạp</a></li>
-      <li><a href="#footer">Liên hệ</a></li>
-      <li id="adminControlLink" style="display: none;"><a href="/frontend/pages/Admin/index.html">Admin Control</a></li>
+    <ul class="nav-links">
+      <li>
+        <a href="../../pages/Phim/index.html" data-i18n="Nav_Home">Trang chủ</a>
+      </li>
+      <li>
+        <a href="../../pages/Phim/detail.html" data-i18n="Nav_Movies">Phim</a>
+      </li>
+      <li id="adminControlLink" style="display: none">
+        <a href="/frontend/pages/Admin/index.html" data-i18n="Nav_Admin"
+          >Admin Control</a
+        >
+      </li>
+
+      <!-- NEW: Nav Ngôn ngữ (dropdown) -->
+      <li class="has-dropdown">
+        <button
+          class="nav-link dropdown-toggle"
+          aria-expanded="false"
+          aria-haspopup="true"
+          data-i18n="Nav_Language"
+        >
+          Ngôn ngữ
+        </button>
+        <ul class="dropdown" role="menu">
+          <li>
+            <a
+              href="#"
+              data-set-lang="vi"
+              role="menuitem"
+              data-i18n="Lang_Vietnamese"
+              >Tiếng Việt</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              data-set-lang="en"
+              role="menuitem"
+              data-i18n="Lang_English"
+              >English</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              data-set-lang="fr"
+              role="menuitem"
+              data-i18n="Lang_French"
+              >Français</a
+            >
+          </li>
+        </ul>
+      </li>
     </ul>
-    <!-- Thêm nút Đăng ký / Đăng nhập -->
-    <div class="auth-buttons" id="authButtons" style="display: flex; gap: 10px; align-items: center;"></div>
+
+    <div class="auth-buttons" id="authButtons"></div>
   </nav>
 </header>
-<script src="../../assets/js/login.js"></script>
-
-
+<!-- Spacer giữ lại nhưng set height:0 vì header dùng sticky -->
+<div id="header-spacer" aria-hidden="true"></div>

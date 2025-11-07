@@ -1,64 +1,39 @@
+
 /* ========= Config ========= */
 const BASE_URL = "https://localhost:7058";
 const API = {
-  phim: (id, lang) => {
-    const u = new URL(`${BASE_URL}/api/phim/get/${id}`);
-    if (lang) u.searchParams.set("lang", lang);
-    return u.toString();
-  },
+  phim: (id, lang) => `${BASE_URL}/api/phim/get/${id}?lang=${encodeURIComponent(lang||'vi')}`,
   cities: `${BASE_URL}/api/rap/get-cities`,
-  rapsByCity: (city) => `${BASE_URL}/api/rap/by-city?thanhPho=${encodeURIComponent(city)}`,
+  rapsByCity: (city) => `${BASE_URL}/api/rap/by-city?thanhPho=${encodeURIComponent(city||"")}`,
   suatByPhim: (phimId, params) => {
     const p = new URLSearchParams(params || {});
     return `${BASE_URL}/api/suatchieu/get-by-phim/${phimId}?${p.toString()}`;
-  },
-  i18n: (alias) => {
-    const u = new URL(`${BASE_URL}/api/i18n`);
-    u.searchParams.set("lang", alias);
-    return u.toString();
-  },
-  ping: (alias) => `${BASE_URL}/api/ping?lang=${encodeURIComponent(alias)}`
+  }
 };
-
 const $  = (s,r=document)=>r.querySelector(s);
 const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
-const authHeader = localStorage.getItem("token")
-  ? { Authorization: `Bearer ${localStorage.getItem("token")}` } : {};
-
-// giữ cách lấy ảnh như bạn đang dùng (không đổi quy ước)
-const absUrl = (u) => !u ? "" : (u.startsWith("http") ? u : `${BASE_URL}${u}`);
-
-/* ========= Latest-wins fetchers (Abort + no-store) ========= */
-function makeLatestFetcher(){
-  let ctl = null;
-  return async (input, init={})=>{
-    if (ctl) ctl.abort();
-    ctl = new AbortController();
-    const url = typeof input === 'string' ? input : input.toString();
-    const u = new URL(url, location.origin);
-    // chống cache cứng đầu
-    if (!u.searchParams.has('_')) u.searchParams.set('_', Date.now());
-    const res = await fetch(u, { ...init, signal: ctl.signal, cache: 'no-store' });
-    return res;
-  };
-}
-
-const fetchI18nLatest      = makeLatestFetcher();
-const fetchMovieLatest     = makeLatestFetcher();
-const fetchCitiesLatest    = makeLatestFetcher();
-const fetchRapsLatest      = makeLatestFetcher();
-const fetchShowtimesLatest = makeLatestFetcher();
+const authHeader = localStorage.getItem("token") ? { Authorization: `Bearer ${localStorage.getItem("token")}` } : {};
+// Chuẩn hoá ảnh giống trang Admin (bỏ wwwroot/, nối BASE_URL nếu là relative)
+const absUrl = (u)=>{
+  if (!u) return "";
+  if (/^https?:\/\//i.test(u)) return u;
+  const clean = String(u).replace(/^\/?wwwroot\//i, "");
+  return `${BASE_URL.replace(/\/+$/,"")}/${clean.replace(/^\/+/,"")}`;
+};
 
 /* ========= I18N ========= */
-const CULT = { vi: "vi", en: "en", fr: "fr" };       // alias ngắn
+const CULT = { vi: "vi", en: "en", fr: "fr" };  // alias ngắn
 let curAlias = localStorage.getItem("lang") || "vi";
 const I18N_CACHE = {};
-
 async function i18nLoad(alias){
   const a = CULT[alias] ? alias : "vi";
   if (I18N_CACHE[a]) return I18N_CACHE[a];
   try{
-    const res = await fetchI18nLatest(API.i18n(a), { credentials: "include" });
+    const url = new URL(`${BASE_URL}/api/i18n`);
+    url.searchParams.set("lang", a);
+    // chống cache
+    url.searchParams.set("_", Date.now());
+    const res = await fetch(url, { credentials: "include", cache: "no-store" });
     if (!res.ok) throw 0;
     const dict = await res.json();
     I18N_CACHE[a] = (dict && typeof dict === "object" && !Array.isArray(dict)) ? dict : {};
@@ -91,17 +66,17 @@ function applyI18nToDom(root=document){
   }
   document.documentElement.lang = curAlias;
 }
+// ĐỔI NGÔN NGỮ: lưu, ping BE cookie, áp i18n, cập nhật URL ?lang=..., refetch chi tiết ngay (hủy request cũ)
 async function setLang(alias){
   curAlias = CULT[alias] ? alias : "vi";
   localStorage.setItem("lang", curAlias);
-  // ping văn hoá + no-store
-  fetch(`${API.ping(curAlias)}&_=${Date.now()}`, { credentials: "include", cache:'no-store' }).catch(()=>{});
-  // tải từ điển mới (hủy yêu cầu cũ nếu spam)
+  try{ await fetch(`${BASE_URL}/api/ping?lang=${encodeURIComponent(curAlias)}&t=${Date.now()}`, { credentials: "include", cache: "no-store" }); }catch{}
   await i18nLoad(curAlias);
   applyI18nToDom(document);
-
-  // REFRESH tức thì phần đang hiển thị (chi tiết phim)
-  try{ await renderMovieDetail(true); }catch{}
+  const u = new URL(location.href);
+  u.searchParams.set("lang", curAlias);
+  history.replaceState({}, "", u.toString());
+  try{ renderMovieDetail(); }catch{}
 }
 document.addEventListener("click",(e)=>{
   const langLink = e.target.closest("[data-set-lang]");
@@ -117,10 +92,9 @@ function unlockBodyScroll(){ document.documentElement.style.overflow=''; documen
 /* ========= Header/Footer ========= */
 async function includeHTML(id, file){
   try{
-    const html = await fetch(`${file}?_=${Date.now()}`, {cache:'no-store'}).then(r=>r.text());
+    const html = await fetch(`${file}?t=${Date.now()}`, { cache:"no-store" }).then(r=>r.text());
     const host = document.getElementById(id);
     if (host) host.innerHTML = html;
-    // áp i18n cho partial vừa chèn
     applyI18nToDom(host || document);
     if (id==="include-header" && typeof updateAuthButtons==="function"){
       setTimeout(updateAuthButtons, 80);
@@ -168,6 +142,9 @@ function closeTrailerModal(){
 /* ========= State ========= */
 let MOVIE = null;
 let MOVIE_ID = null;
+let MOVIE_CTRL = null;     // AbortController hiện hành
+let MOVIE_REQ_VER = 0;     // version để chặn “đua” request
+
 const STATE = { day:null, city:null, rapId:null };
 
 /* ========= Utils ========= */
@@ -186,63 +163,71 @@ const timeToMinutes = (hhmm)=> {
   return (isNaN(h)||isNaN(m))?0:h*60+m;
 };
 
-/* ========= Render chi tiết (race-safe + no-store) ========= */
-function showDetailSkeleton(){
-  const el = $("#movieDetail");
-  if (el) el.innerHTML = `<div class="detail-skeleton" style="padding:20px;opacity:.75">${tr("Loading_Detail","Đang tải chi tiết…")}</div>`;
-}
-async function renderMovieDetail(force=false){
+/* ========= Render chi tiết (có hủy request + chống cache + chặn đua) ========= */
+async function renderMovieDetail(){
   const params = new URLSearchParams(location.search);
   MOVIE_ID = Number(params.get("id"));
   if (!MOVIE_ID){
-    $("#movieDetail").innerHTML = `<p style='color:red'>${tr('Detail_NoData','Không tìm thấy phim.')}</p>`;
+    const mount = $("#movieDetail");
+    if (mount) mount.innerHTML = `<p style='color:red'>${tr('Detail_NoData','Không tìm thấy phim.')}</p>`;
     return;
   }
 
-  // nếu có ?lang trên URL thì ưu tiên (đổi alias + i18n)
-  const langQ = params.get("lang");
-  if (CULT[langQ] && langQ !== curAlias){
-    curAlias = langQ; localStorage.setItem("lang", curAlias);
-    await i18nLoad(curAlias);
-    applyI18nToDom(document);
-  }
+  // Hủy request cũ
+  if (MOVIE_CTRL) try{ MOVIE_CTRL.abort(); }catch{}
+  MOVIE_CTRL = new AbortController();
+  const myVer = ++MOVIE_REQ_VER;
 
-  showDetailSkeleton();
+  const host = $("#movieDetail");
+  if (host) host.innerHTML = `<p style='opacity:.8'>${tr('Loading_Detail','Đang tải chi tiết…')}</p>`;
 
   try{
-    const res = await fetchMovieLatest(API.phim(MOVIE_ID, curAlias), { headers:{...authHeader, Accept:'application/json'} });
+    // thêm tham số chống cache
+    const url = new URL(API.phim(MOVIE_ID, curAlias));
+    url.searchParams.set("_", Date.now().toString());
+
+    const res = await fetch(url.toString(), {
+      signal: MOVIE_CTRL.signal,
+      cache: "no-store",
+      headers: { ...authHeader, "X-No-Cache": Date.now().toString() }
+    });
     const j = await res.json();
-    if (!j?.status || !j?.data) throw new Error();
+
+    // Nếu đã có request mới hơn, bỏ qua
+    if (myVer !== MOVIE_REQ_VER) return;
+
+    if (!j?.status || !j?.data) throw new Error("no data");
     MOVIE = j.data;
 
     const poster = MOVIE.poster ? absUrl(MOVIE.poster) : "../../assets/images/default-poster.jpg";
     const theLoaiText = Array.isArray(MOVIE.loaiPhims) && MOVIE.loaiPhims.length
-      ? MOVIE.loaiPhims.map(l=>l.tenLoaiPhim).join(", ") : tr("Common_NotAvailable","Chưa cập nhật");
+      ? MOVIE.loaiPhims.map(l=>l.tenLoaiPhim).join(", ")
+      : tr("Common_NotAvailable","Chưa cập nhật");
 
-    $("#movieDetail").innerHTML = `
+    host.innerHTML = `
       <div class="movie-poster-wrapper">
         <div class="movie-poster" style="background-image:url('${poster}')"></div>
         ${MOVIE.trailer ? `<button class="btn-trailer">▶️ ${tr('Detail_ViewTrailer','Xem trailer')}</button>` : ``}
       </div>
       <div class="movie-info">
-        <h1>${MOVIE.tenPhim || ''}</h1>
+        <h1>${MOVIE.tenPhim||''}</h1>
         <p><strong>${tr('Detail_Genres','Thể loại')}:</strong> ${theLoaiText}</p>
-        <p><strong>${tr('Detail_Duration','Thời lượng')}:</strong> ${MOVIE.thoiLuong ?? ''} ${tr('Detail_Duration_MinUnit','phút')}</p>
-        <p><strong>${tr('Detail_Director','Đạo diễn')}:</strong> ${MOVIE.daoDien || tr('Common_NotAvailable','Chưa cập nhật')}</p>
-        <p><strong>${tr('Detail_Language','Ngôn ngữ')}:</strong> ${MOVIE.ngonNgu || tr('Common_NotAvailable','Chưa cập nhật')}</p>
-        <p><strong>${tr('Detail_Cast','Diễn viên')}:</strong> ${MOVIE.dienVien || tr('Common_NotAvailable','Chưa cập nhật')}</p>
-        <p><strong>${tr('Detail_ReleaseDate','Khởi chiếu')}:</strong> ${MOVIE.khoiChieu || tr('Common_NotAvailable','Chưa cập nhật')}</p>
-        <p><strong>${tr('Detail_Synopsis','Mô tả')}:</strong> ${MOVIE.moTa || tr('Common_NoDescription','Không có mô tả.')}</p>
-
+        <p><strong>${tr('Detail_Duration','Thời lượng')}:</strong> ${MOVIE.thoiLuong||''} ${tr('Detail_Duration_MinUnit','phút')}</p>
+        <p><strong>${tr('Detail_Director','Đạo diễn')}:</strong> ${MOVIE.daoDien||tr('Common_NotAvailable','Chưa cập nhật')}</p>
+        <p><strong>${tr('Detail_Language','Ngôn ngữ')}:</strong> ${MOVIE.ngonNgu||tr('Common_NotAvailable','Chưa cập nhật')}</p>
+        <p><strong>${tr('Detail_Cast','Diễn viên')}:</strong> ${MOVIE.dienVien||tr('Common_NotAvailable','Chưa cập nhật')}</p>
+        <p><strong>${tr('Detail_ReleaseDate','Khởi chiếu')}:</strong> ${MOVIE.khoiChieu||tr('Common_NotAvailable','Chưa cập nhật')}</p>
+        <p><strong>${tr('Detail_Synopsis','Mô tả')}:</strong> ${MOVIE.moTa||tr('Common_NoDescription','Không có mô tả.')}</p>
         <a href="../../pages/booking/select-seats.html?phimId=${MOVIE.maPhim}" class="btn-booking">🎟 ${tr('Detail_BookNow','Đặt vé ngay')}</a>
 
         <div id="trailerContainer" class="trailer-container" style="display:none;">
           <iframe id="trailerFrameInline" width="100%" height="400" frameborder="0" allowfullscreen title="${tr('Trailer_Title','Trailer')}"></iframe>
         </div>
       </div>`;
-  }catch(e){
-    if (e.name === "AbortError") return; // yêu cầu cũ bị hủy do yêu cầu mới
-    $("#movieDetail").innerHTML = `<p style='color:red'>${tr('Detail_NoData','Không tìm thấy thông tin phim.')}</p>`;
+  }catch(err){
+    if (err?.name === "AbortError") return; // bị hủy do đổi ngôn ngữ
+    console.error(err);
+    if (host) host.innerHTML = `<p style='color:#ffb4b4'>${tr('Error_Detail','Không thể tải chi tiết phim.')}</p>`;
   }
 }
 
@@ -291,10 +276,8 @@ function ensureBookModal(){
   $('#bookClose').addEventListener('click', closeBookModal);
   wrap.addEventListener('click', (e)=>{ if (e.target===wrap) closeBookModal(); });
 }
-
 function openBookModal(){
   ensureBookModal();
-
   const poster = MOVIE?.poster ? absUrl(MOVIE.poster) : "../../assets/images/default-poster.jpg";
   $('#bookPoster').src = poster;
   $('#bookMovieName').textContent = MOVIE?.tenPhim || '';
@@ -302,7 +285,6 @@ function openBookModal(){
     (MOVIE?.thoiLuong ? `${MOVIE.thoiLuong} ${tr('Detail_Duration_MinUnit','phút')}` : "") +
     (MOVIE?.ngonNgu ? ` • ${MOVIE.ngonNgu}` : "");
 
-  // days
   const hostDay = $('#chipsDays'); hostDay.innerHTML = '';
   const today = new Date();
   STATE.day = fmtYMD(today);
@@ -316,24 +298,19 @@ function openBookModal(){
       hostDay.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
       chip.classList.add('active');
       STATE.day = chip.dataset.day;
-      if (STATE.city && STATE.rapId) loadShowtimes(true);
+      if (STATE.city && STATE.rapId) loadShowtimes();
     });
     hostDay.appendChild(chip);
   }
 
-  loadCities(true).then(()=>{ if (STATE.city) loadRapsByCity(true); });
-
+  loadCities().then(()=>{ if (STATE.city) loadRapsByCity(); });
   $('#bookModal').style.display = 'flex';
   lockBodyScroll();
 }
-
-async function loadCities(force=false){
+async function loadCities(){
   const host = $('#chipsCities'); host.innerHTML = `<div class="chip">${tr('Loading_Cities','Đang tải thành phố…')}</div>`;
   try{
-    const url = new URL(API.cities);
-    if (force) url.searchParams.set('_', Date.now());
-    const res = await fetchCitiesLatest(url.toString(), { cache:'no-store' });
-    const j = await res.json();
+    const j = await fetch(`${API.cities}?t=${Date.now()}`, { cache:"no-store" }).then(r=>r.json());
     const list = Array.isArray(j?.data) ? j.data : (Array.isArray(j) ? j : []);
     host.innerHTML = '';
     if (!list.length){ host.innerHTML = `<span class="chip">${tr('NoData_Cities','Không có dữ liệu')}</span>`; return; }
@@ -346,23 +323,18 @@ async function loadCities(force=false){
         host.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
         chip.classList.add('active');
         STATE.city = city; STATE.rapId = null;
-        loadRapsByCity(true);
+        loadRapsByCity();
       });
       host.appendChild(chip);
     });
-  }catch(e){
-    if (e.name==="AbortError") return;
+  }catch{
     host.innerHTML = `<span class="chip">${tr('Error_Cities','Lỗi tải thành phố')}</span>`;
   }
 }
-
-async function loadRapsByCity(force=false){
+async function loadRapsByCity(){
   const host = $('#chipsRaps'); host.innerHTML = `<div class="chip">${tr('Loading_Cinemas','Đang tải rạp…')}</div>`;
   try{
-    const url = new URL(API.rapsByCity(STATE.city));
-    if (force) url.searchParams.set('_', Date.now());
-    const res = await fetchRapsLatest(url.toString(), { cache:'no-store' });
-    const j = await res.json();
+    const j = await fetch(`${API.rapsByCity(STATE.city)}&t=${Date.now()}`, { cache:"no-store" }).then(r=>r.json());
     const list = Array.isArray(j?.data) ? j.data : (Array.isArray(j) ? j : []);
     host.innerHTML = '';
     if (!list.length){ host.innerHTML = `<span class="chip">${tr('NoData_Cinemas','Không có rạp')}</span>`; return; }
@@ -377,19 +349,17 @@ async function loadRapsByCity(force=false){
         host.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
         chip.classList.add('active');
         STATE.rapId = id;
-        loadShowtimes(true);
+        loadShowtimes();
       });
       host.appendChild(chip);
     });
 
-    loadShowtimes(true);
-  }catch(e){
-    if (e.name==="AbortError") return;
+    loadShowtimes();
+  }catch{
     host.innerHTML = `<span class="chip">${tr('NoData_Cinemas','Lỗi tải rạp')}</span>`;
   }
 }
-
-async function loadShowtimes(force=false){
+async function loadShowtimes(){
   const host = $('#roomShowtimes');
   host.innerHTML = `<div class="no-data">${tr('Loading_Showtimes','Đang tải suất chiếu…')}</div>`;
 
@@ -398,10 +368,8 @@ async function loadShowtimes(force=false){
     return;
   }
   try{
-    const base = API.suatByPhim(MOVIE.maPhim, { maRap: STATE.rapId, ngay: STATE.day });
-    const url = new URL(base, location.origin);
-    if (force) url.searchParams.set('_', Date.now());
-    const res = await fetchShowtimesLatest(url.toString(), { cache:'no-store' });
+    const url = API.suatByPhim(MOVIE.maPhim, { maRap: STATE.rapId, ngay: STATE.day });
+    const res = await fetch(`${url}&t=${Date.now()}`, { cache:"no-store" });
     const json = await res.json();
     const list = Array.isArray(json?.data) ? json.data : (Array.isArray(json) ? json : []);
     if (!list.length){ host.innerHTML = `<div class="no-data">${tr('NoData_Showtimes','Không có suất chiếu.')}</div>`; return; }
@@ -445,7 +413,7 @@ async function loadShowtimes(force=false){
       host.appendChild(card);
     }
   }catch(e){
-    if (e.name==="AbortError") return;
+    console.error(e);
     host.innerHTML = `<div class="no-data">${tr('Error_Showtimes','Lỗi tải suất chiếu.')}</div>`;
   }
 }
@@ -462,7 +430,6 @@ document.addEventListener("click", (e)=>{
     }
     openTrailerModal(MOVIE.trailer);
   }
-
   const bbtn = e.target.closest(".btn-booking");
   if (bbtn){
     e.preventDefault();
@@ -490,8 +457,10 @@ document.addEventListener("click", (e)=>{
       extraData:    q.get('extraData')    || '',
       signature:    q.get('signature')    || ''
     };
-    fetch(`${BASE_URL}/api/momopayment/confirm?_=${Date.now()}`, {
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload), cache:'no-store'
+    fetch(`${BASE_URL}/api/momopayment/confirm`, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
     }).catch(()=>{}).finally(()=>{ history.replaceState({}, "", location.pathname + location.hash); });
   } catch {
     try{ history.replaceState({}, "", location.pathname + location.hash); }catch{}
@@ -500,14 +469,14 @@ document.addEventListener("click", (e)=>{
 
 /* ========= Boot ========= */
 document.addEventListener("DOMContentLoaded", async ()=>{
-  // nếu URL có ?lang, ưu tiên nó
-  const langParam = new URLSearchParams(location.search).get('lang');
-  if (CULT[langParam]) { curAlias = langParam; localStorage.setItem("lang", curAlias); }
+  // đọc lang từ URL nếu có
+  const langQ = new URLSearchParams(location.search).get("lang");
+  if (CULT[langQ]) { curAlias = langQ; localStorage.setItem("lang", curAlias); }
 
   await i18nLoad(curAlias);               // nạp từ điển trước
+  applyI18nToDom(document);
   await includeHTML("include-header", "../../part/header.html");
   await includeHTML("include-footer", "../../part/footer.html");
-  applyI18nToDom(document);
-
-  await renderMovieDetail(true);          // fetch chi tiết (latest-wins)
+  renderMovieDetail();                    // refetch chi tiết (có AbortController)
 });
+

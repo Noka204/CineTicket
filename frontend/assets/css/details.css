@@ -1,124 +1,172 @@
-:root{
-  /* 👇 chỉnh 1 chỗ để phóng to/thu nhỏ toàn bộ UI */
-  --scale: 1.25;
+/* ====== Layout trang chi tiết ====== */
+.movie-detail-container{
+  max-width:1100px;margin:110px auto 40px;padding:22px;border-radius:20px;
+  background:linear-gradient(135deg,#101a2e,#0f1930);
+  border:1px solid rgba(255,255,255,.12);color:#eaf6ff;
+  display:grid;grid-template-columns:340px 1fr;gap:24px;
+  box-shadow:0 22px 60px rgba(0,0,0,.55)
 }
 
-body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background: #0e0e1b;
-  color: #fff;
+/* Poster + nút trailer */
+.movie-poster-wrapper{display:flex;flex-direction:column;gap:12px}
+.movie-poster{
+  width:100%;aspect-ratio:2/3;border-radius:16px;background:#0b0b12 center/cover no-repeat;
+  box-shadow:0 18px 50px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12)
+}
+.btn-trailer{
+  width:100%;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.22);
+  color:#fff;font-weight:800;letter-spacing:.2px;background:rgba(16,23,36,.88);
+  backdrop-filter:blur(6px);display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  cursor:pointer;transition:.18s ease
+}
+.btn-trailer:hover{transform:translateY(-1px);background:rgba(18,26,44,.95)}
+
+/* Info phim */
+.movie-info h1{
+  margin:.2rem 0 1rem;font-size:clamp(22px,3.2vw,30px);
+  background:linear-gradient(45deg,#ff6b6b,#4ecdc4);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent
+}
+.movie-info p{margin:.35rem 0;opacity:.92}
+.movie-info strong{color:#6cf0c7}
+.btn-booking{
+  display:inline-block;margin:14px 0 8px;padding:10px 16px;border-radius:12px;font-weight:800;text-decoration:none;
+  background:#34d399;color:#0b1220;border:1px solid #34d399;box-shadow:0 8px 18px rgba(52,211,153,.28)
+}
+.btn-booking:hover{background:#10b981}
+
+/* Trailer khung nhúng */
+.trailer-container{
+  margin-top:14px;border-radius:16px;overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,.45);border:1px solid rgba(255,255,255,.12)
+}
+
+/* ========= Modal đặt vé — cuộn & bám đỉnh ========= */
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(6px);
+
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  padding-top: calc(var(--scale) * 80px); /* ✅ giữ khoảng cách header theo tỷ lệ */
-}
-
-.movie-detail-container {
-  max-width: calc(var(--scale) * 1200px);
-  margin: calc(var(--scale) * 40px) auto;
-  padding: calc(var(--scale) * 30px);
-  display: flex;
-  flex-wrap: wrap;
-  gap: calc(var(--scale) * 40px);
-  background-color: #1a1a2e;
-  border-radius: calc(var(--scale) * 10px);
-  box-shadow: 0 0 calc(var(--scale) * 15px) rgba(0,0,0,0.4);
-}
-
-.movie-poster {
-  width: calc(var(--scale) * 300px);
-  height: calc(var(--scale) * 450px); /* ✅ vẫn 2:3 như cũ */
-  background-size: cover;
-  background-position: center;
-  border-radius: calc(var(--scale) * 10px);
-  box-shadow: 0 0 calc(var(--scale) * 10px) rgba(255,255,255,0.1);
-  flex-shrink: 0;
-}
-
-.movie-poster-wrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: calc(var(--scale) * 10px);
-}
-
-.movie-info {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+  align-items: flex-start;   /* bám đỉnh */
   justify-content: center;
+  padding: 24px 12px;        /* chừa viền */
+  overflow: hidden;          /* khóa nền */
+}
+.modal-content{
+  position: relative;        /* để .modal-close bám theo */
+  width: min(1000px, 92vw);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+
+  background: linear-gradient(135deg,#101a2e,#0f1930);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.6);
+  overscroll-behavior: contain;
 }
 
-.movie-info h1 {
-  margin-top: 0;
-  margin-bottom: calc(var(--scale) * 20px);
-  font-size: calc(var(--scale) * 32px);
-  color: #ffcc00;
+/* Header sticky bên trong modal, tôn trọng bo tròn */
+.modal-content .modal-header{
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  padding: 12px 20px 10px 20px;
+  margin: 0 0 12px 0;
+  background: linear-gradient(180deg, rgba(16,23,36,.96), rgba(16,23,36,.88));
+  backdrop-filter: blur(6px);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
 }
 
-.movie-info p {
-  margin: calc(var(--scale) * 10px) 0;
-  font-size: calc(var(--scale) * 18px);
-}
-
-.movie-info strong {
-  color: #00d9ff;
-}
-
-.btn-booking {
-  display: inline-block;
-  margin-top: calc(var(--scale) * 20px);
-  padding: calc(var(--scale) * 12px) calc(var(--scale) * 24px);
-  background-color: #ff0055;
-  color: white;
-  border-radius: calc(var(--scale) * 6px);
-  font-size: calc(var(--scale) * 18px);
-  font-weight: bold;
-  text-decoration: none;
-  transition: background 0.3s ease;
-  width: fit-content; /* ✅ theo nội dung */
-  align-self: flex-start; /* ✅ căn trái */
-}
-.btn-booking:hover { background-color: #e6004c; }
-
-.btn-trailer {
-  padding: calc(var(--scale) * 10px) calc(var(--scale) * 20px);
-  background-color: #00bfff;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: calc(var(--scale) * 6px);
+/* Nút đóng: ở trong header, tuyệt đối, không vượt bo */
+.modal-close{
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  background: rgba(16,23,36,.88);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 10px;
   cursor: pointer;
-  font-size: calc(var(--scale) * 16px);
-  transition: background 0.3s ease;
 }
-.btn-trailer:hover { background-color: #009acd; }
+.modal-close:hover{ background: rgba(18,26,44,.95); }
 
-.trailer-container {
-  margin-top: calc(var(--scale) * 20px);
-  width: 100%;
+/* Reset close cũ chỉ trong booking modal-content để tránh xung đột */
+.modal-content .close, .modal-content .close-btn{
+  position: static; background: none; border: 0; padding: 0;
 }
 
-iframe {
-  border-radius: calc(var(--scale) * 10px);
-  box-shadow: 0 0 calc(var(--scale) * 10px) rgba(0,0,0,0.5);
+/* Form & chips */
+.form-group{margin-bottom:14px}
+.form-group label{display:block;margin-bottom:.5rem;color:#6cf0c7;font-weight:700}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.chip{
+  padding:10px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);cursor:pointer;font-weight:700;color:#e6f6ff;
+  transition:transform .12s ease, background .15s ease, border-color .15s ease
+}
+.chip:hover{transform:translateY(-1px);background:rgba(255,255,255,.12)}
+.chip.active{background:#34d399;border-color:#34d399;color:#0b1220}
+
+/* Card phòng & giờ */
+.room-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px;margin-bottom:10px}
+.room-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.room-name{font-weight:800;color:#a6ffe1}
+.time-chips{display:flex;gap:8px;flex-wrap:wrap}
+
+/* time-chip tương phản cao */
+.room-card .time-chips .time-chip{
+  opacity:1 !important; filter:none;
+  background:#2c3b5a !important;
+  border:1px solid rgba(110,231,183,.55) !important;
+  color:#eaf6ff !important;
+  padding:8px 12px; border-radius:10px; cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.05), 0 6px 18px rgba(0,0,0,.28);
+  transition:background .15s ease,border-color .15s ease,transform .12s ease;
+}
+.room-card .time-chips .time-chip:hover,
+.room-card .time-chips .time-chip:focus{
+  background:#34466b !important;
+  border-color:rgba(110,231,183,.8) !important;
+  transform:translateY(-1px); outline:none;
+}
+.room-card .time-chips .time-chip.active{
+  background:linear-gradient(135deg,#34d399,#2dd4bf) !important;
+  color:#0b1220 !important;
+  border-color:transparent !important;
+  box-shadow:0 8px 22px rgba(45,212,191,.35);
 }
 
-/* ============ Mobile ============ */
-@media (max-width: 768px) {
-  .movie-poster-wrapper { position: relative; }
-  .movie-poster { overflow: hidden; }
+/* Trailer modal (giữ style hiện có) */
+.trailer-modal{position:fixed;left:0;top:0;width:100vw;height:100vh;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:9999}
+.trailer-modal .close-btn{position:absolute;top:-40px;right:0;font-size:2rem;background:none;border:none;color:#fff;cursor:pointer}
+.trailer-modal .close-btn:hover{color:#ff5252}
+.trailer-modal video{max-width:90vw;max-height:80vh;border-radius:16px;box-shadow:0 8px 32px #000a;outline:4px solid #fff3;background:#000;margin:0 auto;display:block}
+@media (max-width:600px){.trailer-modal video{max-width:98vw;max-height:40vh}.trailer-modal .close-btn{top:-30px;font-size:1.5rem}}
 
-  .movie-poster-wrapper .btn-trailer {
-    position: absolute;
-    left: 50%;
-    bottom: calc(var(--scale) * 14px);
-    transform: translateX(-50%);
-    padding: calc(var(--scale) * 9px) calc(var(--scale) * 22px);
-    font-size: calc(var(--scale) * 15px);
-    line-height: 1;
-    z-index: 1;
-    box-shadow: 0 3px 6px rgba(0,0,0,.45);
-  }
+@media (max-width:920px){ .movie-detail-container{grid-template-columns:1fr} }
+
+/* Scrollbar gọn cho modal-content */
+.modal-content::-webkit-scrollbar{ width: 10px; }
+.modal-content::-webkit-scrollbar-thumb{
+  background: rgba(255,255,255,.14);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+.modal-content::-webkit-scrollbar-thumb:hover{
+  background: rgba(255,255,255,.24);
+  border: 2px solid transparent;
 }

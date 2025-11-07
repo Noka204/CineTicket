@@ -1,157 +1,322 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8">
-  <title>Quản lý Ghế</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <style>
-    body { font-family: sans-serif; margin: 20px; background: #f4f4f4; }
-    table { width: 100%; border-collapse: collapse; background: white; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
-    th { background: #343a40; color: white; }
-    .form-inline { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-    .pagination-controls { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; align-items: center; }
-  </style>
-</head>
-<body>
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>💺 Danh sách Ghế</h2>
-    <a href="../Admin/index.html" class="btn btn-outline-secondary">🔙 Quay lại</a>
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quản lý Ghế</title>
 
-  <!-- KHỐI THÊM MỚI: ẨN hoàn toàn để chỉ hiển thị -->
-  <div class="form-inline d-none">
-    <input type="text" id="soGhe" placeholder="Số ghế" class="form-control" />
-    <input type="text" id="loaiGhe" placeholder="Loại ghế" class="form-control" />
-    <select id="maPhong" class="form-select"><option value="">-- Chọn phòng --</option></select>
-    <button class="btn btn-primary">➕ Thêm</button>
-  </div>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css"
+      rel="stylesheet"
+    />
 
-  <div class="form-inline">
-    <label>Hiển thị:</label>
-    <select id="pageSize" class="form-select w-auto" onchange="goToPage(1)">
-      <option value="5">5 dòng</option>
-      <option value="10" selected>10 dòng</option>
-      <option value="20">20 dòng</option>
-    </select>
-
-    <label for="searchText">Tìm theo ghế:</label>
-    <input type="text" id="searchText" class="form-control" placeholder="Nhập số ghế..." oninput="goToPage(1)" />
-
-    <label for="searchPhong">Phòng:</label>
-    <select id="searchPhong" class="form-select w-auto" onchange="goToPage(1)">
-      <option value="">-- Tất cả phòng --</option>
-    </select>
-  </div>
-
-  <table class="table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Số ghế</th>
-        <th>Loại ghế</th>
-        <th>Phòng</th>
-      </tr>
-    </thead>
-    <tbody id="gheTableBody"></tbody>
-  </table>
-
-  <div class="pagination-controls">
-    <button class="btn btn-secondary" onclick="goToPage(1)">← Trang đầu</button>
-    <button class="btn btn-secondary" onclick="changePage(-1)">← Trước</button>
-    <span>Trang <strong id="currentPageSpan">1</strong> / <span id="totalPageSpan">1</span></span>
-    <input type="number" id="gotoPageInput" min="1" placeholder="Số trang">
-    <button class="btn btn-outline-primary" onclick="jumpToPage()">Đi</button>
-    <button class="btn btn-secondary" onclick="changePage(1)">Tiếp →</button>
-    <button class="btn btn-secondary" onclick="goToLastPage()">Trang cuối →</button>
-  </div>
-
-  <script>
-    const API_BASE = "https://localhost:7058/api/Ghe";
-    const PHONG_API = "https://localhost:7058/api/phongchieu/get-all";
-
-    let currentPage = 1;
-    let totalPages = 1;
-    let currentData = [];
-    let phongOptions = [];
-
-    async function loadPhongOptions() {
-      const res = await fetch(PHONG_API);
-      const json = await res.json();
-      phongOptions = json.data || [];
-
-      // Dropdown tìm kiếm phòng
-      const searchSelect = document.getElementById("searchPhong");
-      searchSelect.innerHTML = '<option value="">-- Tất cả phòng --</option>';
-      phongOptions.forEach(phong => {
-        const opt = document.createElement("option");
-        opt.value = phong.maPhong;
-        opt.textContent = phong.tenPhong || `Phòng ${phong.maPhong}`;
-        searchSelect.appendChild(opt);
-      });
-
-      // Nếu URL có ?maPhong=... thì auto chọn bộ lọc
-      const qs = new URLSearchParams(location.search);
-      const maPhongQS = qs.get("maPhong");
-      if (maPhongQS) {
-        searchSelect.value = maPhongQS;
+    <style>
+      body {
+        background-color: #f8f9fa;
+        padding: 20px;
       }
-    }
+      h2 {
+        font-weight: 700;
+      }
+      .dt-container .row {
+        align-items: center;
+      }
+      .badge-seat {
+        font-weight: 600;
+        border: 1px solid rgba(0, 0, 0, 0.075);
+      }
+      #alertBox {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>💺 Quản lý Ghế</h2>
+      <div class="d-flex gap-2">
+        <a href="../Admin/index.html" class="btn btn-outline-dark"
+          >🔙 Quay lại</a
+        >
+        <button id="btnReload" class="btn btn-outline-secondary">
+          ↻ Tải lại
+        </button>
+      </div>
+    </div>
 
-    async function fetchData() {
-      const res = await fetch(`${API_BASE}/get-all`);
-      const json = await res.json();
-      currentData = json.data || [];
-      goToPage(currentPage);
-    }
+    <div id="alertBox" class="alert" role="alert"></div>
 
-    function goToPage(page) {
-      const search = document.getElementById("searchText").value.toLowerCase();
-      const selectedMaPhong = document.getElementById("searchPhong").value;
-      const pageSize = parseInt(document.getElementById("pageSize").value);
-      const tbody = document.getElementById("gheTableBody");
-      tbody.innerHTML = "";
+    <div class="row g-3 mb-3">
+      <div class="col-12 col-md-4">
+        <label for="searchText" class="form-label mb-1">Tìm theo số ghế</label>
+        <input
+          type="text"
+          id="searchText"
+          class="form-control"
+          placeholder="Nhập số ghế..."
+        />
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="searchPhong" class="form-label mb-1">Phòng chiếu</label>
+        <select id="searchPhong" class="form-select">
+          <option value="">-- Chọn phòng --</option>
+        </select>
+      </div>
+      <div class="col-12 col-md-4">
+        <label for="pageSize" class="form-label mb-1">Hiển thị</label>
+        <select id="pageSize" class="form-select">
+          <option value="5">5 dòng</option>
+          <option value="10" selected>10 dòng</option>
+          <option value="20">20 dòng</option>
+          <option value="50">50 dòng</option>
+        </select>
+      </div>
+    </div>
 
-      const filtered = currentData.filter(p =>
-        (p.soGhe || '').toLowerCase().includes(search) &&
-        (selectedMaPhong === "" || p.maPhong == parseInt(selectedMaPhong))
-      );
-
-      totalPages = Math.max(1, Math.ceil(filtered.length / pageSize));
-      if (page < 1) page = 1;
-      if (page > totalPages) page = totalPages;
-      currentPage = page;
-
-      const start = (currentPage - 1) * pageSize;
-      const paginated = filtered.slice(start, start + pageSize);
-
-      paginated.forEach(p => {
-        const phongText = (phongOptions.find(x => x.maPhong === p.maPhong)?.tenPhong) || `Phòng ${p.maPhong}`;
-        tbody.innerHTML += `
+    <div class="table-responsive">
+      <table
+        id="gheTable"
+        class="table table-bordered table-striped align-middle text-center w-100"
+      >
+        <thead class="table-light">
           <tr>
-            <td>${p.maGhe}</td>
-            <td>${p.soGhe || ''}</td>
-            <td>${p.loaiGhe || ''}</td>
-            <td>${phongText}</td>
-          </tr>`;
+            <th style="width: 90px">ID</th>
+            <th style="width: 140px">Số ghế</th>
+            <th style="width: 160px">Loại ghế</th>
+            <th>Phòng</th>
+            <th style="width: 1px">MaPhong (ẩn)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+      const BASE_URL = "https://localhost:7058";
+      const API_GHE_ALL = `${BASE_URL}/api/Ghe/get-all`;
+      const API_GHE_BY_PHONG = (id) =>
+        `${BASE_URL}/api/ghe/get-by-phong?maPhong=${encodeURIComponent(id)}`;
+      const API_PHONG_GET_ALL = `${BASE_URL}/api/phongchieu/get-all`;
+
+      const $id = (s) => document.getElementById(s);
+
+      let dt = null;
+      let phongOptions = [];
+      let dataRows = [];
+
+      function showAlert(type, msg) {
+        const box = $id("alertBox");
+        box.className = `alert alert-${type}`;
+        box.textContent = msg;
+        box.style.display = "block";
+      }
+      function hideAlert() {
+        $id("alertBox").style.display = "none";
+      }
+
+      const mapPhong = (x) => ({
+        maPhong: x.maPhong ?? x.MaPhong ?? x.id ?? x.ID,
+        tenPhong:
+          x.tenPhong ??
+          x.TenPhong ??
+          x.name ??
+          x.Name ??
+          `Phòng ${x.maPhong ?? x.MaPhong ?? x.id ?? x.ID}`,
       });
 
-      document.getElementById("currentPageSpan").textContent = currentPage;
-      document.getElementById("totalPageSpan").textContent = totalPages;
-    }
+      const mapGhe = (x) => ({
+        maGhe: x.maGhe ?? x.MaGhe ?? x.id ?? x.ID,
+        soGhe: x.soGhe ?? x.SoGhe ?? "",
+        loaiGhe: x.loaiGhe ?? x.LoaiGhe ?? "",
+        maPhong:
+          x.maPhong ??
+          x.MaPhong ??
+          x.maPhongId ??
+          x.MaPhongId ??
+          x.phongId ??
+          x.PhongId,
+        tenPhong: x.tenPhong ?? x.TenPhong ?? x.name ?? x.Name ?? null,
+        isDisabled: x.isDisabled ?? x.IsDisabled ?? false,
+      });
 
-    function changePage(offset) { goToPage(currentPage + offset); }
-    function goToLastPage() { goToPage(totalPages); }
-    function jumpToPage() {
-      const page = parseInt(document.getElementById("gotoPageInput").value);
-      if (!isNaN(page)) goToPage(page);
-    }
+      function renderLoaiGheBadge(val) {
+        const v = (val || "").toString().toLowerCase();
+        if (!v) return '<span class="text-muted">—</span>';
+        if (v.includes("vip"))
+          return '<span class="badge bg-warning-subtle text-warning-emphasis badge-seat">VIP</span>';
+        if (v.includes("sweet"))
+          return '<span class="badge bg-danger-subtle text-danger-emphasis badge-seat">Sweetbox</span>';
+        return '<span class="badge bg-success-subtle text-success-emphasis badge-seat">Thường</span>';
+      }
 
-    // Khởi động
-    (async function init(){
-      await loadPhongOptions();
-      await fetchData();
-    })();
-  </script>
-</body>
+      async function loadPhongOptions() {
+        try {
+          const r = await fetch(API_PHONG_GET_ALL, { credentials: "include" });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const json = await r.json();
+          phongOptions = (
+            Array.isArray(json?.data)
+              ? json.data
+              : Array.isArray(json)
+              ? json
+              : []
+          ).map(mapPhong);
+
+          const sel = $id("searchPhong");
+          sel.innerHTML = '<option value="">-- Chọn phòng --</option>';
+          phongOptions.forEach((p) => {
+            const opt = document.createElement("option");
+            opt.value = String(p.maPhong);
+            opt.textContent = p.tenPhong;
+            sel.appendChild(opt);
+          });
+
+          const qs = new URLSearchParams(location.search);
+          const maPhongQS = (qs.get("maPhong") || "").toString().trim();
+          if (maPhongQS && [...sel.options].some((o) => o.value === maPhongQS))
+            sel.value = maPhongQS;
+        } catch (err) {
+          console.error("loadPhongOptions error:", err);
+          showAlert(
+            "danger",
+            "Không tải được danh sách phòng. Kiểm tra API /api/phongchieu/get-all và CORS/HTTPS."
+          );
+          phongOptions = [];
+        }
+      }
+
+      async function loadSeats() {
+        try {
+          const selectedMaPhong = ($id("searchPhong").value || "").trim();
+          const url = selectedMaPhong
+            ? API_GHE_BY_PHONG(selectedMaPhong)
+            : API_GHE_ALL;
+
+          const r = await fetch(url, { credentials: "include" });
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          const json = await r.json();
+          const arr = Array.isArray(json?.data)
+            ? json.data
+            : Array.isArray(json)
+            ? json
+            : [];
+          dataRows = arr.map(mapGhe);
+
+          // ✅ bỏ alert info khi chưa chọn phòng
+          if (!dataRows.length) {
+            showAlert(
+              "warning",
+              selectedMaPhong
+                ? "Không có ghế cho phòng đã chọn."
+                : "Không có dữ liệu ghế."
+            );
+          } else {
+            hideAlert();
+          }
+        } catch (err) {
+          console.error("loadSeats error:", err);
+          showAlert(
+            "danger",
+            "Không tải được danh sách ghế. Kiểm tra API ghế và CORS/HTTPS."
+          );
+          dataRows = [];
+        }
+      }
+
+      function toTableRows(rows) {
+        return rows.map((r) => {
+          const tenPhong =
+            r.tenPhong ??
+            phongOptions.find((p) => String(p.maPhong) === String(r.maPhong))
+              ?.tenPhong ??
+            `Phòng ${r.maPhong}`;
+          return [
+            r.maGhe,
+            r.soGhe || "",
+            renderLoaiGheBadge(r.loaiGhe),
+            tenPhong,
+            String(r.maPhong),
+          ];
+        });
+      }
+
+      function initTable() {
+        if (dt) {
+          dt.clear();
+          dt.rows.add(toTableRows(dataRows)).draw();
+          return;
+        }
+        $.fn.dataTable.ext.search.push((settings, rowData) => {
+          if (settings.nTable !== $id("gheTable")) return true;
+          const searchSeat = ($id("searchText").value || "")
+            .toLowerCase()
+            .trim();
+          const soGhe = (rowData[1] ?? "").toString().toLowerCase();
+          return !searchSeat || soGhe.includes(searchSeat);
+        });
+
+        dt = $("#gheTable").DataTable({
+          data: toTableRows(dataRows),
+          columns: [
+            { title: "ID" },
+            { title: "Số ghế" },
+            { title: "Loại ghế" },
+            { title: "Phòng" },
+            { title: "MaPhong", visible: false, searchable: false },
+          ],
+          language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/vi.json",
+          },
+          pageLength: parseInt($id("pageSize").value) || 10,
+          responsive: true,
+          autoWidth: false,
+          order: [[0, "asc"]],
+          dom: '<"row mb-2"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"row mt-2"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        });
+      }
+
+      $id("btnReload").addEventListener("click", async () => {
+        hideAlert();
+        await loadPhongOptions();
+        await loadSeats();
+        if (dt) {
+          dt.clear();
+          dt.rows.add(toTableRows(dataRows)).draw();
+        } else {
+          initTable();
+        }
+        dt.draw();
+      });
+
+      $id("pageSize").addEventListener("change", () => {
+        const len = parseInt($id("pageSize").value) || 10;
+        dt.page.len(len).draw();
+      });
+      $id("searchText").addEventListener("input", () => dt && dt.draw());
+
+      $id("searchPhong").addEventListener("change", async () => {
+        await loadSeats();
+        if (dt) {
+          dt.clear();
+          dt.rows.add(toTableRows(dataRows)).draw();
+          dt.draw();
+        }
+      });
+
+      (async function boot() {
+        hideAlert();
+        await loadPhongOptions();
+        await loadSeats();
+        initTable();
+        dt.draw();
+      })();
+    </script>
+  </body>
 </html>

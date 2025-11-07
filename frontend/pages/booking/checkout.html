@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="Checkout_Page_Title">CineTicket • Thanh toán</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="stylesheet" href="../../assets/css/Phim.css" />
+
+    <style>
+      /* ========= HEADER sticky (đồng bộ) ========= */
+      :root {
+        --header-h: 72px;
+        --buy: #22e3a2;
+        --buy-2: #12c48b;
+        --border: rgba(255, 255, 255, 0.12);
+      }
+      html {
+        scroll-padding-top: var(--header-h);
+      }
+      .site-header {
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(0, 0, 0, 0.9);
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .site-header .nav.container {
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        padding-inline: clamp(14px, 4vw, 28px) !important;
+        height: var(--header-h);
+        min-height: var(--header-h);
+      }
+      .site-header .nav.shell {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 24px;
+        height: var(--header-h);
+        min-height: var(--header-h);
+        width: 100%;
+        padding-inline: clamp(14px, 4vw, 28px);
+      }
+      #header-spacer {
+        height: 0 !important;
+      }
+      .site-header .nav-links {
+        overflow: visible !important;
+      }
+
+      /* ========= PAGE ========= */
+      .container {
+        max-width: 1100px;
+        margin: 24px auto;
+        padding: 0 18px;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .header-row h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+        backdrop-filter: blur(12px);
+        margin-bottom: 12px;
+      }
+
+      .movie-info {
+        display: grid;
+        grid-template-columns: 120px 1fr;
+        gap: 16px;
+        padding: 16px;
+        margin-bottom: 20px;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+      }
+      .movie-poster {
+        width: 120px;
+        height: 160px;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 1px solid var(--border);
+      }
+      .movie-details h3 {
+        margin: 0 0 12px 0;
+        font-size: 1.4em;
+        background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .movie-meta {
+        color: #cbd5e1;
+        font-size: 0.92em;
+        line-height: 1.6;
+      }
+      .movie-meta p {
+        margin: 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .divider {
+        height: 1px;
+        background: var(--border);
+        margin: 16px 0;
+      }
+      .summary-item {
+        border-bottom: 1px dashed var(--border);
+        padding: 12px 0;
+      }
+      .summary-item:last-child {
+        border: none;
+      }
+      .item-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        gap: 12px;
+      }
+
+      .total-row {
+        font-size: 1.2em;
+        font-weight: 700;
+        color: var(--buy);
+        margin-top: 16px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 12px;
+        border: none;
+        background: var(--buy);
+        color: #0b1b14;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .btn:hover {
+        background: var(--buy-2);
+        transform: translateY(-1px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        pointer-events: none;
+      }
+      .btn.is-loading {
+        position: relative;
+      }
+      .btn.is-loading::after {
+        content: "";
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        border: 2px solid rgba(0, 0, 0, 0.25);
+        border-top-color: #0b1b14;
+        margin-left: 8px;
+        display: inline-block;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* ====== PAYMENT METHODS ====== */
+      .pay-methods {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+      .pm {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        cursor: pointer;
+      }
+      .pm input {
+        accent-color: var(--buy);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="include-header"></div>
+    <div id="header-spacer"></div>
+
+    <div class="container">
+      <div class="header-row">
+        <h2 id="checkout-heading" data-i18n="Checkout_Heading">
+          💳 Thanh toán
+        </h2>
+      </div>
+
+      <div class="card">
+        <div id="orderSummary"><!-- JS render --></div>
+      </div>
+
+      <!-- CHỌN CỔNG THANH TOÁN -->
+      <div class="card">
+        <h3
+          id="pm-heading"
+          style="margin-top: 0"
+          data-i18n="Checkout_Methods_Heading"
+        >
+          Phương thức thanh toán
+        </h3>
+        <div class="pay-methods">
+          <label class="pm">
+            <input type="radio" name="pm" value="momo" checked />
+            <span>MoMo</span>
+          </label>
+          <label class="pm">
+            <input type="radio" name="pm" value="vnpay" />
+            <span>VNPAY</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="card" style="text-align: right">
+        <button class="btn btn-book">🎟 Thanh toán ngay</button>
+      </div>
+    </div>
+
+    <div id="include-footer"></div>
+
+    <script defer src="../../assets/js/login.js"></script>
+    <script>
+      /* =================== CONFIG =================== */
+      const BASE_URL = "https://localhost:7058";
+      const LS_KEY = "BOOKING_FLOW";
+      const $ = (s, r = document) => r.querySelector(s);
+      const numberVN = (n) => {
+        try {
+          return Number(n).toLocaleString("vi-VN");
+        } catch {
+          return n;
+        }
+      };
+      const token = () => localStorage.getItem("token");
+      const authHeaders = () =>
+        token() ? { Authorization: "Bearer " + token() } : {};
+
+      /* =================== I18N (đồng bộ với resource list) =================== */
+      const CULT = { vi: "vi", en: "en", fr: "fr" };
+      function pickInitialLang() {
+        const q = new URLSearchParams(location.search).get("lang");
+        const s = localStorage.getItem("lang") || localStorage.getItem("CULT");
+        return CULT[q] ? q : CULT[s] ? s : "vi";
+      }
+      let curAlias = pickInitialLang();
+      const I18N_CACHE = {};
+
+      /* Fallback cho các key chưa có trong resource server */
+      const LOCAL_FALLBACKS = {
+        vi: {
+          Checkout_Methods_Heading: "Phương thức thanh toán",
+          Checkout_PayWith_MoMo: "Thanh toán MoMo",
+          Checkout_PayWith_Vnpay: "Thanh toán VNPAY",
+        },
+        en: {
+          Checkout_Methods_Heading: "Payment methods",
+          Checkout_PayWith_MoMo: "Pay with MoMo",
+          Checkout_PayWith_Vnpay: "Pay with VNPAY",
+        },
+        fr: {
+          Checkout_Methods_Heading: "Moyens de paiement",
+          Checkout_PayWith_MoMo: "Payer avec MoMo",
+          Checkout_PayWith_Vnpay: "Payer avec VNPAY",
+        },
+      };
+
+      async function i18nLoad(alias) {
+        const a = CULT[alias] ? alias : "vi";
+        if (I18N_CACHE[a]) return I18N_CACHE[a];
+        try {
+          const url = new URL(`${BASE_URL}/api/i18n`);
+          url.searchParams.set("lang", a);
+          url.searchParams.set("_", Date.now());
+          const res = await fetch(url, {
+            credentials: "include",
+            cache: "no-store",
+            headers: { "Accept-Language": a },
+          });
+          const dict = res.ok ? await res.json() : {};
+          I18N_CACHE[a] = dict && typeof dict === "object" ? dict : {};
+        } catch {
+          I18N_CACHE[a] = {};
+        }
+        return I18N_CACHE[a];
+      }
+      function t(key, vars) {
+        let s = (I18N_CACHE[curAlias] || {})[key];
+        if (typeof s !== "string") {
+          s = (LOCAL_FALLBACKS[curAlias] || {})[key];
+          if (typeof s !== "string") s = key;
+        }
+        if (vars && typeof vars === "object")
+          for (const [k, v] of Object.entries(vars))
+            s = s.replaceAll(`{${k}}`, v);
+        return s;
+      }
+      function applyI18nToDom(root = document) {
+        root.querySelectorAll("[data-i18n]").forEach((el) => {
+          const k = el.getAttribute("data-i18n");
+          if (k) el.textContent = t(k);
+        });
+        const titleEl = document.querySelector("title[data-i18n]");
+        if (titleEl) document.title = t(titleEl.getAttribute("data-i18n"));
+        document.documentElement.lang = curAlias;
+      }
+      async function setLang(alias) {
+        curAlias = CULT[alias] ? alias : "vi";
+        localStorage.setItem("lang", curAlias);
+        localStorage.setItem("CULT", curAlias);
+        try {
+          await fetch(
+            `${BASE_URL}/api/ping?lang=${encodeURIComponent(
+              curAlias
+            )}&t=${Date.now()}`,
+            {
+              credentials: "include",
+              cache: "no-store",
+            }
+          );
+        } catch {}
+        await i18nLoad(curAlias);
+        applyI18nToDom(document);
+        renderOrderSummary(getFlow());
+        const u = new URL(location.href);
+        u.searchParams.set("lang", curAlias);
+        history.replaceState({}, "", u.toString());
+        // cập nhật nhãn nút theo gateway
+        const btn = document.querySelector(".btn-book");
+        if (btn && !btn.classList.contains("is-loading"))
+          btn.textContent = labelByGateway(currentGateway());
+      }
+      document.addEventListener("click", (e) => {
+        const langLink = e.target.closest("[data-set-lang]");
+        if (!langLink) return;
+        e.preventDefault();
+        setLang(langLink.getAttribute("data-set-lang"));
+      });
+
+      /* =================== include header/footer =================== */
+      async function includeHTML(id, file) {
+        try {
+          const html = await fetch(`${file}?t=${Date.now()}`, {
+            cache: "no-store",
+          }).then((r) => r.text());
+          const host = document.getElementById(id);
+          if (host) host.innerHTML = html;
+          applyI18nToDom(host || document);
+          if (
+            id === "include-header" &&
+            typeof updateAuthButtons === "function"
+          )
+            setTimeout(updateAuthButtons, 80);
+        } catch (e) {
+          console.error("includeHTML error:", e);
+        }
+      }
+
+      /* =================== FLOW STORAGE =================== */
+      const getFlow = () => {
+        try {
+          return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      };
+      const setFlow = (p) => {
+        const cur = getFlow();
+        localStorage.setItem(LS_KEY, JSON.stringify({ ...cur, ...(p || {}) }));
+      };
+
+      /* =================== TOTALS =================== */
+      function ensureTotals(flow) {
+        const seatsSubtotal = Number(flow?.seatTotal ?? 0);
+        const comboTotal = Number(flow?.comboTotal ?? 0);
+        const tempTotal = Number(flow?.tempTotal ?? seatsSubtotal + comboTotal);
+        return { seatsSubtotal, comboTotal, tempTotal };
+      }
+
+      /* =================== NÚT: STATES =================== */
+      function btnLabelFor(state) {
+        // Map các trạng thái. Nếu thiếu key Loading_Creating*, fallback về Loading_Processing
+        const m = {
+          creatingInvoice: (I18N_CACHE[curAlias] || {})[
+            "Loading_CreatingInvoice"
+          ],
+          creatingPayment: (I18N_CACHE[curAlias] || {})[
+            "Loading_CreatingPayment"
+          ],
+          redirecting: (I18N_CACHE[curAlias] || {})["Loading_Redirecting"],
+        };
+        if (state === "error") return t("Btn_Retry");
+        if (state === "idle" || state === "ready")
+          return labelByGateway(currentGateway());
+        return m[state] || t("Loading_Processing");
+      }
+      function setBtnState(state) {
+        const btn = document.querySelector(".btn-book");
+        if (!btn) return;
+        const waiting =
+          state === "creatingInvoice" ||
+          state === "creatingPayment" ||
+          state === "redirecting";
+        btn.textContent = btnLabelFor(state);
+        btn.disabled = waiting;
+        btn.classList.toggle("is-loading", waiting);
+      }
+
+      /* =================== RENDER SUMMARY =================== */
+      function renderOrderSummary(flow) {
+        const movie = flow?.movie || {};
+        const { seatsSubtotal, comboTotal, tempTotal } = ensureTotals(flow);
+
+        const poster =
+          movie.posterUrl || "../../assets/images/default-poster.jpg";
+        const tenPhim = movie.tenPhim || "(?)";
+        const rap = movie.rapTen || flow?.rapName || "";
+        const phong = movie.phongTen || flow?.roomName || "";
+        const ngay = movie.ngayChieu || "";
+        const gio = movie.gioChieu || "";
+        const seatLabels = Array.isArray(flow?.seatLabels)
+          ? flow.seatLabels.join(", ")
+          : "—";
+
+        const comboItems = Array.isArray(flow?.comboItems)
+          ? flow.comboItems
+          : [];
+        const comboRows = comboItems.length
+          ? comboItems
+              .map(
+                (it) => `
+              <div class="item-row">
+                <div>${it.tenBn || "Combo #" + it.maBn} × ${it.qty | 0}</div>
+                <div>${numberVN(
+                  (it.qty | 0) * (parseInt(it.gia || 0, 10) || 0)
+                )}đ</div>
+              </div>`
+              )
+              .join("")
+          : `<div class="item-row"><div>${t(
+              "BN_Summary_None"
+            )}</div><div>0đ</div></div>`;
+
+        $("#orderSummary").innerHTML = `
+          <div class="movie-info">
+            <img class="movie-poster" src="${poster}" alt="${tenPhim}">
+            <div class="movie-details">
+              <h3>${tenPhim}</h3>
+              <div class="movie-meta">
+                <p>🎭 ${t("Label_Cinema")}: ${rap || "—"}</p>
+                <p>🏛 ${t("Label_Room")}: ${phong || "—"}</p>
+                <p>🎬 ${t("Label_Showtime")}: ${ngay || ""} ${gio || ""}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+
+          <div class="summary-item">
+            <h3>${t("Checkout_SelectedTickets_Heading")}</h3>
+            <div class="item-row">
+              <div>${seatLabels}</div>
+              <div>${numberVN(seatsSubtotal)}đ</div>
+            </div>
+          </div>
+
+          <div class="summary-item">
+            <h3>${t("Checkout_Combo_Heading")}</h3>
+            ${comboRows}
+          </div>
+
+          <div class="total-row">
+            <div class="item-row">
+              <div>${t("Checkout_TotalToPay_Label")}:</div>
+              <div>${numberVN(tempTotal)}đ</div>
+            </div>
+          </div>
+        `;
+      }
+
+      /* =================== INVOICE (Backend) =================== */
+      async function createInvoiceOnServer(flow) {
+        const maSuat = flow?.suatId;
+        const seatIds = Array.isArray(flow?.seatIds)
+          ? flow.seatIds.map(Number)
+          : [];
+        const seatVeIds = flow?.seatVeIds || {}; // { maGhe: maVe }
+        if (!maSuat) throw new Error(t("Error_Missing_Session"));
+        if (!seatIds.length) throw new Error(t("Msg_MustSelectSeatFirst"));
+
+        const veLines = [];
+        for (const seatId of seatIds) {
+          const veId = seatVeIds?.[seatId];
+          if (veId != null) veLines.push({ maVe: Number(veId), soLuong: 1 });
+        }
+        const useVePath =
+          veLines.length > 0 && veLines.length === seatIds.length;
+
+        const bnLines = [];
+        const comboItems = Array.isArray(flow?.comboItems)
+          ? flow.comboItems
+          : [];
+        for (const item of comboItems) {
+          const maBn = Number(item.maBn);
+          const soLuong = Number(item.qty || 0);
+          if (maBn && soLuong > 0) bnLines.push({ maBn, soLuong });
+        }
+
+        let bapNuocId = null,
+          soLuongBapNuoc = 0;
+        if (bnLines.length === 1) {
+          bapNuocId = bnLines[0].maBn;
+          soLuongBapNuoc = bnLines[0].soLuong;
+        }
+
+        const body = {
+          maSuat: Number(maSuat),
+          seatIds: useVePath ? [] : seatIds,
+          bapNuocId,
+          soLuongBapNuoc,
+          chiTietHoaDons: [...veLines, ...bnLines],
+          ghiChu: "Đặt vé qua website",
+          hinhThucThanhToan: "Momo", // note nội bộ; gateway thực dùng bên dưới
+        };
+
+        const res = await fetch(`${BASE_URL}/api/hoadon/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify(body),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch {}
+        if (!res.ok || data?.status === false)
+          throw new Error(data?.message || `HTTP ${res.status}`);
+        const d = data?.data ?? data;
+
+        return {
+          maHd: d.maHd ?? d.MaHd ?? d.id ?? d.orderId,
+          amount: Math.round(Number(d.tongTien ?? d.amount ?? 0)),
+          orderInfo:
+            d.orderInfo ||
+            t("Payment_OrderInfo_Tpl", { orderId: d.maHd ?? d.id ?? "" }),
+          fullName: d.tenKhachHang || d.fullName || t("User_Default_FullName"),
+        };
+      }
+
+      /* =================== MoMo PAYMENT =================== */
+      async function createMomoPayment({
+        orderId,
+        amount,
+        orderInfo,
+        fullName,
+      }) {
+        const body = {
+          orderId: String(orderId),
+          amount: Math.round(Number(amount || 0)),
+          orderInfo: orderInfo || t("Payment_OrderInfo_Tpl", { orderId }),
+          fullName: fullName || t("User_Default_FullName"),
+        };
+        const res = await fetch(`${BASE_URL}/api/momopayment/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify(body),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch {}
+        if (!res.ok || data?.status === false)
+          throw new Error(data?.message || `HTTP ${res.status}`);
+        const url = data?.payUrl || data?.shortLink || data?.deeplink;
+        if (!url) throw new Error("Không nhận được payUrl từ MoMo.");
+        return url;
+      }
+
+      /* =================== VNPAY PAYMENT =================== */
+      async function createVnpayPayment({ amount, orderInfo }) {
+        const locale = curAlias === "en" ? "en" : "vn";
+        const body = {
+          amount: Math.round(Number(amount || 0)), // server sẽ x100 theo spec VNPAY
+          orderDescription:
+            orderInfo || t("Payment_OrderInfo_Tpl", { orderId: "" }),
+          orderType: "other",
+          locale,
+        };
+        const res = await fetch(`${BASE_URL}/api/payments/vnpay/create`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify(body),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch {}
+        if (!res.ok || !data || !data.url)
+          throw new Error(
+            (data && (data.message || data.error)) || `HTTP ${res.status}`
+          );
+        return data.url; // vnpay checkout url
+      }
+
+      /* =================== Chọn cổng & label =================== */
+      function currentGateway() {
+        const el = document.querySelector('input[name="pm"]:checked');
+        return el ? el.value : "momo";
+      }
+      function labelByGateway(gw) {
+        if (gw === "vnpay") return t("Checkout_PayWith_Vnpay");
+        return t("Checkout_PayWith_MoMo");
+      }
+      document.addEventListener("change", (e) => {
+        if (!e.target.matches('input[name="pm"]')) return;
+        const btn = document.querySelector(".btn-book");
+        if (btn && !btn.classList.contains("is-loading")) {
+          btn.textContent = labelByGateway(currentGateway());
+        }
+      });
+
+      /* =================== BOOK (HĐ -> Gateway) =================== */
+      let bookingInFlight = false;
+      async function bookTicket() {
+        if (bookingInFlight) return;
+        bookingInFlight = true;
+        try {
+          if (!token()) throw new Error(t("Auth_Login_Required"));
+
+          const flow = getFlow();
+          if (!flow?.suatId) throw new Error(t("Error_Missing_Session"));
+          if (!Array.isArray(flow?.seatIds) || !flow.seatIds.length)
+            throw new Error(t("Msg_MustSelectSeatFirst"));
+
+          const { seatsSubtotal, comboTotal } = ensureTotals(flow);
+          if (!flow?.tempTotal)
+            setFlow({ tempTotal: seatsSubtotal + comboTotal });
+
+          setBtnState("creatingInvoice");
+          const invoice = await createInvoiceOnServer(getFlow());
+          if (!invoice?.maHd) throw new Error(t("Error_NoInvoiceId"));
+          if (!invoice?.amount || invoice.amount <= 0)
+            throw new Error(t("Error_InvalidAmount"));
+
+          const gw = currentGateway();
+          setBtnState("creatingPayment");
+
+          let payUrl = "";
+          if (gw === "vnpay") {
+            payUrl = await createVnpayPayment({
+              amount: invoice.amount,
+              orderInfo:
+                invoice.orderInfo ||
+                t("Payment_OrderInfo_Tpl", { orderId: invoice.maHd }),
+            });
+          } else {
+            payUrl = await createMomoPayment({
+              orderId: String(invoice.maHd),
+              amount: invoice.amount,
+              orderInfo:
+                invoice.orderInfo ||
+                t("Payment_OrderInfo_Tpl", { orderId: invoice.maHd }),
+              fullName: invoice.fullName,
+            });
+          }
+
+          setBtnState("redirecting");
+          location.href = payUrl;
+        } catch (err) {
+          alert(err?.message || t("Error_Booking_Generic"));
+          setBtnState("error");
+        } finally {
+          bookingInFlight = false;
+        }
+      }
+
+      /* =================== CLEAR FLOW CHỈ KHI BẤM NAV-LINK Ở HEADER =================== */
+      function bindHeaderNavFlowClear() {
+        const host = document.getElementById("include-header");
+        if (!host) return;
+        host.addEventListener(
+          "click",
+          (e) => {
+            const el = e.target.closest("a,button");
+            if (!el) return;
+            if (el.matches(".dropdown-toggle,[data-set-lang]")) return;
+            if (!el.closest(".site-header")) return;
+            if (e.ctrlKey || e.metaKey || e.shiftKey || e.button === 1) return;
+            try {
+              localStorage.removeItem(LS_KEY);
+            } catch {}
+          },
+          true
+        );
+      }
+
+      /* =================== BOOT =================== */
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          await i18nLoad(curAlias);
+        } catch (e) {
+          console.error("i18n load failed", e);
+        }
+        applyI18nToDom(document);
+
+        await includeHTML("include-header", "../../part/header.html");
+        await includeHTML("include-footer", "../../part/footer.html");
+
+        bindHeaderNavFlowClear();
+
+        const flow = getFlow();
+        if (!flow?.suatId) {
+          alert(t("Error_Missing_ShowtimeInfo"));
+          location.href = "select-showtime.html";
+          return;
+        }
+        if (!Array.isArray(flow?.seatIds) || !flow.seatIds.length) {
+          alert(t("Msg_MustSelectSeatFirst"));
+          location.href = "select-seats.html";
+          return;
+        }
+
+        renderOrderSummary(flow);
+
+        const bookBtn = document.querySelector(".btn-book");
+        if (bookBtn && !bookBtn.dataset.bound) {
+          bookBtn.addEventListener("click", () => {
+            if (!bookBtn.disabled) bookTicket();
+          });
+          bookBtn.dataset.bound = "1";
+        }
+        setBtnState("idle");
+        // nhãn nút theo gateway mặc định
+        const btn = document.querySelector(".btn-book");
+        if (btn) btn.textContent = labelByGateway(currentGateway());
+      });
+    </script>
+  </body>
+</html>

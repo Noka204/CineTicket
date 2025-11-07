@@ -1,79 +1,756 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Đăng ký</title>
-    <link rel="stylesheet" href="../../assets/css/login.css"> <!-- Dùng lại CSS nếu đã tách -->
-</head>
-<body>
-    <section class="container">
-        <div class="login-container">
-            <div class="circle circle-one"></div>
-            <div class="form-container">
-                <img src="https://raw.githubusercontent.com/hicodersofficial/glassmorphism-login-form/master/assets/illustration.png" alt="illustration" class="illustration" />
-                <h1 class="opacity">REGISTER</h1>
-                <form id="registerForm">
-                    <input type="text" id="username" placeholder="USERNAME" required />
-                    <input type="email" id="email" placeholder="EMAIL" required />
-                    <input type="text" id="fullname" placeholder="FULL NAME" required />
-                    <input type="text" id="address" placeholder="ADDRESS" required />
-                    <input type="password" id="password" placeholder="PASSWORD" required />
-                    <input type="password" id="confirmPassword" placeholder="CONFIRM PASSWORD" required />
-                    <button type="submit" class="opacity">SUBMIT</button>
-                </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title data-i18n="Register_Page_Title">CineTicket • Đăng ký</title>
 
-                <div class="register-forget opacity">
-                    <a href="login.html">LOGIN</a>
-                    <a href="#">HELP?</a>
+    <link rel="stylesheet" href="../../assets/css/Phim.css" />
+    <link rel="stylesheet" href="../../assets/css/login.css" />
+
+    <style>
+      :root {
+        --header-h: 72px;
+        --accent: #34d399;
+        --accent-2: #10b981;
+        --text: #e5e7eb;
+        --muted: #a8b3cf;
+        --border: rgba(255, 255, 255, 0.12);
+        --ring: rgba(52, 211, 153, 0.2);
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: Segoe UI, Tahoma, Arial, sans-serif;
+        color: var(--text);
+        background: radial-gradient(
+            1000px 500px at 10% -10%,
+            rgba(52, 211, 153, 0.1),
+            transparent 60%
+          ),
+          radial-gradient(
+            800px 500px at 90% 110%,
+            rgba(16, 185, 129, 0.08),
+            transparent 60%
+          ),
+          #0f172a;
+      }
+      a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      #include-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 16px;
+      }
+      .auth-wrap {
+        min-height: calc(100vh - var(--header-h, 72px));
+        display: grid;
+        place-items: center;
+        padding: 24px 12px;
+      }
+      .auth-grid {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(380px, 560px);
+        justify-content: center;
+        gap: 36px;
+      }
+      @media (min-width: 1024px) {
+        .auth-grid {
+          grid-template-columns: minmax(420px, 560px) 520px;
+        }
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          rgba(19, 27, 46, 0.88),
+          rgba(12, 18, 36, 0.88)
+        );
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px 24px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+      }
+      .card h1 {
+        margin: 0 0 8px 0;
+        font-size: 1.8rem;
+        letter-spacing: 0.2px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 0.98rem;
+        margin-bottom: 18px;
+      }
+      form {
+        display: grid;
+        gap: 14px;
+      }
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+      .field label {
+        font-weight: 600;
+        font-size: 0.95rem;
+      }
+      .input {
+        position: relative;
+      }
+      .input input {
+        width: 100%;
+        height: 46px;
+        padding: 0 44px 0 12px;
+        border-radius: 12px;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--border);
+        outline: none;
+        transition: box-shadow 0.2s, border-color 0.2s, background-color 0.2s;
+      }
+      .input input::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+      }
+      .input input:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 4px var(--ring);
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+
+      /* Nút icon con mắt */
+      .icon-btn {
+        position: absolute;
+        right: 6px;
+        top: 6px;
+        height: 34px;
+        width: 38px;
+        display: grid;
+        place-items: center;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 8px;
+        cursor: pointer;
+        outline: none;
+      }
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+        display: block;
+      }
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      .row-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      @media (max-width: 560px) {
+        .row-two {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 46px;
+        padding: 12px 14px;
+        gap: 8px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+        color: #071b12;
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        border: 1px solid var(--accent-2);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: filter 0.15s, transform 0.02s;
+      }
+      .btn:hover {
+        filter: brightness(1.05);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
+      .btn[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+      .btn-outline {
+        color: var(--text);
+        background: transparent;
+        border: 1px solid var(--border);
+      }
+      .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 12px;
+      }
+      .actions .btn {
+        flex: 1;
+      }
+
+      .alert {
+        display: none;
+        margin-top: 12px;
+        padding: 12px;
+        border-radius: 12px;
+        font-size: 0.96rem;
+      }
+      .alert.error {
+        background: #3b0f16;
+        color: #ffd0d5;
+        border: 1px solid #8a2531;
+      }
+      .alert.success {
+        background: #082e24;
+        color: #b6ffe7;
+        border: 1px solid #0f5d49;
+      }
+      .alert.info {
+        background: #0b213f;
+        color: #cfe6ff;
+        border: 1px solid #1e3a8a;
+      }
+
+      #registerAside {
+        display: none;
+        padding: 24px;
+        border-radius: 16px;
+        background: linear-gradient(
+          180deg,
+          rgba(52, 211, 153, 0.1),
+          rgba(16, 185, 129, 0.06)
+        );
+        border: 1px solid rgba(52, 211, 153, 0.2);
+      }
+      #registerAside h2 {
+        margin: 0 0 12px 0;
+      }
+      #registerAside p {
+        margin: 0 0 10px 0;
+        color: var(--muted);
+      }
+      @media (min-width: 1024px) {
+        #registerAside {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="include-header"></div>
+
+    <main class="container">
+      <div class="auth-wrap">
+        <div class="auth-grid">
+          <!-- FORM -->
+          <section class="card" aria-label="Đăng ký">
+            <h1 data-i18n="Register_Title">Đăng ký</h1>
+            <p class="muted" data-i18n="Register_Subtitle">
+              Tạo tài khoản để đặt vé nhanh, lưu lịch sử.
+            </p>
+
+            <form id="registerForm" novalidate>
+              <div class="field">
+                <label for="username" data-i18n="Register_Username_Label"
+                  >Tên đăng nhập</label
+                >
+                <div class="input">
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    inputmode="text"
+                    placeholder="vd: nhatminh"
+                    autocomplete="username"
+                    required
+                    minlength="4"
+                    maxlength="50"
+                  />
                 </div>
-            </div>
-            <div class="circle circle-two"></div>
-        </div>
-        <div class="theme-btn-container"></div>
-    </section>
+                <!-- INFO as ALERT thay cho dòng help -->
+              </div>
 
-    <p id="message" style="text-align:center; margin-top: 1rem;"></p>
+              <div class="row-two">
+                <div class="field">
+                  <label for="email" data-i18n="Register_Email_Label"
+                    >Email</label
+                  >
+                  <div class="input">
+                    <input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="you@example.com"
+                      autocomplete="email"
+                      required
+                      maxlength="100"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="fullname" data-i18n="Register_FullName_Label"
+                    >Họ và tên</label
+                  >
+                  <div class="input">
+                    <input
+                      id="fullname"
+                      name="fullName"
+                      type="text"
+                      placeholder="Nguyễn Văn A"
+                      required
+                      minlength="2"
+                      maxlength="100"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="address" data-i18n="Register_Address_Label"
+                  >Địa chỉ</label
+                >
+                <div class="input">
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    placeholder="Số nhà, đường, quận/huyện, TP"
+                    required
+                    minlength="4"
+                    maxlength="200"
+                  />
+                </div>
+              </div>
+
+              <div class="row-two">
+                <div class="field">
+                  <label for="password" data-i18n="Register_Password_Label"
+                    >Mật khẩu</label
+                  >
+                  <div class="input">
+                    <input
+                      id="password"
+                      name="password"
+                      type="password"
+                      placeholder="********"
+                      autocomplete="new-password"
+                      required
+                      minlength="6"
+                      maxlength="100"
+                    />
+                    <button
+                      type="button"
+                      id="togglePw"
+                      class="icon-btn"
+                      aria-pressed="false"
+                    >
+                      <span class="sr-only">Hiện/ẩn mật khẩu</span>
+                      <!-- eye icon -->
+                      <svg
+                        id="iconPw"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"
+                        />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label
+                    for="confirmPassword"
+                    data-i18n="Register_Confirm_Label"
+                    >Xác nhận mật khẩu</label
+                  >
+                  <div class="input">
+                    <input
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      type="password"
+                      placeholder="********"
+                      autocomplete="new-password"
+                      required
+                      minlength="6"
+                      maxlength="100"
+                    />
+                    <button
+                      type="button"
+                      id="togglePw2"
+                      class="icon-btn"
+                      aria-pressed="false"
+                    >
+                      <span class="sr-only">Hiện/ẩn mật khẩu</span>
+                      <svg
+                        id="iconPw2"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path
+                          d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"
+                        />
+                        <circle cx="12" cy="12" r="3" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <button
+                id="submitBtn"
+                type="submit"
+                class="btn"
+                data-i18n="Register_Submit"
+              >
+                Đăng ký
+              </button>
+              <div
+                id="message"
+                class="alert"
+                role="alert"
+                aria-live="polite"
+              ></div>
+
+              <div class="actions">
+                <a
+                  class="btn btn-outline"
+                  href="login.html"
+                  data-i18n="Register_GotoLogin"
+                  >Đã có tài khoản</a
+                >
+                <a
+                  class="btn btn-outline"
+                  href="../Phim/index.html"
+                  data-i18n="Register_BackHome"
+                  >Về trang phim</a
+                >
+              </div>
+            </form>
+          </section>
+
+          <aside class="card" id="registerAside">
+            <h2 data-i18n="Register_Aside_Title">Vì sao nên tạo tài khoản?</h2>
+            <p data-i18n="Register_Aside_1">
+              Giữ ghế theo thời gian thực, thanh toán an toàn.
+            </p>
+            <p data-i18n="Register_Aside_2">
+              Lưu hóa đơn và lịch sử vé để xem lại nhanh.
+            </p>
+            <p data-i18n="Register_Aside_3">
+              Nhận ưu đãi bắp nước, mã khuyến mãi.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </main>
+
+    <div id="include-footer"></div>
 
     <script>
-        document.getElementById("registerForm").addEventListener("submit", async function (e) {
-            e.preventDefault();
+      "use strict";
 
-            const password = document.getElementById("password").value;
-            const confirmPassword = document.getElementById("confirmPassword").value;
-            const msg = document.getElementById("message");
+      const BASE_URL = "https://localhost:7058";
+      const CULT = { vi: "vi-VN", en: "en-US", fr: "fr-FR" };
+      let curAlias = localStorage.getItem("lang") || "vi";
+      const I18N_CACHE = {};
 
-            if (password !== confirmPassword) {
-                msg.style.color = "red";
-                msg.textContent = "Mật khẩu xác nhận không khớp.";
-                return;
-            }
-
-            const data = {
-                userName: document.getElementById("username").value,
-                email: document.getElementById("email").value,
-                password: password,
-                fullName: document.getElementById("fullname").value,
-                address: document.getElementById("address").value
-            };
-
-            const response = await fetch("https://localhost:7058/api/Account/register", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
-
-            const result = await response.json();
-
-            if (result.status) {
-                msg.style.color = "green";
-                msg.textContent = "Đăng ký thành công!";
-                localStorage.setItem("token", result.token);
-                window.location.href = "../Phim/index.html";
-            } else {
-                msg.style.color = "red";
-                msg.textContent = result.message || "Đăng ký thất bại.";
-            }
+      async function i18nLoad(alias) {
+        const a = CULT[alias] ? alias : "vi";
+        if (I18N_CACHE[a]) return I18N_CACHE[a];
+        try {
+          const url = new URL(BASE_URL + "/api/i18n");
+          url.searchParams.set("lang", a);
+          url.searchParams.set("_", Date.now());
+          const res = await fetch(url, {
+            credentials: "include",
+            cache: "no-store",
+          });
+          if (!res.ok) throw 0;
+          const dict = await res.json();
+          I18N_CACHE[a] =
+            dict && typeof dict === "object" && !Array.isArray(dict)
+              ? dict
+              : {};
+        } catch {
+          I18N_CACHE[a] = {};
+        }
+        return I18N_CACHE[a];
+      }
+      function t(key) {
+        const pack = I18N_CACHE[curAlias] || {};
+        const v = pack[key];
+        return typeof v === "string" ? v : null;
+      }
+      function applyI18nToDom(root = document) {
+        root.querySelectorAll("[data-i18n]").forEach((el) => {
+          const k = el.getAttribute("data-i18n");
+          const v = t(k);
+          if (v != null) el.textContent = v;
         });
+        const titleEl = document.querySelector("title[data-i18n]");
+        if (titleEl) {
+          const tv = t(titleEl.getAttribute("data-i18n"));
+          if (tv != null) document.title = tv;
+        }
+        document.documentElement.lang = curAlias;
+      }
+      async function setLang(alias) {
+        curAlias = CULT[alias] ? alias : "vi";
+        localStorage.setItem("lang", curAlias);
+        fetch(
+          `${BASE_URL}/api/ping?lang=${encodeURIComponent(
+            curAlias
+          )}&_=${Date.now()}`,
+          { credentials: "include", cache: "no-store" }
+        ).catch(() => {});
+        await i18nLoad(curAlias);
+        applyI18nToDom(document);
+      }
+
+      async function includeHTML(id, file) {
+        try {
+          const html = await fetch(file, { cache: "no-store" }).then((r) =>
+            r.text()
+          );
+          const el = document.getElementById(id);
+          if (el) el.innerHTML = html;
+          applyI18nToDom(el || document);
+          try {
+            typeof updateAuthButtons === "function" && updateAuthButtons();
+          } catch {}
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      const $ = (s, r = document) => r.querySelector(s);
+      function getQuery(k) {
+        return new URLSearchParams(location.search).get(k);
+      }
+      function showMsg(type, text) {
+        const box = $("#message");
+        if (!box) return;
+        box.className =
+          "alert " +
+          (type === "error" ? "error" : type === "info" ? "info" : "success");
+        box.textContent = text || "";
+        box.style.display = text ? "block" : "none";
+      }
+      function validateUsername(u) {
+        return (
+          !!u && u.length >= 4 && u.length <= 50 && /^[A-Za-z0-9._@-]+$/.test(u)
+        );
+      }
+      function validateEmail(e) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || "");
+      }
+      function validatePassword(p) {
+        return !!p && p.length >= 6 && p.length <= 100;
+      }
+
+      function base64UrlToUint8Array(base64Url) {
+        const pad = "=".repeat((4 - (base64Url.length % 4)) % 4);
+        const b64 = (base64Url + pad).replace(/-/g, "+").replace(/_/g, "/");
+        const raw = atob(b64);
+        const out = new Uint8Array(raw.length);
+        for (let i = 0; i < raw.length; i++) out[i] = raw.charCodeAt(i);
+        return out;
+      }
+      function decodeJwt(token) {
+        try {
+          const payload = token.split(".")[1] || "";
+          const bytes = base64UrlToUint8Array(payload);
+          const json = new TextDecoder("utf-8").decode(bytes);
+          return JSON.parse(json);
+        } catch {
+          return null;
+        }
+      }
+
+      // đổi icon eye/eye-off
+      function setEyeIcon(svgEl, visible) {
+        if (!svgEl) return;
+        svgEl.innerHTML = visible
+          ? // eye-off
+            '<path d="M3 3l18 18"/><path d="M10.58 10.58A3 3 0 0 0 12 15a3 3 0 0 0 2.42-4.42"/><path d="M16.5 16.5C14.9 17.5 13.1 18 12 18 5 18 1 12 1 12a21.8 21.8 0 0 1 5.06-5.64"/><path d="M9.88 4.24A10.9 10.9 0 0 1 12 4c7 0 11 8 11 8a21.7 21.7 0 0 1-3.17 3.73"/>'
+          : // eye
+            '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>';
+      }
+
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          document.body.innerHTML = document.body.innerHTML.replace(
+            /[\u200B-\u200D\uFEFF]/g,
+            ""
+          );
+        } catch {}
+
+        await i18nLoad(curAlias);
+        applyI18nToDom(document);
+        includeHTML("include-header", "../../part/header.html");
+        includeHTML("include-footer", "../../part/footer.html");
+
+        // Toggle eye icons
+        const pw = $("#password"),
+          pw2 = $("#confirmPassword");
+        const btn1 = $("#togglePw"),
+          btn2 = $("#togglePw2");
+        const icon1 = $("#iconPw"),
+          icon2 = $("#iconPw2");
+        setEyeIcon(icon1, false);
+        setEyeIcon(icon2, false);
+
+        btn1.addEventListener("click", () => {
+          const vis = pw.type === "password";
+          pw.type = vis ? "text" : "password";
+          btn1.setAttribute("aria-pressed", String(vis));
+          setEyeIcon(icon1, vis);
+          pw.focus();
+        });
+        btn2.addEventListener("click", () => {
+          const vis = pw2.type === "password";
+          pw2.type = vis ? "text" : "password";
+          btn2.setAttribute("aria-pressed", String(vis));
+          setEyeIcon(icon2, vis);
+          pw2.focus();
+        });
+
+        // Submit
+        const form = $("#registerForm"),
+          btn = $("#submitBtn");
+        let inflight = false;
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (inflight) return;
+
+          const username = ($("#username").value || "").trim();
+          const email = ($("#email").value || "").trim();
+          const fullName = ($("#fullname").value || "").trim();
+          const address = ($("#address").value || "").trim();
+          const password = $("#password").value || "";
+          const confirm = $("#confirmPassword").value || "";
+
+          if (!validateUsername(username)) {
+            showMsg("info", "4–50 ký tự: chữ, số, ., _, @, -");
+            return;
+          }
+          if (!validateEmail(email)) {
+            showMsg("error", "Email không hợp lệ.");
+            return;
+          }
+          if (fullName.length < 2) {
+            showMsg("error", "Họ tên quá ngắn.");
+            return;
+          }
+          if (address.length < 4) {
+            showMsg("error", "Địa chỉ quá ngắn.");
+            return;
+          }
+          if (!validatePassword(password)) {
+            showMsg("error", "Mật khẩu phải từ 6–100 ký tự.");
+            return;
+          }
+          if (password !== confirm) {
+            showMsg("error", "Mật khẩu xác nhận không khớp.");
+            return;
+          }
+
+          inflight = true;
+          btn.disabled = true;
+          const old = btn.textContent;
+          btn.textContent = "Đang tạo tài khoản…";
+          showMsg("", "");
+
+          try {
+            const payload = {
+              userName: username,
+              email,
+              password,
+              fullName,
+              address,
+            };
+            const res = await fetch(`${BASE_URL}/api/Account/register`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+              cache: "no-store",
+            });
+            let result = null;
+            try {
+              result = await res.json();
+            } catch {}
+
+            if (!res.ok || !result) {
+              showMsg("error", "Không thể đăng ký. Vui lòng thử lại.");
+            } else if (result.status === false) {
+              showMsg(
+                "error",
+                result.message || result.error || "Đăng ký thất bại."
+              );
+            } else {
+              if (result.token) {
+                try {
+                  localStorage.setItem("token", result.token);
+                  const claims = decodeJwt(result.token) || {};
+                  localStorage.setItem("claims", JSON.stringify(claims));
+                } catch {}
+              }
+              showMsg("success", "Đăng ký thành công.");
+              const returnUrl = getQuery("returnUrl");
+              const target = returnUrl
+                ? decodeURIComponent(returnUrl)
+                : "../Phim/index.html";
+              setTimeout(() => {
+                location.href = target;
+              }, 500);
+              return;
+            }
+          } catch (err) {
+            console.error(err);
+            showMsg("error", "Lỗi mạng hoặc máy chủ không phản hồi.");
+          } finally {
+            inflight = false;
+            btn.disabled = false;
+            btn.textContent = old;
+          }
+        });
+      });
     </script>
-</body>
+  </body>
 </html>

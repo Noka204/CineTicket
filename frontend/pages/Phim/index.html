@@ -1,242 +1,107 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CineMax - Danh sách Phim</title>
-  <link rel="stylesheet" href="../../assets/css/Phim.css">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="Page_Title">CineMax - Danh sách Phim</title>
+    <link rel="stylesheet" href="../../assets/css/phim.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="include-header"></div>
 
-</head>
-<body>
-  <div id="include-header"></div>
-
-  <!-- Hero -->
-  <section class="hero-section" id="home">
-    <div class="slideshow-container">
-      <div class="slide active" style="background-image: url('https://wallpapercat.com/w/full/8/7/7/194290-3840x2160-desktop-4k-outer-space-wallpaper-photo.jpg')">
-        <div class="slide-overlay">
-          <div class="slide-content">
-            <h1>Trải Nghiệm Điện Ảnh Đỉnh Cao</h1>
-            <p>Khám phá những bộ phim mới nhất</p>
-            <a href="#movies" class="cta-button">Xem Phim</a>
+    <!-- HERO (đơn giản, không tự tràn) -->
+    <section class="hero-section" id="home" aria-label="Hero">
+      <div class="slideshow-container">
+        <div
+          class="slide active"
+          style="
+            background-image: url('https://wallpapercat.com/w/full/8/7/7/194290-3840x2160-desktop-4k-outer-space-wallpaper-photo.jpg');
+          "
+        >
+          <div class="slide-overlay">
+            <div class="slide-content">
+              <h1 data-i18n="Hero_Title">Trải Nghiệm Điện Ảnh Đỉnh Cao</h1>
+              <p data-i18n="Hero_Subtitle">Khám phá những bộ phim mới nhất</p>
+              <a
+                href="#movies"
+                class="cta-button"
+                data-i18n="Hero_CTA_ViewMovies"
+                >Xem Phim</a
+              >
+            </div>
           </div>
         </div>
       </div>
+      <div class="dots-container" aria-hidden="true">
+        <span class="dot active"></span>
+      </div>
+    </section>
+
+    <!-- Banner động từ API -->
+    <section class="banner-slider-wrapper" aria-label="Hot banners">
+      <div class="banner-slider" id="bannerSlider">
+        <button
+          class="banner-prev"
+          onclick="changeBannerSlide(-1)"
+          aria-label="Prev"
+        >
+          ❮
+        </button>
+        <button
+          class="banner-next"
+          onclick="changeBannerSlide(1)"
+          aria-label="Next"
+        >
+          ❯
+        </button>
+      </div>
+      <div class="banner-dots" id="bannerDots" aria-hidden="false"></div>
+    </section>
+
+    <!-- Movies -->
+    <section class="movies-section" id="movies" aria-label="Movies">
+      <h2 class="section-title" data-i18n="Section_Movies_Title">
+        Phim Đang Chiếu
+      </h2>
+      <div class="movies-grid" id="moviesGrid"></div>
+    </section>
+
+    <div id="include-footer"></div>
+
+    <!-- Trailer Modal -->
+    <div
+      id="trailerModal"
+      class="modal-overlay"
+      style="display: none"
+      aria-modal="true"
+      role="dialog"
+    >
+      <div class="modal-content video">
+        <button
+          class="close-btn"
+          onclick="closeTrailerModal()"
+          aria-label="close"
+        >
+          &times;
+        </button>
+        <iframe
+          id="trailerFrame"
+          width="100%"
+          height="100%"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
-    <div class="dots-container">
-      <span class="dot active" onclick="currentSlide(1)"></span>
-    </div>
-  </section>
 
-  <!-- Banner -->
-  <section class="banner-slider-wrapper">
-    <div class="banner-slider" id="bannerSlider">
-      <button class="banner-prev" onclick="changeBannerSlide(-1)">❮</button>
-      <button class="banner-next" onclick="changeBannerSlide(1)">❯</button>
-    </div>
-    <div class="banner-dots" id="bannerDots"></div>
-  </section>
+    <!-- Booking Modal (được tạo động trong JS) -->
 
-  <!-- Movies -->
-  <section class="movies-section" id="movies">
-    <h2 class="section-title">Phim Đang Chiếu</h2>
-    <div class="movies-grid" id="moviesGrid"></div>
-  </section>
-
-  <div id="include-footer"></div>
-
-  <!-- Trailer Modal -->
-  <div id="trailerModal" class="modal-overlay" style="display:none;">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeTrailerModal()">&times;</span>
-      <iframe id="trailerFrame" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>
-    </div>
-  </div>
-
-  <script src="../../assets/js/login.js"></script>
-  <script>
-    function includeHTML(id, file) {
-      fetch(file)
-        .then(res => res.text())
-        .then(data => {
-          document.getElementById(id).innerHTML = data;
-          if (id === "include-header") setTimeout(updateAuthButtons, 100);
-        });
-    }
-
-    function loadMovies() {
-      const moviesGrid = document.getElementById('moviesGrid');
-      fetch('https://localhost:7058/api/phim/get-all')
-        .then(res => res.json())
-        .then(data => {
-          if (data.status && Array.isArray(data.data)) {
-            data.data.forEach(movie => {
-              const posterUrl = movie.poster ? `https://localhost:7058${movie.poster}` : '../../assets/images/default-poster.jpg';
-              const movieCard = document.createElement('div');
-              movieCard.className = 'movie-card';
-              movieCard.style.cursor = 'pointer';
-              movieCard.innerHTML = `
-                <div class="movie-poster" style="background-image: url('${posterUrl}')">
-                  ${movie.trailer ? `
-                    <div class="trailer-button-wrapper">
-                      <button class="trailer-button" onclick="event.stopPropagation(); openTrailerModal('${movie.trailer}')">
-                        <i class="fas fa-play-circle"></i> Trailer
-                      </button>
-                    </div>
-                  ` : ''}
-                </div>
-                <div class="movie-info">
-                  <div class="movie-title">${movie.tenPhim}</div>
-                  <div class="movie-details">
-                    <p><strong>Thể loại:</strong> ${movie.loaiPhims?.map(l => l.tenLoaiPhim).join(', ') || 'Chưa cập nhật'}</p>
-                    <p><strong>Thời lượng:</strong> ${movie.thoiLuong} phút</p>
-                    <p><strong>Đạo diễn:</strong> ${movie.daoDien}</p>
-                  </div>
-                </div>
-              `;
-              movieCard.addEventListener('click', () => {
-                window.location.href = `../../pages/phim/detail.html?id=${movie.maPhim}`;
-              });
-              moviesGrid.appendChild(movieCard);
-            });
-          } else {
-            alert('Không có dữ liệu phim.');
-          }
-        })
-        .catch(err => {
-          console.error('Lỗi API:', err);
-          alert('Không thể tải danh sách phim.');
-        });
-    }
-
-    function loadBannerSlideshow() {
-      const bannerContainer = document.getElementById('bannerSlider');
-      const dotsContainer = document.getElementById('bannerDots');
-
-      fetch('https://localhost:7058/api/phim/get-all')
-        .then(res => res.json())
-        .then(data => {
-          if (data.status && Array.isArray(data.data)) {
-            const banners = data.data.filter(m => m.isHot && m.banner);
-            if (banners.length === 0) return;
-
-            banners.forEach((movie, i) => {
-              const slide = document.createElement('div');
-              slide.className = 'banner-slide';
-              if (i === 0) slide.classList.add('active');
-              slide.style.backgroundImage = `url('https://localhost:7058${movie.banner}')`;
-              slide.title = movie.tenPhim;
-              slide.addEventListener('click', () => {
-                window.location.href = `../../pages/phim/detail.html?id=${movie.maPhim}`;
-              });
-              bannerContainer.appendChild(slide);
-
-              const dot = document.createElement('span');
-              dot.className = 'banner-dot';
-              if (i === 0) dot.classList.add('active');
-              dot.addEventListener('click', () => showBannerSlide(i));
-              dotsContainer.appendChild(dot);
-            });
-
-            startBannerAutoSlide();
-          }
-        })
-        .catch(err => {
-          console.error('Lỗi tải banner:', err);
-        });
-    }
-
-    let bannerSlideIndex = 0;
-    function showBannerSlide(index) {
-      const slides = document.querySelectorAll('.banner-slide');
-      const dots = document.querySelectorAll('.banner-dot');
-      slides.forEach((s, i) => s.classList.toggle('active', i === index));
-      dots.forEach((d, i) => d.classList.toggle('active', i === index));
-      bannerSlideIndex = index;
-    }
-
-    function changeBannerSlide(n) {
-      const slides = document.querySelectorAll('.banner-slide');
-      bannerSlideIndex = (bannerSlideIndex + n + slides.length) % slides.length;
-      showBannerSlide(bannerSlideIndex);
-    }
-
-    function startBannerAutoSlide() {
-      setInterval(() => {
-        const slides = document.querySelectorAll('.banner-slide');
-        if (slides.length === 0) return;
-        bannerSlideIndex = (bannerSlideIndex + 1) % slides.length;
-        showBannerSlide(bannerSlideIndex);
-      }, 5000);
-    }
-
-    function openTrailerModal(youtubeLink) {
-      const embedLink = convertToEmbedLink(youtubeLink);
-      document.getElementById('trailerFrame').src = embedLink;
-      document.getElementById('trailerModal').style.display = 'flex';
-    }
-
-    function closeTrailerModal() {
-      document.getElementById('trailerModal').style.display = 'none';
-      document.getElementById('trailerFrame').src = '';
-    }
-
-    function convertToEmbedLink(link) {
-      if (link.includes("watch?v=")) {
-        return link.replace("watch?v=", "embed/");
-      } else if (link.includes("youtu.be/")) {
-        return link.replace("youtu.be/", "youtube.com/embed/");
-      }
-      return link;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      includeHTML("include-header", "../../part/header.html");
-      includeHTML("include-footer", "../../part/footer.html");
-      loadMovies();
-      loadBannerSlideshow();
-    });
-  </script>
-  <script>
-(function runMomoCallback() {
-  try {
-    const q = new URLSearchParams(location.search);
-    // Nếu không có orderId => không phải từ MoMo redirect
-    if (!q.get('orderId')) return;
-
-    // Gom tất cả tham số mà MoMo redirect trả về
-    const payload = {
-      partnerCode:  q.get('partnerCode')  || '',
-      orderId:      q.get('orderId')      || '',
-      requestId:    q.get('requestId')    || '',
-      amount:       q.get('amount')       || '',
-      orderInfo:    q.get('orderInfo')    || '',
-      orderType:    q.get('orderType')    || '',
-      transId:      q.get('transId')      || '',
-      resultCode:   q.get('resultCode')   || '',
-      message:      q.get('message')      || '',
-      payType:      q.get('payType')      || '',
-      responseTime: q.get('responseTime') || '',
-      extraData:    q.get('extraData')    || '',
-      signature:    q.get('signature')    || ''
-    };
-
-    const API_BASE = 'https://localhost:7058';
-
-    // Gửi 1 lần tới /confirm (POST)
-    fetch(`${API_BASE}/api/momopayment/confirm`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:   JSON.stringify(payload)
-    }).catch(() => {}).finally(() => {
-      // Dọn query cho sạch (để tránh resend khi F5)
-      history.replaceState({}, "", location.pathname + location.hash);
-    });
-  } catch {
-    try { history.replaceState({}, "", location.pathname + location.hash); } catch {}
-  }
-})();
-</script>
-</body>
+    <!-- JS: auth (nếu có) -> page logic -->
+    <script src="../../assets/js/login.js"></script>
+    <script src="../../assets/js/phim.js"></script>
+  </body>
 </html>
