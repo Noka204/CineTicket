@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="../../assets/css/Phim.css" />
 
     <style>
-      /* ========= HEADER sticky (đồng bộ) ========= */
       :root {
         --header-h: 72px;
         --buy: #22e3a2;
@@ -53,7 +52,6 @@
         overflow: visible !important;
       }
 
-      /* ========= PAGE ========= */
       .container {
         max-width: 1100px;
         margin: 24px auto;
@@ -82,7 +80,6 @@
         backdrop-filter: blur(12px);
         margin-bottom: 12px;
       }
-
       .movie-info {
         display: grid;
         grid-template-columns: 120px 1fr;
@@ -136,7 +133,6 @@
         margin-bottom: 8px;
         gap: 12px;
       }
-
       .total-row {
         font-size: 1.2em;
         font-weight: 700;
@@ -186,7 +182,6 @@
         }
       }
 
-      /* ====== PAYMENT METHODS ====== */
       .pay-methods {
         display: flex;
         gap: 16px;
@@ -204,6 +199,62 @@
       }
       .pm input {
         accent-color: var(--buy);
+      }
+
+      /* ===== Coupon UI ===== */
+      .coupon-row {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+      .coupon-input {
+        flex: 1;
+        min-width: 240px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.03);
+        color: #e2e8f0;
+      }
+      .coupon-apply {
+        padding: 10px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.05);
+        cursor: pointer;
+      }
+      .coupon-note {
+        color: #a7f3d0;
+        font-size: 0.9em;
+        margin-top: 8px;
+      }
+      .coupon-error {
+        color: #fecaca;
+        font-size: 0.9em;
+        margin-top: 8px;
+      }
+      .coupon-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(34, 227, 162, 0.15);
+        border: 1px solid rgba(34, 227, 162, 0.35);
+        padding: 6px 10px;
+        border-radius: 999px;
+        font-size: 0.9em;
+      }
+      .coupon-remove {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      .coupon-remove:hover {
+        opacity: 1;
+        text-decoration: underline;
+      }
+      .price-strike {
+        text-decoration: line-through;
+        opacity: 0.7;
       }
     </style>
   </head>
@@ -223,7 +274,30 @@
         <div id="orderSummary"><!-- JS render --></div>
       </div>
 
-      <!-- CHỌN CỔNG THANH TOÁN -->
+      <!-- MÃ KHUYẾN MÃI -->
+      <div class="card" id="couponCard">
+        <h3 style="margin-top: 0" data-i18n="Checkout_Coupon_Heading">
+          Mã khuyến mãi
+        </h3>
+        <div class="coupon-row">
+          <input
+            id="couponInput"
+            class="coupon-input"
+            placeholder="Nhập mã..."
+          />
+          <button id="couponBtn" class="coupon-apply" type="button">
+            Áp mã
+          </button>
+          <span id="couponChip" class="coupon-chip" style="display: none">
+            <span id="couponCodeText"></span>
+            <span class="coupon-remove" id="couponRemove">gỡ</span>
+          </span>
+        </div>
+        <div id="couponMsg" class="coupon-note" style="display: none"></div>
+        <div id="couponErr" class="coupon-error" style="display: none"></div>
+      </div>
+
+      <!-- CỔNG THANH TOÁN -->
       <div class="card">
         <h3
           id="pm-heading"
@@ -233,14 +307,16 @@
           Phương thức thanh toán
         </h3>
         <div class="pay-methods">
-          <label class="pm">
-            <input type="radio" name="pm" value="momo" checked />
-            <span>MoMo</span>
-          </label>
-          <label class="pm">
-            <input type="radio" name="pm" value="vnpay" />
-            <span>VNPAY</span>
-          </label>
+          <label class="pm"
+            ><input type="radio" name="pm" value="momo" checked /><span
+              >MoMo</span
+            ></label
+          >
+          <label class="pm"
+            ><input type="radio" name="pm" value="vnpay" /><span
+              >VNPAY</span
+            ></label
+          >
         </div>
       </div>
 
@@ -253,7 +329,7 @@
 
     <script defer src="../../assets/js/login.js"></script>
     <script>
-      /* =================== CONFIG =================== */
+      // =================== CONFIG ===================
       const BASE_URL = "https://localhost:7058";
       const LS_KEY = "BOOKING_FLOW";
       const $ = (s, r = document) => r.querySelector(s);
@@ -268,7 +344,7 @@
       const authHeaders = () =>
         token() ? { Authorization: "Bearer " + token() } : {};
 
-      /* =================== I18N (đồng bộ với resource list) =================== */
+      // =================== I18N ===================
       const CULT = { vi: "vi", en: "en", fr: "fr" };
       function pickInitialLang() {
         const q = new URLSearchParams(location.search).get("lang");
@@ -277,26 +353,93 @@
       }
       let curAlias = pickInitialLang();
       const I18N_CACHE = {};
-
-      /* Fallback cho các key chưa có trong resource server */
       const LOCAL_FALLBACKS = {
         vi: {
           Checkout_Methods_Heading: "Phương thức thanh toán",
           Checkout_PayWith_MoMo: "Thanh toán MoMo",
           Checkout_PayWith_Vnpay: "Thanh toán VNPAY",
+          Checkout_Coupon_Heading: "Mã khuyến mãi",
+          Coupon_Applied: "Đã áp dụng mã {code}. Giảm {off}đ.",
+          Coupon_Removed: "Đã gỡ mã khuyến mãi.",
+          Coupon_Invalid: "Mã không hợp lệ hoặc đã dùng.",
+          Coupon_TotalAfter: "Tổng sau giảm",
+          Coupon_Discount: "Giảm giá",
+          Coupon_Valid_Preview: "Mã hợp lệ: {code}. Dự kiến giảm {off}đ.",
+          Checkout_SelectedTickets_Heading: "Vé đã chọn",
+          Checkout_Combo_Heading: "Combo",
+          Checkout_TotalToPay_Label: "Tổng thanh toán",
+          BN_Summary_None: "Không chọn combo",
+          Label_Cinema: "Rạp",
+          Label_Room: "Phòng",
+          Label_Showtime: "Suất chiếu",
+          Loading_Processing: "Đang xử lý…",
+          Btn_Retry: "Thử lại",
+          Auth_Login_Required: "Vui lòng đăng nhập trước khi thanh toán.",
+          Error_Missing_Session: "Thiếu thông tin suất chiếu.",
+          Error_Missing_ShowtimeInfo: "Thiếu thông tin suất chiếu.",
+          Msg_MustSelectSeatFirst: "Bạn chưa chọn ghế.",
+          Error_NoInvoiceId: "Không nhận được mã hóa đơn.",
+          Error_InvalidAmount: "Số tiền không hợp lệ.",
+          Error_Booking_Generic: "Không thể đặt vé.",
         },
         en: {
           Checkout_Methods_Heading: "Payment methods",
           Checkout_PayWith_MoMo: "Pay with MoMo",
           Checkout_PayWith_Vnpay: "Pay with VNPAY",
+          Checkout_Coupon_Heading: "Promo code",
+          Coupon_Applied: "Applied {code}. Discount {off}đ.",
+          Coupon_Removed: "Promo removed.",
+          Coupon_Invalid: "Code invalid or already used.",
+          Coupon_TotalAfter: "Total after discount",
+          Coupon_Discount: "Discount",
+          Coupon_Valid_Preview:
+            "Valid code: {code}. Estimated discount {off}đ.",
+          Checkout_SelectedTickets_Heading: "Selected tickets",
+          Checkout_Combo_Heading: "Combo",
+          Checkout_TotalToPay_Label: "Total to pay",
+          BN_Summary_None: "No combos",
+          Label_Cinema: "Cinema",
+          Label_Room: "Room",
+          Label_Showtime: "Showtime",
+          Loading_Processing: "Processing…",
+          Btn_Retry: "Retry",
+          Auth_Login_Required: "Please log in to pay.",
+          Error_Missing_Session: "Missing session.",
+          Error_Missing_ShowtimeInfo: "Missing showtime info.",
+          Msg_MustSelectSeatFirst: "Select seats first.",
+          Error_NoInvoiceId: "No invoice id.",
+          Error_InvalidAmount: "Invalid amount.",
+          Error_Booking_Generic: "Booking failed.",
         },
         fr: {
           Checkout_Methods_Heading: "Moyens de paiement",
           Checkout_PayWith_MoMo: "Payer avec MoMo",
           Checkout_PayWith_Vnpay: "Payer avec VNPAY",
+          Checkout_Coupon_Heading: "Code promo",
+          Coupon_Applied: "Code {code} appliqué. Remise {off}đ.",
+          Coupon_Removed: "Code promo supprimé.",
+          Coupon_Invalid: "Code invalide ou déjà utilisé.",
+          Coupon_TotalAfter: "Total après remise",
+          Coupon_Discount: "Remise",
+          Coupon_Valid_Preview: "Code valide : {code}. Remise estimée {off}đ.",
+          Checkout_SelectedTickets_Heading: "Billets choisis",
+          Checkout_Combo_Heading: "Combo",
+          Checkout_TotalToPay_Label: "Total à payer",
+          BN_Summary_None: "Aucun combo",
+          Label_Cinema: "Cinéma",
+          Label_Room: "Salle",
+          Label_Showtime: "Séance",
+          Loading_Processing: "Traitement…",
+          Btn_Retry: "Réessayer",
+          Auth_Login_Required: "Veuillez vous connecter.",
+          Error_Missing_Session: "Séance manquante.",
+          Error_Missing_ShowtimeInfo: "Infos séance manquantes.",
+          Msg_MustSelectSeatFirst: "Sélectionnez les sièges.",
+          Error_NoInvoiceId: "Pas d'ID facture.",
+          Error_InvalidAmount: "Montant invalide.",
+          Error_Booking_Generic: "Échec de réservation.",
         },
       };
-
       async function i18nLoad(alias) {
         const a = CULT[alias] ? alias : "vi";
         if (I18N_CACHE[a]) return I18N_CACHE[a];
@@ -345,10 +488,7 @@
             `${BASE_URL}/api/ping?lang=${encodeURIComponent(
               curAlias
             )}&t=${Date.now()}`,
-            {
-              credentials: "include",
-              cache: "no-store",
-            }
+            { credentials: "include", cache: "no-store" }
           );
         } catch {}
         await i18nLoad(curAlias);
@@ -357,7 +497,6 @@
         const u = new URL(location.href);
         u.searchParams.set("lang", curAlias);
         history.replaceState({}, "", u.toString());
-        // cập nhật nhãn nút theo gateway
         const btn = document.querySelector(".btn-book");
         if (btn && !btn.classList.contains("is-loading"))
           btn.textContent = labelByGateway(currentGateway());
@@ -369,7 +508,7 @@
         setLang(langLink.getAttribute("data-set-lang"));
       });
 
-      /* =================== include header/footer =================== */
+      // =================== include header/footer ===================
       async function includeHTML(id, file) {
         try {
           const html = await fetch(`${file}?t=${Date.now()}`, {
@@ -388,7 +527,7 @@
         }
       }
 
-      /* =================== FLOW STORAGE =================== */
+      // =================== FLOW STORAGE ===================
       const getFlow = () => {
         try {
           return JSON.parse(localStorage.getItem(LS_KEY) || "{}");
@@ -401,7 +540,7 @@
         localStorage.setItem(LS_KEY, JSON.stringify({ ...cur, ...(p || {}) }));
       };
 
-      /* =================== TOTALS =================== */
+      // =================== TOTALS ===================
       function ensureTotals(flow) {
         const seatsSubtotal = Number(flow?.seatTotal ?? 0);
         const comboTotal = Number(flow?.comboTotal ?? 0);
@@ -409,9 +548,8 @@
         return { seatsSubtotal, comboTotal, tempTotal };
       }
 
-      /* =================== NÚT: STATES =================== */
+      // =================== NÚT: STATES ===================
       function btnLabelFor(state) {
-        // Map các trạng thái. Nếu thiếu key Loading_Creating*, fallback về Loading_Processing
         const m = {
           creatingInvoice: (I18N_CACHE[curAlias] || {})[
             "Loading_CreatingInvoice"
@@ -438,7 +576,172 @@
         btn.classList.toggle("is-loading", waiting);
       }
 
-      /* =================== RENDER SUMMARY =================== */
+      // =================== COUPON HELPERS ===================
+      function currentBaseTotal(flow) {
+        const { tempTotal } = ensureTotals(flow);
+        return Math.max(0, Number(tempTotal || 0));
+      }
+
+      async function validateCouponOnServer(code, amount) {
+        const res = await fetch(`${BASE_URL}/api/khuyenmai/apply`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", ...authHeaders() },
+          body: JSON.stringify({
+            code: String(code || "").trim(),
+            amount: Math.round(Number(amount || 0)),
+          }),
+        });
+        let data = null;
+        try {
+          data = await res.json();
+        } catch {}
+        if (!res.ok || data?.status === false)
+          throw new Error(data?.message || t("Coupon_Invalid"));
+        const d = data?.data ?? data;
+        const discount = Number(d.giam ?? d.discount ?? 0);
+        const final = Number(
+          d.tongSauGiam ?? d.finalAmount ?? amount - discount
+        );
+        return {
+          code: (d.code || code || "").toString().trim(),
+          loaiGiam: d.loaiGiam || d.kind || null,
+          mucGiam: Number(d.mucGiam ?? d.value ?? 0),
+          discount,
+          final,
+          khuyenMaiId: d.khuyenMaiId ?? null,
+          khuyenMaiCodeId: d.khuyenMaiCodeId ?? null,
+          note: d.note || "",
+        };
+      }
+
+      function showCouponState(okMsg, errMsg) {
+        const msgEl = $("#couponMsg"),
+          errEl = $("#couponErr");
+        if (okMsg) {
+          msgEl.textContent = okMsg;
+          msgEl.style.display = "block";
+        } else {
+          msgEl.style.display = "none";
+          msgEl.textContent = "";
+        }
+        if (errMsg) {
+          errEl.textContent = errMsg;
+          errEl.style.display = "block";
+        } else {
+          errEl.style.display = "none";
+          errEl.textContent = "";
+        }
+      }
+
+      // --- tính giảm local phục vụ preview ---
+      function computeDiscount(kind, value, amount) {
+        const k = String(kind || "").toLowerCase();
+        const v = Number(value || 0);
+        const base = Math.max(0, Number(amount || 0));
+        if (k === "percent") {
+          const d = Math.round(base * (v / 100));
+          return Math.max(0, Math.min(d, base));
+        }
+        return Math.max(0, Math.min(v, base));
+      }
+
+      // --- Preview mã bằng GET /khuyenmai/validate (không ghi vào flow) ---
+      let _lastPreviewReqId = 0;
+      async function previewCoupon(code) {
+        code = (code || "").trim();
+        if (!code) {
+          showCouponState(null, null);
+          return;
+        }
+        const reqId = ++_lastPreviewReqId;
+
+        try {
+          const url = new URL(`${BASE_URL}/api/khuyenmai/validate`);
+          url.searchParams.set("code", code);
+          const res = await fetch(url.toString(), {
+            headers: { ...authHeaders() },
+            cache: "no-store",
+            credentials: "include",
+          });
+          let j = null;
+          try {
+            j = await res.json();
+          } catch {}
+
+          if (reqId !== _lastPreviewReqId) return;
+
+          if (!res.ok || !j || j.status === false || !j.data) {
+            showCouponState(null, t("Coupon_Invalid"));
+            return;
+          }
+
+          const d = j.data; // { loaiGiam, mucGiam, code, ... }
+          const base = currentBaseTotal(getFlow());
+          const discount = computeDiscount(d.loaiGiam, d.mucGiam, base);
+
+          showCouponState(
+            t("Coupon_Valid_Preview", {
+              code: d.code || code,
+              off: numberVN(discount),
+            }),
+            null
+          );
+        } catch {
+          if (reqId !== _lastPreviewReqId) return;
+          showCouponState(null, t("Coupon_Invalid"));
+        }
+      }
+
+      let applyingCoupon = false;
+      async function onApplyCoupon() {
+        if (applyingCoupon) return;
+        const code = ($("#couponInput")?.value || "").trim();
+        if (!code) {
+          showCouponState(null, t("Coupon_Invalid"));
+          return;
+        }
+        applyingCoupon = true;
+        const btn = $("#couponBtn");
+        if (btn) {
+          btn.disabled = true;
+          btn.textContent = "Đang áp…";
+        }
+        try {
+          const flow = getFlow();
+          const base = currentBaseTotal(flow);
+          const applied = await validateCouponOnServer(code, base);
+          setFlow({ coupon: applied });
+          $("#couponCodeText").textContent = applied.code;
+          $("#couponChip").style.display = "inline-flex";
+          showCouponState(
+            t("Coupon_Applied", {
+              code: applied.code,
+              off: numberVN(applied.discount),
+            }),
+            null
+          );
+          renderOrderSummary(getFlow());
+        } catch (e) {
+          showCouponState(null, e?.message || t("Coupon_Invalid"));
+        } finally {
+          applyingCoupon = false;
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = "Áp mã";
+          }
+        }
+      }
+
+      function onRemoveCoupon() {
+        const f = getFlow();
+        delete f.coupon;
+        localStorage.setItem(LS_KEY, JSON.stringify(f));
+        $("#couponChip").style.display = "none";
+        showCouponState(t("Coupon_Removed"), null);
+        renderOrderSummary(getFlow());
+      }
+
+      // =================== RENDER SUMMARY ===================
       function renderOrderSummary(flow) {
         const movie = flow?.movie || {};
         const { seatsSubtotal, comboTotal, tempTotal } = ensureTotals(flow);
@@ -473,6 +776,19 @@
               "BN_Summary_None"
             )}</div><div>0đ</div></div>`;
 
+        const coupon = flow?.coupon;
+        const baseTotal = Number(tempTotal || 0);
+        const discount = Math.min(Number(coupon?.discount || 0), baseTotal);
+        const finalPay =
+          discount > 0
+            ? Math.max(0, Number(coupon?.final ?? baseTotal - discount))
+            : baseTotal;
+
+        if (coupon?.code) {
+          $("#couponCodeText").textContent = coupon.code;
+          $("#couponChip").style.display = "inline-flex";
+        }
+
         $("#orderSummary").innerHTML = `
           <div class="movie-info">
             <img class="movie-poster" src="${poster}" alt="${tenPhim}">
@@ -490,10 +806,9 @@
 
           <div class="summary-item">
             <h3>${t("Checkout_SelectedTickets_Heading")}</h3>
-            <div class="item-row">
-              <div>${seatLabels}</div>
-              <div>${numberVN(seatsSubtotal)}đ</div>
-            </div>
+            <div class="item-row"><div>${seatLabels}</div><div>${numberVN(
+          seatsSubtotal
+        )}đ</div></div>
           </div>
 
           <div class="summary-item">
@@ -502,15 +817,30 @@
           </div>
 
           <div class="total-row">
-            <div class="item-row">
-              <div>${t("Checkout_TotalToPay_Label")}:</div>
-              <div>${numberVN(tempTotal)}đ</div>
-            </div>
+            ${
+              discount > 0
+                ? `
+                <div class="item-row"><div>${t(
+                  "Checkout_TotalToPay_Label"
+                )}:</div><div class="price-strike">${numberVN(
+                    baseTotal
+                  )}đ</div></div>
+                <div class="item-row"><div>${t("Coupon_Discount")} (${
+                    coupon.code
+                  }):</div><div>-${numberVN(discount)}đ</div></div>
+                <div class="item-row"><div>${t(
+                  "Coupon_TotalAfter"
+                )}:</div><div>${numberVN(finalPay)}đ</div></div>
+              `
+                : `<div class="item-row"><div>${t(
+                    "Checkout_TotalToPay_Label"
+                  )}:</div><div>${numberVN(baseTotal)}đ</div></div>`
+            }
           </div>
         `;
       }
 
-      /* =================== INVOICE (Backend) =================== */
+      // =================== INVOICE (Backend) ===================
       async function createInvoiceOnServer(flow) {
         const maSuat = flow?.suatId;
         const seatIds = Array.isArray(flow?.seatIds)
@@ -552,7 +882,9 @@
           soLuongBapNuoc,
           chiTietHoaDons: [...veLines, ...bnLines],
           ghiChu: "Đặt vé qua website",
-          hinhThucThanhToan: "Momo", // note nội bộ; gateway thực dùng bên dưới
+          hinhThucThanhToan: "Momo",
+          // truyền coupon code để BE áp dụng khi tạo hóa đơn
+          couponCode: flow?.coupon?.code || undefined,
         };
 
         const res = await fetch(`${BASE_URL}/api/hoadon/create`, {
@@ -578,7 +910,7 @@
         };
       }
 
-      /* =================== MoMo PAYMENT =================== */
+      // =================== PAYMENT ===================
       async function createMomoPayment({
         orderId,
         amount,
@@ -606,12 +938,10 @@
         if (!url) throw new Error("Không nhận được payUrl từ MoMo.");
         return url;
       }
-
-      /* =================== VNPAY PAYMENT =================== */
       async function createVnpayPayment({ amount, orderInfo }) {
         const locale = curAlias === "en" ? "en" : "vn";
         const body = {
-          amount: Math.round(Number(amount || 0)), // server sẽ x100 theo spec VNPAY
+          amount: Math.round(Number(amount || 0)),
           orderDescription:
             orderInfo || t("Payment_OrderInfo_Tpl", { orderId: "" }),
           orderType: "other",
@@ -630,34 +960,33 @@
           throw new Error(
             (data && (data.message || data.error)) || `HTTP ${res.status}`
           );
-        return data.url; // vnpay checkout url
+        return data.url;
       }
 
-      /* =================== Chọn cổng & label =================== */
+      // =================== Gateway choose ===================
       function currentGateway() {
         const el = document.querySelector('input[name="pm"]:checked');
         return el ? el.value : "momo";
       }
       function labelByGateway(gw) {
-        if (gw === "vnpay") return t("Checkout_PayWith_Vnpay");
-        return t("Checkout_PayWith_MoMo");
+        return gw === "vnpay"
+          ? t("Checkout_PayWith_Vnpay")
+          : t("Checkout_PayWith_MoMo");
       }
       document.addEventListener("change", (e) => {
         if (!e.target.matches('input[name="pm"]')) return;
         const btn = document.querySelector(".btn-book");
-        if (btn && !btn.classList.contains("is-loading")) {
+        if (btn && !btn.classList.contains("is-loading"))
           btn.textContent = labelByGateway(currentGateway());
-        }
       });
 
-      /* =================== BOOK (HĐ -> Gateway) =================== */
+      // =================== BOOK (HĐ -> Gateway) ===================
       let bookingInFlight = false;
       async function bookTicket() {
         if (bookingInFlight) return;
         bookingInFlight = true;
         try {
           if (!token()) throw new Error(t("Auth_Login_Required"));
-
           const flow = getFlow();
           if (!flow?.suatId) throw new Error(t("Error_Missing_Session"));
           if (!Array.isArray(flow?.seatIds) || !flow.seatIds.length)
@@ -675,7 +1004,6 @@
 
           const gw = currentGateway();
           setBtnState("creatingPayment");
-
           let payUrl = "";
           if (gw === "vnpay") {
             payUrl = await createVnpayPayment({
@@ -694,7 +1022,6 @@
               fullName: invoice.fullName,
             });
           }
-
           setBtnState("redirecting");
           location.href = payUrl;
         } catch (err) {
@@ -705,7 +1032,7 @@
         }
       }
 
-      /* =================== CLEAR FLOW CHỈ KHI BẤM NAV-LINK Ở HEADER =================== */
+      // =================== CLEAR FLOW khi click nav ===================
       function bindHeaderNavFlowClear() {
         const host = document.getElementById("include-header");
         if (!host) return;
@@ -725,7 +1052,7 @@
         );
       }
 
-      /* =================== BOOT =================== */
+      // =================== BOOT ===================
       document.addEventListener("DOMContentLoaded", async () => {
         try {
           await i18nLoad(curAlias);
@@ -736,7 +1063,6 @@
 
         await includeHTML("include-header", "../../part/header.html");
         await includeHTML("include-footer", "../../part/footer.html");
-
         bindHeaderNavFlowClear();
 
         const flow = getFlow();
@@ -751,6 +1077,30 @@
           return;
         }
 
+        // coupon events
+        const btnApply = $("#couponBtn");
+        if (btnApply) btnApply.addEventListener("click", onApplyCoupon);
+        const input = $("#couponInput");
+        if (input)
+          input.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") onApplyCoupon();
+          });
+        const rm = $("#couponRemove");
+        if (rm) rm.addEventListener("click", onRemoveCoupon);
+
+        // auto-preview khi gõ + blur
+        if (input) {
+          let debounceId;
+          input.addEventListener("input", () => {
+            clearTimeout(debounceId);
+            const val = input.value.trim();
+            debounceId = setTimeout(() => previewCoupon(val), 350);
+          });
+          input.addEventListener("blur", () => {
+            previewCoupon(input.value.trim());
+          });
+        }
+
         renderOrderSummary(flow);
 
         const bookBtn = document.querySelector(".btn-book");
@@ -761,7 +1111,6 @@
           bookBtn.dataset.bound = "1";
         }
         setBtnState("idle");
-        // nhãn nút theo gateway mặc định
         const btn = document.querySelector(".btn-book");
         if (btn) btn.textContent = labelByGateway(currentGateway());
       });

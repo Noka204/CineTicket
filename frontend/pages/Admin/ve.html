@@ -2,9 +2,9 @@
 <html lang="vi">
   <head>
     <meta charset="UTF-8" />
-    <title>Quản lý Suất Chiếu</title>
+    <title>Quản lý Vé</title>
 
-    <!-- Bootstrap + DataTables (Bootstrap 5 theme) -->
+    <!-- Bootstrap + DataTables -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
@@ -29,12 +29,42 @@
         font-variant-numeric: tabular-nums;
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
       }
+      .toast-wrap {
+        position: fixed;
+        top: 16px;
+        right: 16px;
+        z-index: 1080;
+      }
+      .badge-st {
+        font-weight: 600;
+        border: 1px solid rgba(0, 0, 0, 0.05);
+      }
+      .badge-trong {
+        background: #eef2ff;
+        color: #3f51b5;
+      }
+      .badge-giu {
+        background: #fff7ed;
+        color: #b45309;
+      }
+      .badge-dadat {
+        background: #f0fdf4;
+        color: #16a34a;
+      }
+      .badge-huy {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+      .small-muted {
+        font-size: 12px;
+        color: #6c757d;
+      }
     </style>
   </head>
   <body>
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>🎬 Quản lý Suất Chiếu</h2>
+      <h2>🎟️ Quản lý Vé</h2>
       <div class="d-flex gap-2">
         <a href="../Admin/index.html" class="btn btn-outline-dark"
           >🔙 Quay lại</a
@@ -49,37 +79,35 @@
     <!-- Bảng -->
     <div class="table-responsive">
       <table
-        id="suatTable"
+        id="veTable"
         class="table table-bordered table-striped align-middle text-center w-100"
       >
         <thead class="table-light">
           <tr>
-            <th style="width: 90px">ID</th>
-            <th>Phim</th>
-            <th>Phòng</th>
-            <th class="mono" style="width: 180px">Bắt đầu</th>
-            <th class="mono" style="width: 180px">Kết thúc</th>
-            <th class="mono" style="width: 130px">Ngày chiếu</th>
-            <th class="mono" style="width: 110px">Giờ chiếu</th>
-            <th style="width: 220px">Hành động</th>
+            <th style="width: 80px">Mã vé</th>
+            <th style="width: 100px">Mã ghế</th>
+            <th style="width: 110px">Mã suất</th>
+            <th style="width: 130px">Giá vé</th>
+            <th style="width: 120px">Trạng thái</th>
+            <th style="width: 320px">Hành động</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
 
-    <!-- Modal Thêm/Sửa -->
+    <!-- Modal Thêm/Sửa Vé -->
     <div
       class="modal fade"
-      id="suatModal"
+      id="veModal"
       tabindex="-1"
-      aria-labelledby="suatModalLabel"
+      aria-labelledby="veModalLabel"
       aria-hidden="true"
     >
       <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 id="suatModalLabel" class="modal-title">Thêm suất chiếu</h5>
+            <h5 id="veModalLabel" class="modal-title">Thêm vé</h5>
             <button
               type="button"
               class="btn-close"
@@ -87,48 +115,95 @@
               aria-label="Đóng"
             ></button>
           </div>
-          <form id="suatForm">
+
+          <form id="veForm">
             <div class="modal-body">
-              <input type="hidden" id="MaSuat" />
+              <input type="hidden" id="MaVe" />
+
               <div class="row g-3">
-                <div class="col-md-6">
-                  <label for="MaPhim" class="form-label">Phim</label>
-                  <select id="MaPhim" class="form-select" required>
-                    <option value="">-- Chọn phim --</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="MaPhong" class="form-label">Phòng</label>
-                  <select id="MaPhong" class="form-select" required>
-                    <option value="">-- Chọn phòng --</option>
-                  </select>
-                </div>
-                <div class="col-md-6">
-                  <label for="BatDau" class="form-label">Bắt đầu</label>
+                <div class="col-md-4">
+                  <label class="form-label">Mã ghế</label>
                   <input
-                    type="datetime-local"
-                    id="BatDau"
+                    id="MaGhe"
+                    type="number"
                     class="form-control"
                     required
                   />
                 </div>
-                <div class="col-md-6">
-                  <label for="KetThuc" class="form-label">Kết thúc</label>
+                <div class="col-md-4">
+                  <label class="form-label">Mã suất</label>
                   <input
-                    type="datetime-local"
-                    id="KetThuc"
+                    id="MaSuat"
+                    type="number"
                     class="form-control"
                     required
                   />
                 </div>
-                <div class="col-12">
-                  <div class="form-text">
-                    <strong>Ghi chú:</strong> <code>ngàyChiếu</code> và
-                    <code>giờChiếu</code> sẽ tự tính từ <em>Bắt đầu</em>.
+
+                <div class="col-md-4">
+                  <label
+                    class="form-label d-flex justify-content-between align-items-center"
+                  >
+                    <span>Giá vé (VND)</span>
+                    <button
+                      type="button"
+                      id="btnAutoPrice"
+                      class="btn btn-sm btn-outline-primary"
+                    >
+                      🔎 Tính giá
+                    </button>
+                  </label>
+                  <input
+                    id="GiaVe"
+                    type="number"
+                    step="1000"
+                    min="0"
+                    class="form-control"
+                  />
+                  <div class="form-text small-muted">
+                    Dựa theo loại ghế, giờ chiếu, cuối tuần…
                   </div>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Trạng thái</label>
+                  <select id="TrangThai" class="form-select">
+                    <option value="Trong">Trong</option>
+                    <option value="TamGiu">TamGiu</option>
+                    <option value="DaDat">DaDat</option>
+                    <option value="Huy">Huy</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Giữ đến (datetime)</label>
+                  <input
+                    id="ThoiGianTamGiu"
+                    type="datetime-local"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Người giữ (UserId)</label>
+                  <input id="NguoiGiuId" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Ngày đặt (datetime)</label>
+                  <input
+                    id="NgayDat"
+                    type="datetime-local"
+                    class="form-control"
+                  />
+                </div>
+
+                <div class="col-md-6">
+                  <div id="AutoPriceNote" class="small-muted mt-4"></div>
                 </div>
               </div>
             </div>
+
             <div class="modal-footer">
               <button
                 type="button"
@@ -144,6 +219,26 @@
       </div>
     </div>
 
+    <!-- Toast -->
+    <div class="toast-wrap">
+      <div
+        id="toast"
+        class="toast align-items-center border-0 text-white bg-success"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="d-flex">
+          <div id="toastBody" class="toast-body"></div>
+          <button
+            type="button"
+            class="btn-close btn-close-white me-2 m-auto"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+      </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -151,318 +246,374 @@
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
 
     <script>
-      /* ================= Config API ================= */
-      const BASE = "https://localhost:7058";
+      /* ============== Config ============== */
+      const BASE_URL = "https://localhost:7058";
       const API = {
-        list: `${BASE}/api/SuatChieu/get-all`, // GET
-        create: `${BASE}/api/SuatChieu/create`, // POST (JSON)
-        update: (id) => `${BASE}/api/SuatChieu/update/${id}`, // PUT (JSON)
-        remove: (id) => `${BASE}/api/SuatChieu/delete/${id}`, // DELETE
-        phim: `${BASE}/api/Phim/get-all`, // GET
-        phong: `${BASE}/api/Phongchieu/get-all`, // GET (chú ý chữ thường/hoa theo backend)
+        list: `${BASE_URL}/api/Ve/get-all`, // GET
+        create: `${BASE_URL}/api/Ve/create`, // POST (JSON)
+        update: (id) => `${BASE_URL}/api/Ve/update/${id}`, // PUT (JSON)
+        remove: (id) => `${BASE_URL}/api/Ve/delete/${id}`, // DELETE
+        hold: `${BASE_URL}/api/Ve/hold`, // POST {maGhe,maSuat}
+        release: `${BASE_URL}/api/Ve/release`, // POST {maGhe,maSuat}
+        price: (maGhe, maSuat) =>
+          `${BASE_URL}/api/Ve/tinh-gia-ve?maGhe=${maGhe}&maSuat=${maSuat}`, // GET
       };
       const token = localStorage.getItem("token");
       const authHeader = token ? { Authorization: `Bearer ${token}` } : {};
-
-      /* ================= Helpers ================= */
       const $id = (s) => document.getElementById(s);
-      const mapPhim = (x) => ({
-        maPhim: x.maPhim ?? x.MaPhim,
-        tenPhim: x.tenPhim ?? x.TenPhim,
-      });
-      const mapPhong = (x) => ({
-        maPhong: x.maPhong ?? x.MaPhong,
-        tenPhong: x.tenPhong ?? x.TenPhong ?? `Phòng ${x.maPhong ?? x.MaPhong}`,
-      });
-      const mapSuat = (x) => ({
-        maSuat: x.maSuat ?? x.MaSuat,
-        maPhim: x.maPhim ?? x.MaPhim,
-        maPhong: x.maPhong ?? x.MaPhong,
-        thoiGianBatDau: x.thoiGianBatDau ?? x.ThoiGianBatDau,
-        thoiGianKetThuc: x.thoiGianKetThuc ?? x.ThoiGianKetThuc,
+
+      const VND = new Intl.NumberFormat("vi-VN", {
+        style: "currency",
+        currency: "VND",
       });
 
-      function toDate(d) {
-        try {
-          return new Date(d);
-        } catch {
-          return null;
-        }
+      /* ============== Helpers ============== */
+      function showToast(msg, kind = "success") {
+        const el = $id("toast"),
+          body = $id("toastBody");
+        el.className =
+          "toast align-items-center border-0 text-white " +
+          (kind === "success" ? "bg-success" : "bg-danger");
+        body.textContent = msg;
+        new bootstrap.Toast(el, { delay: 2200 }).show();
       }
-      function pad2(n) {
-        return String(n).padStart(2, "0");
+      function toLocalInputValue(v) {
+        if (!v) return "";
+        const d = new Date(v);
+        if (isNaN(d)) return "";
+        const pad = (n) => String(n).padStart(2, "0");
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(
+          d.getDate()
+        )}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
       }
-      function fmtDateTimeLabel(d) {
-        const dt = toDate(d);
-        if (!dt || isNaN(dt)) return "";
-        return `${pad2(dt.getDate())}/${pad2(
-          dt.getMonth() + 1
-        )}/${dt.getFullYear()} ${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
-      }
-      function fmtDateOnly(d) {
-        const dt = toDate(d);
-        if (!dt || isNaN(dt)) return "";
-        return `${dt.getFullYear()}-${pad2(dt.getMonth() + 1)}-${pad2(
-          dt.getDate()
-        )}`;
-      }
-      function fmtTimeOnly(d) {
-        const dt = toDate(d);
-        if (!dt || isNaN(dt)) return "";
-        return `${pad2(dt.getHours())}:${pad2(dt.getMinutes())}`;
+      function toISOStringOrNull(inputVal) {
+        return inputVal ? new Date(inputVal).toISOString() : null;
       }
 
-      /* ================= State ================= */
+      function mapVe(x) {
+        return {
+          maVe: x?.maVe ?? x?.MaVe,
+          maGhe: x?.maGhe ?? x?.MaGhe,
+          maSuat: x?.maSuat ?? x?.MaSuat,
+          giaVe: x?.giaVe ?? x?.GiaVe,
+          trangThai: x?.trangThai ?? x?.TrangThai,
+          ngayDat: x?.ngayDat ?? x?.NgayDat,
+          thoiGianTamGiu: x?.thoiGianTamGiu ?? x?.ThoiGianTamGiu,
+          nguoiGiuId: x?.nguoiGiuId ?? x?.NguoiGiuId ?? "",
+        };
+      }
+      function badgeTrangThai(st) {
+        const s = String(st || "").toLowerCase();
+        if (s === "dadat")
+          return `<span class="badge badge-st badge-dadat">Đã đặt</span>`;
+        if (s === "tamgiu")
+          return `<span class="badge badge-st badge-giu">Tạm giữ</span>`;
+        if (s === "huy")
+          return `<span class="badge badge-st badge-huy">Hủy</span>`;
+        return `<span class="badge badge-st badge-trong">Trong</span>`;
+      }
+
+      /* ============== State ============== */
+      let veRows = [];
       let dt = null;
-      let phimOptions = [];
-      let phongOptions = [];
-      let rows = [];
 
-      /* ================= Load Options ================= */
-      async function loadOptions() {
-        const [rPhim, rPhong] = await Promise.all([
-          fetch(API.phim, { headers: { ...authHeader } }),
-          fetch(API.phong, { headers: { ...authHeader } }),
-        ]);
-        const j1 = await rPhim.json();
-        const j2 = await rPhong.json();
-        phimOptions = (
-          Array.isArray(j1?.data) ? j1.data : Array.isArray(j1) ? j1 : []
-        ).map(mapPhim);
-        phongOptions = (
-          Array.isArray(j2?.data) ? j2.data : Array.isArray(j2) ? j2 : []
-        ).map(mapPhong);
-
-        // fill selects in modal
-        const phimSel = $id("MaPhim");
-        const phongSel = $id("MaPhong");
-        phimSel.innerHTML = '<option value="">-- Chọn phim --</option>';
-        phongSel.innerHTML = '<option value="">-- Chọn phòng --</option>';
-        phimOptions.forEach((p) => {
-          const o = document.createElement("option");
-          o.value = p.maPhim;
-          o.textContent = p.tenPhim;
-          phimSel.appendChild(o);
-        });
-        phongOptions.forEach((p) => {
-          const o = document.createElement("option");
-          o.value = p.maPhong;
-          o.textContent = p.tenPhong;
-          phongSel.appendChild(o);
-        });
+      /* ============== Loaders ============== */
+      async function loadVes() {
+        const r = await fetch(API.list, { headers: { ...authHeader } });
+        const j = await r.json();
+        veRows = (
+          Array.isArray(j?.data) ? j.data : Array.isArray(j) ? j : []
+        ).map(mapVe);
+        renderTable();
       }
 
-      /* ================= Load Table ================= */
-      async function loadTable() {
-        try {
-          const r = await fetch(API.list, { headers: { ...authHeader } });
-          const j = await r.json();
-          rows = (
-            Array.isArray(j?.data) ? j.data : Array.isArray(j) ? j : []
-          ).map(mapSuat);
+      /* ============== Table ============== */
+      function renderTable() {
+        const rows = veRows.map((v) => ({
+          ...v,
+          giaHtml: v.giaVe != null ? VND.format(Number(v.giaVe)) : "",
+          stHtml: badgeTrangThai(v.trangThai),
+        }));
 
-          const tableData = rows.map((r) => {
-            const phimName =
-              phimOptions.find((p) => p.maPhim === r.maPhim)?.tenPhim ||
-              `#${r.maPhim}`;
-            const phongName =
-              phongOptions.find((p) => p.maPhong === r.maPhong)?.tenPhong ||
-              `Phòng ${r.maPhong}`;
-            return {
-              ...r,
-              phimName,
-              phongName,
-              batDauLabel: fmtDateTimeLabel(r.thoiGianBatDau),
-              ketThucLabel: fmtDateTimeLabel(r.thoiGianKetThuc),
-              ngayChieuLabel: fmtDateOnly(r.thoiGianBatDau),
-              gioChieuLabel: fmtTimeOnly(r.thoiGianBatDau),
-            };
-          });
-
-          if (dt) {
-            dt.clear();
-            dt.rows.add(tableData).draw();
-            return;
-          }
-
-          dt = $("#suatTable").DataTable({
-            data: tableData,
-            columns: [
-              { data: "maSuat" },
-              { data: "phimName" },
-              { data: "phongName" },
-              { data: "batDauLabel", className: "mono" },
-              { data: "ketThucLabel", className: "mono" },
-              { data: "ngayChieuLabel", className: "mono" },
-              { data: "gioChieuLabel", className: "mono" },
-              {
-                data: null,
-                orderable: false,
-                searchable: false,
-                render: (row) =>
-                  `<div class="d-flex flex-wrap gap-2 justify-content-center">
-                   <button class="btn btn-sm btn-outline-primary" data-act="edit" data-id="${row.maSuat}">Sửa</button>
-                   <button class="btn btn-sm btn-outline-danger"  data-act="del"  data-id="${row.maSuat}">Xóa</button>
-                 </div>`,
-              },
-            ],
-            language: {
-              url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/vi.json",
-            },
-            pageLength: 10,
-            responsive: true,
-            autoWidth: false,
-            order: [[0, "asc"]],
-            dom: '<"row mb-2"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"row mt-2"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-          });
-        } catch (e) {
-          console.error(e);
-          alert("❌ Không thể tải danh sách suất chiếu.");
+        if (dt) {
+          dt.clear();
+          dt.rows.add(rows).draw();
+          return;
         }
+
+        dt = $("#veTable").DataTable({
+          data: rows,
+          columns: [
+            { data: "maVe" },
+            { data: "maGhe" },
+            { data: "maSuat" },
+            { data: "giaHtml", className: "mono" },
+            { data: "stHtml", orderable: false, searchable: false },
+            {
+              data: null,
+              orderable: false,
+              searchable: false,
+              render: (row) => `
+                <div class="d-flex flex-wrap gap-2 justify-content-center">
+                  <button class="btn btn-sm btn-outline-primary" data-act="edit" data-id="${row.maVe}">Sửa</button>
+                  <button class="btn btn-sm btn-outline-danger"  data-act="del"  data-id="${row.maVe}">Xóa</button>
+                  <button class="btn btn-sm btn-warning"         data-act="hold" data-ghe="${row.maGhe}" data-suat="${row.maSuat}">Giữ 3'</button>
+                  <button class="btn btn-sm btn-secondary"       data-act="release" data-ghe="${row.maGhe}" data-suat="${row.maSuat}">Trả</button>
+                </div>`,
+            },
+          ],
+          language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/vi.json",
+          },
+          pageLength: 10,
+          responsive: true,
+          autoWidth: false,
+          order: [[0, "desc"]],
+          dom: '<"row mb-2"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"row mt-2"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        });
       }
 
-      /* ================= Modal & CRUD ================= */
-      const bsModal = new bootstrap.Modal(
-        document.getElementById("suatModal"),
-        { backdrop: "static" }
-      );
+      /* ============== Modal & CRUD ============== */
+      const bsModal = new bootstrap.Modal($id("veModal"), {
+        backdrop: "static",
+      });
 
       function resetForm() {
-        $id("suatForm").reset();
-        $id("MaSuat").value = "";
+        $id("veForm").reset();
+        $id("MaVe").value = "";
+        $id("TrangThai").value = "Trong";
+        $id("AutoPriceNote").textContent = "";
       }
 
-      // Thêm mới
+      // Add
       $id("btnAdd").addEventListener("click", () => {
         resetForm();
-        $id("suatModalLabel").textContent = "Thêm suất chiếu";
+        $id("veModalLabel").textContent = "Thêm vé";
         bsModal.show();
       });
 
-      // Tải lại
+      // Reload
       $id("btnReload").addEventListener("click", async () => {
-        await loadOptions();
-        await loadTable();
+        await loadVes();
+        showToast("Đã tải lại dữ liệu!", "success");
+      });
+
+      // Auto price
+      $id("btnAutoPrice").addEventListener("click", async () => {
+        const maGhe = Number($id("MaGhe").value);
+        const maSuat = Number($id("MaSuat").value);
+        if (
+          !Number.isInteger(maGhe) ||
+          !Number.isInteger(maSuat) ||
+          maGhe <= 0 ||
+          maSuat <= 0
+        ) {
+          return showToast("Nhập Mã ghế & Mã suất hợp lệ trước.", "error");
+        }
+        try {
+          const res = await fetch(API.price(maGhe, maSuat), {
+            headers: { ...authHeader },
+          });
+          const j = await res.json();
+          if (!res.ok || !j?.status)
+            throw new Error(j?.message || "Không tính được giá.");
+          const data = j.data || {};
+          if (data?.giaCuoiCung != null) {
+            $id("GiaVe").value = Number(data.giaCuoiCung);
+            $id("AutoPriceNote").textContent =
+              `Giá cơ bản: ${Number(data.giaCoBan || 0).toLocaleString(
+                "vi-VN"
+              )} — ` +
+              `VIP: ${data.laVip ? "Có" : "Không"}, Đêm: ${
+                data.laBanDem ? "Có" : "Không"
+              }, Cuối tuần: ${data.laCuoiTuan ? "Có" : "Không"}`;
+            showToast("Đã tính giá.");
+          } else {
+            showToast("Thiếu dữ liệu giá.", "error");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast(err.message || "Lỗi tính giá.", "error");
+        }
       });
 
       // Submit (Create/Update)
-      $id("suatForm").addEventListener("submit", async (e) => {
+      $id("veForm").addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        const id = $id("MaSuat").value.trim();
-        const maPhim = Number($id("MaPhim").value);
-        const maPhong = Number($id("MaPhong").value);
-        const batDau = $id("BatDau").value;
-        const ketThuc = $id("KetThuc").value;
+        const id = $id("MaVe").value.trim();
+        const maGhe = Number($id("MaGhe").value);
+        const maSuat = Number($id("MaSuat").value);
+        const giaVe = $id("GiaVe").value ? Number($id("GiaVe").value) : null;
+        const trangThai = $id("TrangThai").value.trim();
+        const tgHold = $id("ThoiGianTamGiu").value;
+        const nguoiGiuId = $id("NguoiGiuId").value.trim() || null;
+        const ngayDat = $id("NgayDat").value;
 
-        if (!maPhim || !maPhong || !batDau || !ketThuc)
-          return alert("❌ Vui lòng nhập đủ thông tin.");
-        if (new Date(ketThuc) <= new Date(batDau))
-          return alert("❌ Thời gian kết thúc phải sau thời gian bắt đầu.");
+        if (
+          !Number.isInteger(maGhe) ||
+          !Number.isInteger(maSuat) ||
+          maGhe <= 0 ||
+          maSuat <= 0
+        ) {
+          return showToast("Mã ghế / Mã suất không hợp lệ.", "error");
+        }
 
-        const body = {
-          maSuat: id ? Number(id) : undefined,
-          maPhim,
-          maPhong,
-          thoiGianBatDau: batDau,
-          thoiGianKetThuc: ketThuc,
-          ngayChieu: fmtDateOnly(batDau),
-          gioChieu: fmtTimeOnly(batDau),
+        const payload = {
+          maGhe,
+          maSuat,
+          giaVe,
+          trangThai: trangThai || "Trong",
+          thoiGianTamGiu: toISOStringOrNull(tgHold),
+          nguoiGiuId,
+          ngayDat: toISOStringOrNull(ngayDat),
         };
 
         try {
           let res;
           if (id) {
+            payload.maVe = Number(id);
             res = await fetch(API.update(id), {
               method: "PUT",
-              headers: { "Content-Type": "application/json", ...authHeader },
-              body: JSON.stringify(body),
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                ...authHeader,
+              },
+              body: JSON.stringify(payload),
             });
+            if (!res.ok) {
+              let msg = "";
+              try {
+                msg = (await res.json())?.message || "";
+              } catch {}
+              throw new Error(msg || "Cập nhật thất bại.");
+            }
           } else {
-            const createPayload = { ...body };
-            delete createPayload.maSuat;
             res = await fetch(API.create, {
               method: "POST",
-              headers: { "Content-Type": "application/json", ...authHeader },
-              body: JSON.stringify(createPayload),
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                ...authHeader,
+              },
+              body: JSON.stringify(payload),
             });
+            if (!res.ok) {
+              let msg = "";
+              try {
+                msg = (await res.json())?.message || "";
+              } catch {}
+              throw new Error(msg || "Tạo vé thất bại.");
+            }
           }
-
-          if (!res.ok) {
-            const t = await res.text();
-            throw new Error(t || "Request failed");
-          }
-
-          alert(id ? "✅ Đã cập nhật suất chiếu" : "✅ Đã thêm suất chiếu");
+          showToast(id ? "Đã cập nhật vé." : "Đã tạo vé.", "success");
           bsModal.hide();
-          await loadTable();
+          await loadVes();
         } catch (err) {
           console.error(err);
-          alert("❌ Lưu không thành công");
+          showToast(err.message || "Lưu không thành công.", "error");
         }
       });
 
-      // Hành động trong bảng: edit / delete
-      $("#suatTable").on("click", "button[data-act]", async function () {
+      // Hành động dòng
+      $("#veTable").on("click", "button[data-act]", function () {
         const act = this.dataset.act;
-        const id = this.dataset.id;
+        const id = Number(this.dataset.id);
+        const rowData = dt.row($(this).closest("tr")).data();
 
         if (act === "edit") {
-          try {
-            const rowData = dt.row($(this).closest("tr")).data();
-            const s = rowData
-              ? rows.find((x) => x.maSuat === rowData.maSuat)
-              : null;
-            if (!s) return alert("❌ Không lấy được dữ liệu suất.");
-
-            $id("MaSuat").value = s.maSuat ?? "";
-            $id("MaPhim").value = s.maPhim ?? "";
-            $id("MaPhong").value = s.maPhong ?? "";
-
-            // set datetime-local (YYYY-MM-DDTHH:mm)
-            const bd = new Date(s.thoiGianBatDau);
-            const kt = new Date(s.thoiGianKetThuc);
-            const toLocalInput = (d) => {
-              if (!d || isNaN(d)) return "";
-              const y = d.getFullYear(),
-                m = String(d.getMonth() + 1).padStart(2, "0"),
-                day = String(d.getDate()).padStart(2, "0");
-              const h = String(d.getHours()).padStart(2, "0"),
-                mi = String(d.getMinutes()).padStart(2, "0");
-              return `${y}-${m}-${day}T${h}:${mi}`;
-            };
-            $id("BatDau").value = toLocalInput(bd);
-            $id("KetThuc").value = toLocalInput(kt);
-
-            $id("suatModalLabel").textContent = "Cập nhật suất chiếu";
-            bsModal.show();
-          } catch (err) {
-            console.error(err);
-            alert("❌ Lỗi lấy dữ liệu suất.");
-          }
+          const v = veRows.find((x) => x.maVe === rowData.maVe);
+          if (!v) return showToast("Không tìm thấy vé.", "error");
+          $id("veModalLabel").textContent = "Cập nhật vé";
+          $id("veForm").reset();
+          $id("MaVe").value = v.maVe;
+          $id("MaGhe").value = v.maGhe || "";
+          $id("MaSuat").value = v.maSuat || "";
+          $id("GiaVe").value = v.giaVe != null ? Number(v.giaVe) : "";
+          $id("TrangThai").value = v.trangThai || "Trong";
+          $id("ThoiGianTamGiu").value = toLocalInputValue(v.thoiGianTamGiu);
+          $id("NguoiGiuId").value = v.nguoiGiuId || "";
+          $id("NgayDat").value = toLocalInputValue(v.ngayDat);
+          bsModal.show();
         }
 
         if (act === "del") {
-          if (!confirm(`Xóa suất chiếu #${id}?`)) return;
-          try {
-            const res = await fetch(API.remove(id), {
-              method: "DELETE",
-              headers: { ...authHeader },
-            });
-            if (!res.ok) throw new Error("DELETE failed");
-            alert("✅ Đã xóa suất chiếu");
-            await loadTable();
-          } catch (err) {
-            console.error(err);
-            alert("❌ Xóa không thành công");
-          }
+          if (!confirm(`Xóa vé #${id}?`)) return;
+          (async () => {
+            try {
+              const res = await fetch(API.remove(id), {
+                method: "DELETE",
+                headers: { ...authHeader },
+              });
+              if (!res.ok) throw new Error("DELETE failed");
+              showToast("Đã xóa vé.", "success");
+              await loadVes();
+            } catch (e) {
+              console.error(e);
+              showToast("Xóa không thành công.", "error");
+            }
+          })();
+        }
+
+        if (act === "hold") {
+          const ghe = Number(this.dataset.ghe);
+          const suat = Number(this.dataset.suat);
+          if (!ghe || !suat) return showToast("Thiếu MaGhe/MaSuat.", "error");
+          (async () => {
+            try {
+              const res = await fetch(API.hold, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  ...authHeader,
+                },
+                body: JSON.stringify({ maGhe: ghe, maSuat: suat }),
+              });
+              const j = await res.json();
+              if (!res.ok || !j?.status)
+                throw new Error(j?.message || "Hold thất bại.");
+              showToast("Đã giữ ghế 3 phút.", "success");
+              await loadVes();
+            } catch (e) {
+              console.error(e);
+              showToast(e.message || "Hold thất bại.", "error");
+            }
+          })();
+        }
+
+        if (act === "release") {
+          const ghe = Number(this.dataset.ghe);
+          const suat = Number(this.dataset.suat);
+          if (!ghe || !suat) return showToast("Thiếu MaGhe/MaSuat.", "error");
+          (async () => {
+            try {
+              const res = await fetch(API.release, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Accept: "application/json",
+                  ...authHeader,
+                },
+                body: JSON.stringify({ maGhe: ghe, maSuat: suat }),
+              });
+              const j = await res.json();
+              if (!res.ok || !j?.status)
+                throw new Error(j?.message || "Release thất bại.");
+              showToast("Đã trả ghế.", "success");
+              await loadVes();
+            } catch (e) {
+              console.error(e);
+              showToast(e.message || "Release thất bại.", "error");
+            }
+          })();
         }
       });
 
-      /* ================= Boot ================= */
+      /* ============== Boot ============== */
       (async function boot() {
-        await loadOptions();
-        await loadTable();
+        await loadVes();
       })();
     </script>
   </body>
