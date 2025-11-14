@@ -1,4 +1,7 @@
-﻿using CineTicket.Models;
+﻿// ==============================
+// File: Repositories/Interfaces/IKhuyenMaiRepository.cs
+// ==============================
+using CineTicket.Models;
 
 namespace CineTicket.Repositories.Interfaces
 {

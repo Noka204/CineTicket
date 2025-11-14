@@ -1,16 +1,32 @@
-﻿using System.Text.Json.Serialization;
-using CineTicket.DTOs.ChiTietHoaDon;
-namespace CineTicket.DTOs.HoaDon { 
-    public class CreateHoaDonDTO { 
-        public int MaSuat { get; set; } 
-        public List<int> SeatIds { get; set; } = new();
-        // danh sách MaGhe đã hold
-        public int? BapNuocId { get; set; }
-        public int SoLuongBapNuoc { get; set; } = 0;
+﻿// ==============================
+// File: DTOs/HoaDon/CreateHoaDonDTO.cs
+// ==============================
+using System.ComponentModel.DataAnnotations;
+
+namespace CineTicket.DTOs.HoaDon
+{
+    public class CreateHoaDonDTO
+    {
+        [Required]
+        public int MaSuat { get; set; }
+
+        // FE có thể gửi seatIds (MaGhe) hoặc ChiTietHoaDons với MaVe
+        public List<int>? SeatIds { get; set; }
+
+        // Dòng chi tiết: (MaVe, SoLuong=1) hoặc (MaBn, SoLuong)
+        public List<CreateHoaDonLineDTO>? ChiTietHoaDons { get; set; }
+
+        public string? HinhThucThanhToan { get; set; } // "Momo" | "VNPAY" ...
         public string? GhiChu { get; set; }
-        public string? HinhThucThanhToan { get; set; } // "Momo" mặc định
-        public string? ClientToken { get; set; }
-        [JsonPropertyName("ChiTietHoaDons")]// chống tạo HĐ trùng
-        public List<CreateChiTietHoaDonDTO> ChiTietHoaDons { get; set; } = new();
+
+        // tuỳ ý: nếu muốn truyền mã KM từ checkout
+        public string? CouponCode { get; set; }
+    }
+
+    public class CreateHoaDonLineDTO
+    {
+        public int? MaVe { get; set; }
+        public int? MaBn { get; set; }
+        public int SoLuong { get; set; } = 1;
     }
 }

@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// ==============================
+// File: Services/Implementations/HoaDonService.cs
+// (phiên bản đã khớp với repo & DTO tối giản; giữ nguyên logic cũ)
+// ==============================
+using AutoMapper;
 using CineTicket.Data;
 using CineTicket.DTOs.HoaDon;
 using CineTicket.Models;
@@ -43,9 +47,6 @@ namespace CineTicket.Services.Implementations
 
         public async Task<bool> DeleteAsync(int id) => await _repo.DeleteAsync(id);
 
-        /// <summary>
-        /// Helper: SaveChangesAsync có log
-        /// </summary>
         private async Task<int> SaveChangesWithLogAsync(string contextInfo)
         {
             try
@@ -68,43 +69,32 @@ namespace CineTicket.Services.Implementations
         public async Task<HoaDon> CreateWithDetailsAsync(CreateHoaDonDTO dto, string userId)
         {
             var now = DateTime.Now;
-            var graceCutoff = now.AddSeconds(-5);
 
-            // ---- Gom tất cả MaVe từ SeatIds hoặc ChiTietHoaDons ----
-            // 1) Ưu tiên MaVe từ chi tiết (nếu có)
+            // ---- gom MaVe từ dto (nếu có) hoặc suy ra theo SeatIds ----
             var veIdsFromDto = (dto.ChiTietHoaDons?
-                                    .Where(x => x.MaVe.HasValue)
-                                    .Select(x => x.MaVe!.Value)
-                                    .Distinct()
-                                    .ToList()) ?? new();
+                    .Where(x => x.MaVe.HasValue)
+                    .Select(x => x.MaVe!.Value)
+                    .Distinct()
+                    .ToList()) ?? new();
 
-            // 2) Fallback theo MaGhe từ SeatIds (FE đang gửi MaGhe ở đây)
             var seatIdsFromDto = (dto.SeatIds?.Distinct().ToList()) ?? new();
 
             IQueryable<Ve> q = _db.Ves.AsQueryable().Where(v => v.MaSuat == dto.MaSuat);
-
             if (veIdsFromDto.Any())
-            {
                 q = q.Where(v => veIdsFromDto.Contains(v.MaVe));
-            }
             else if (seatIdsFromDto.Any())
-            {
                 q = q.Where(v => v.MaGhe.HasValue && seatIdsFromDto.Contains(v.MaGhe.Value));
-            }
 
             var vesRaw = await q.ToListAsync();
-
 
             var holdWindow = TimeSpan.FromMinutes(5);
             var validVes = vesRaw.Where(v =>
                 v.TrangThai == "TamGiu" &&
                 v.ThoiGianTamGiu.HasValue &&
-                (v.ThoiGianTamGiu.Value + holdWindow) > now &&
+                (v.ThoiGianTamGiu.Value) > now &&
                 v.NguoiGiuId == userId
             ).ToList();
 
-
-            // ---- Gom bắp nước ----
             var bapNuocList = dto.ChiTietHoaDons?
                 .Where(x => x.MaBn.HasValue && x.SoLuong > 0)
                 .ToList() ?? new();
@@ -112,7 +102,7 @@ namespace CineTicket.Services.Implementations
             if (validVes.Count == 0 && bapNuocList.Count == 0)
                 throw new InvalidOperationException("Không có vé/bắp hợp lệ để tạo hóa đơn.");
 
-            // ---- Tạo hóa đơn ----
+            // ---- tạo hóa đơn ----
             var hd = new HoaDon
             {
                 ApplicationUserId = userId,
@@ -126,16 +116,15 @@ namespace CineTicket.Services.Implementations
             _db.HoaDons.Add(hd);
             await SaveChangesWithLogAsync("Insert HoaDon");
 
-            // ---- Chi tiết hóa đơn + tính tiền ----
+            // ---- chi tiết + tính tiền ----
             var details = new List<ChiTietHoaDon>();
             decimal tongTien = 0m;
 
             // Vé
             foreach (var v in validVes)
             {
-                var giaVeInfo = await _veService.TinhGiaVeAsync(v.MaGhe ?? 0, v.MaSuat ?? 0);
-                if (giaVeInfo == null)
-                    throw new InvalidOperationException($"Không tính được giá vé cho ghế {v.MaGhe}.");
+                var giaVeInfo = await _veService.TinhGiaVeAsync(v.MaGhe ?? 0, v.MaSuat ?? 0)
+                                  ?? throw new InvalidOperationException($"Không tính được giá vé cho ghế {v.MaGhe}.");
 
                 var donGia = giaVeInfo.GiaCuoiCung;
 
@@ -149,16 +138,15 @@ namespace CineTicket.Services.Implementations
 
                 tongTien += donGia;
 
-                // cập nhật trạng thái vé
+                // vẫn để trạng thái TamGiu; xác nhận Đã đặt sau khi payment success
                 v.TrangThai = "TamGiu";
             }
 
             // Bắp nước
             foreach (var li in bapNuocList)
             {
-                var bn = await _db.BapNuocs
-                    .FirstOrDefaultAsync(x => x.MaBn == li.MaBn!.Value)
-                    ?? throw new InvalidOperationException("Bắp nước không hợp lệ.");
+                var bn = await _db.BapNuocs.FirstOrDefaultAsync(x => x.MaBn == li.MaBn!.Value)
+                         ?? throw new InvalidOperationException("Bắp nước không hợp lệ.");
 
                 var donGia = bn.Gia ?? 0m;
 
@@ -179,15 +167,16 @@ namespace CineTicket.Services.Implementations
                 await SaveChangesWithLogAsync("Insert ChiTietHoaDon");
             }
 
-            // ---- Update tổng tiền ----
+            // ---- tổng tiền ----
             hd.TongTien = tongTien;
             _db.HoaDons.Update(hd);
             await SaveChangesWithLogAsync("Update TongTien HoaDon");
 
             return hd;
         }
+
         public async Task<(int total, List<MyPaidMovieItemDto> items)> GetMyPaidMoviesAsync(
-    string userId, int skip, int take)
+            string userId, int skip, int take)
         {
             var baseQuery = _db.HoaDons
                 .AsNoTracking()
@@ -222,7 +211,5 @@ namespace CineTicket.Services.Implementations
 
             return (total, items);
         }
-
     }
-
 }

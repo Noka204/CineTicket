@@ -15,38 +15,42 @@ namespace CineTicket.Controllers.Admin
 
         [HttpGet]
         public async Task<IActionResult> GetAll() =>
-            Ok(await _svc.GetAllAsync());
+            Ok(new { status = true, data = await _svc.GetAllAsync() });
 
         [HttpGet("{id:int}")]
         public async Task<IActionResult> Get(int id)
         {
             var km = await _svc.GetAsync(id);
-            return km is null ? NotFound() : Ok(km);
+            return km is null
+                ? NotFound(new { status = false, message = "Không tìm thấy." })
+                : Ok(new { status = true, data = km });
         }
+
         [Authorize(Roles = "Employee,Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] KhuyenMaiCreateDto dto)
         {
             var km = await _svc.CreateAsync(dto);
-            return CreatedAtAction(nameof(Get), new { id = km.Id }, km);
+            return CreatedAtAction(nameof(Get), new { id = km.Id }, new { status = true, data = km });
         }
+
         [Authorize(Roles = "Employee,Admin")]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> Update(int id, [FromBody] KhuyenMaiUpdateDto dto)
         {
-            if (id != dto.Id) return BadRequest("Id không khớp.");
-            var km = await _svc.GetAsync(id);
-            if (km is null) return NotFound();
-
+            if (id != dto.Id) return BadRequest(new { status = false, message = "Id không khớp." });
             var updated = await _svc.UpdateAsync(dto);
-            return Ok(updated);
+            return updated is null
+                ? NotFound(new { status = false, message = "Không tìm thấy." })
+                : Ok(new { status = true, data = updated });
         }
+
         [Authorize(Roles = "Employee,Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var ok = await _svc.DeleteAsync(id);
-            return ok ? NoContent() : NotFound();
+            return ok ? NoContent() : NotFound(new { status = false, message = "Không tìm thấy." });
         }
     }
 }

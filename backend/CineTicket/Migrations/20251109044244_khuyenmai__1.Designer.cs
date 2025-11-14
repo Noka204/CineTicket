@@ -4,6 +4,7 @@ using CineTicket.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CineTicket.Migrations
 {
     [DbContext(typeof(CineTicketDbContext))]
-    partial class CineTicketDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251109044244_khuyenmai__1")]
+    partial class khuyenmai__1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,41 +278,24 @@ namespace CineTicket.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Code")
+                    b.Property<string>("CodeDaDung")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("GiaTriGiam")
+                    b.Property<decimal>("GiamThucTe")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("HoaDonMaHd")
                         .HasColumnType("int");
 
-                    b.Property<int?>("KhuyenMaiCodeId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("KhuyenMaiId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LoaiGiam")
+                    b.Property<int>("KhuyenMaiId")
                         .HasColumnType("int");
 
                     b.Property<int>("MaHd")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("MucGiam")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HoaDonMaHd");
-
-                    b.HasIndex("KhuyenMaiCodeId");
 
                     b.HasIndex("KhuyenMaiId");
 
@@ -819,19 +805,15 @@ namespace CineTicket.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CineTicket.Models.KhuyenMaiCode", "KhuyenMaiCode")
-                        .WithMany()
-                        .HasForeignKey("KhuyenMaiCodeId");
-
                     b.HasOne("CineTicket.Models.KhuyenMai", "KhuyenMai")
                         .WithMany("Redemptions")
-                        .HasForeignKey("KhuyenMaiId");
+                        .HasForeignKey("KhuyenMaiId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("HoaDon");
 
                     b.Navigation("KhuyenMai");
-
-                    b.Navigation("KhuyenMaiCode");
                 });
 
             modelBuilder.Entity("CineTicket.Models.KhuyenMaiCode", b =>

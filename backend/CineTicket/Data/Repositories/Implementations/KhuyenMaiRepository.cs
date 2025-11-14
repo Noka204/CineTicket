@@ -1,4 +1,7 @@
-﻿using CineTicket.Data;
+﻿// ==============================
+// File: Repositories/Implementations/KhuyenMaiRepository.cs
+// ==============================
+using CineTicket.Data;
 using CineTicket.Models;
 using CineTicket.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +14,13 @@ namespace CineTicket.Repositories.Implementations
         public KhuyenMaiRepository(CineTicketDbContext db) => _db = db;
 
         public Task<List<KhuyenMai>> GetAllAsync() =>
-            _db.KhuyenMais.OrderByDescending(x => x.Id).ToListAsync();
+            _db.KhuyenMais
+               .Include(x => x.Codes) // để đếm SoCode khi map DTO
+               .OrderByDescending(x => x.Id)
+               .ToListAsync();
 
         public Task<KhuyenMai?> GetAsync(int id) =>
-            _db.KhuyenMais.FirstOrDefaultAsync(x => x.Id == id)!;
+            _db.KhuyenMais.Include(x => x.Codes).FirstOrDefaultAsync(x => x.Id == id)!;
 
         public async Task AddAsync(KhuyenMai entity)
         {
@@ -32,6 +38,7 @@ namespace CineTicket.Repositories.Implementations
         {
             var found = await _db.KhuyenMais.FindAsync(id);
             if (found is null) return false;
+
             _db.KhuyenMais.Remove(found);
             await _db.SaveChangesAsync();
             return true;

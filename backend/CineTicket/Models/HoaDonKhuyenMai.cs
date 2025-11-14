@@ -1,20 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CineTicket.Models
 {
     public class HoaDonKhuyenMai
     {
-        // FK tới HoaDon dùng khóa hiện có MaHd
-        public int Id { get; set; }               // PK
-        public int MaHd { get; set; }
-        public HoaDon HoaDon { get; set; } = null!;
+        public int Id { get; set; }
 
-        public int KhuyenMaiId { get; set; }
-        public KhuyenMai KhuyenMai { get; set; } = null!;
+        // bat buoc
+        public int MaHd { get; set; }                      // FK -> HoaDon.MaHd
 
-        public string? CodeDaDung { get; set; }           // nếu dùng code cụ thể
+        public int? KhuyenMaiId { get; set; }              // FK -> KhuyenMai.Id
+        public int? KhuyenMaiCodeId { get; set; }          // FK -> KhuyenMaiCode.Id
+
+        public string? Code { get; set; }
+
+        public string? UserId { get; set; }
+
+        public DiscountKind LoaiGiam { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        public decimal GiamThucTe { get; set; }           // số tiền thực trừ (đã tính)
+        public decimal MucGiam { get; set; }
+
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal GiaTriGiam { get; set; }
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        // nav
+        public virtual HoaDon HoaDon { get; set; } = null!;
+        public virtual KhuyenMai? KhuyenMai { get; set; }
+        public virtual KhuyenMaiCode? KhuyenMaiCode { get; set; }
     }
 }
